@@ -1,0 +1,91 @@
+<div class="d-flex-center">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="3"></ion-col>
+      <ion-col size="6">
+        <ion-card>
+          <ion-card-content>
+            <div class="d-flex-center">
+              <img src="../../../assets/images/contractbase-logo.png">
+            </div>
+            <div>
+              <form [formGroup]="professionalInfoForm">
+                <div class="d-flex-center">
+                  <h4># years of experience*</h4>
+                  <ion-list>
+                    <ion-radio-group>
+                      <ion-item class="font-13">
+                        <ion-radio labelPlacement="end" class="ml-2">5-10 years</ion-radio>
+                        <ion-radio labelPlacement="end" class="ml-2">>10 years</ion-radio>
+                        <ion-radio labelPlacement="end" class="ml-2">>15 years</ion-radio>
+                      </ion-item>
+                    </ion-radio-group>
+                  </ion-list>
+                </div>
+                <div class="d-flex-center">
+                  <h4>Project Budget*</h4>
+                  <ion-list>
+                    <ion-radio-group>
+                      <ion-item class="font-13">
+                        <ion-radio labelPlacement="end" class="ml-2">
+                          < 10 MIO</ion-radio>
+                            <ion-radio labelPlacement="end" class="ml-2">10 MIO - 100 MIO</ion-radio>
+                            <ion-radio labelPlacement="end" class="ml-2">100 MIO - 500 MIO</ion-radio>
+                            <ion-radio labelPlacement="end" class="ml-2">>500 MIO</ion-radio>
+                      </ion-item>
+                    </ion-radio-group>
+                  </ion-list>
+                </div>
+                <div class="d-flex-center">
+                  <h4>Team Size*</h4>
+                  <ion-list>
+                    <ion-radio-group>
+                      <ion-item class="font-13">
+                        <ion-radio labelPlacement="end" class="ml-2">
+                          < 10</ion-radio>
+                            <ion-radio labelPlacement="end" class="ml-2">10 - 50</ion-radio>
+                            <ion-radio labelPlacement="end" class="ml-2">50 - 100</ion-radio>
+                            <ion-radio labelPlacement="end" class="ml-2">>100</ion-radio>
+                      </ion-item>
+                    </ion-radio-group>
+                  </ion-list>
+                </div>
+                <div class="d-flex-center">
+                  <h4>Contract Length*</h4>
+                  <ion-list>
+                    <ion-radio-group>
+                      <ion-item class="font-13">
+                        <ion-radio labelPlacement="end" class="ml-2">
+                          < 6 months</ion-radio>
+                            <ion-radio labelPlacement="end" class="ml-2">6 months - 1 year</ion-radio>
+                            <ion-radio labelPlacement="end" class="ml-2">>1 year</ion-radio>
+                      </ion-item>
+                    </ion-radio-group>
+                  </ion-list>
+                </div>
+                <div class="d-flex-center">
+                  <h4>Hourly Rate*</h4>
+                  <input type="text">
+                </div>
+                <div class="d-flex-center">
+                  <h4>Availability*</h4>
+                  <ion-datetime presentation="date" [preferWheel]="true"></ion-datetime>
+                </div>
+              </form>
+            </div>
+          </ion-card-content>
+          <div class="d-flex-end p-4">
+            <ion-nav-link router-direction="forward" [component]="previousComponentName">
+              <ion-button>Previous</ion-button>
+            </ion-nav-link>
+            <ion-nav-link router-direction="forward">
+              <ion-button>Next</ion-button>
+            </ion-nav-link>
+          </div>
+        </ion-card>
+      </ion-col>
+      <ion-col size="2">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

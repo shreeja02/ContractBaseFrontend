@@ -1,0 +1,7 @@
+{
+  "name": "contractbase-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

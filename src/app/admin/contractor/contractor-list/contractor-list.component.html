@@ -1,0 +1,43 @@
+<div class="d-flex-end">
+  <ion-searchbar class="searchbar-width"></ion-searchbar>
+</div>
+<ion-grid>
+  <ion-row>
+    <ion-col size="12" size-md="4" size-lg="3" *ngFor="let item of contractorList">
+      <ion-card class="cursor-pointer" (click)="onViewMoreClicked(item.contractorId)">
+        <ion-card-header>
+          <ion-card-title>{{item.contractorId}}</ion-card-title>
+          <ion-card-subtitle>{{item.name}}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="d-flex">
+            <ion-icon class="p-1 mt-1 icon-font" name="mail"></ion-icon>
+            <h3 class="p-1">{{item.email}}</h3>
+          </div>
+          <div class="d-flex">
+            <ion-icon class="p-1 mt-1 icon-font" name="location"></ion-icon>
+            <h3 class="p-1">{{item.location}}</h3>
+          </div>
+          <div class="d-flex">
+            <ion-icon class="p-1 mt-1 icon-font" name="school"></ion-icon>
+            <h3 class="p-1">{{item.position}}</h3>
+          </div>
+          <div class="d-flex">
+            <ion-icon class="p-1 mt-1 icon-font" name="person"></ion-icon>
+            <h3 class="p-1">Experience - {{item.yearsOfExperience}} years</h3>
+          </div>
+          <div class="d-flex">
+            <ion-icon class="p-1 mt-1 icon-font" name="call"></ion-icon>
+            <h3 class="p-1">{{item.phone}}</h3>
+          </div>
+        </ion-card-content>
+        <div class="d-flex-center">
+          <ion-button color="primary" (click)="onViewMoreClicked(item.contractorId)">
+            <ion-icon slot="start" name="arrow-forward"></ion-icon>
+            View More</ion-button>
+        </div>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>
