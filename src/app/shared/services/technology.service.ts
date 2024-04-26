@@ -10,6 +10,6 @@ export class TechnologyService {
   constructor(private _http: HttpClient) { }
 
   getAllTechologies() {
-    return this._http.get(this.apiEndPoint + "/Technology");
+    return this._http.get(this.apiEndPoint + "Technologies");
   }
 }

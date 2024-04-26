@@ -8,7 +8,6 @@ import { HeaderComponent } from '../header/header.component';
 import { ContractorDetailsComponent } from './contractor-details/contractor-details.component';
 
 
-
 @NgModule({
   declarations: [ContractorListComponent, ContractorComponent, ContractorDetailsComponent],
   imports: [

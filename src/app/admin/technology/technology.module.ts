@@ -4,14 +4,20 @@ import { TechnologyRoutingModule } from './technology-routing';
 import { TechnologyComponent } from './technology.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { TechnologyListComponent } from './technology-list/technology-list.component';
-
+import { TechnologyListGridComponent } from './technology-list/technology-list-grid/technology-list-grid.component';
+import { IonicComponentsModule } from 'src/app/shared/ionic-components.module';
+import { HeaderComponent } from '../header/header.component';
+import { TechnologyEditComponent } from './technology-edit/technology-edit.component';
 
 @NgModule({
-  declarations: [TechnologyComponent, TechnologyListComponent],
+  declarations: [TechnologyComponent,
+    TechnologyListComponent, TechnologyListGridComponent, TechnologyEditComponent],
   imports: [
     CommonModule,
     TechnologyRoutingModule,
     MaterialModule,
+    IonicComponentsModule,
+    HeaderComponent
   ]
 })
 export class TechnologyModule { }
