@@ -1,0 +1,34 @@
+<form [formGroup]="positionForm">
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-card class="p-2">
+          <ion-card-content>
+            <div>
+              <b>
+                <h2>Position Form</h2>
+              </b>
+            </div>
+            <div class="row d-flex-center mt-3">
+              <ion-input formControlName="positionName" type="text" class="p-2" label="Role Name*"
+                label-placement="floating" fill="outline"></ion-input>
+            </div>
+            <div
+              *ngIf="positionForm.controls['positionForm']?.invalid && (positionForm.controls['positionForm']?.dirty || positionForm.controls['positionForm'].touched)">
+              <div class="error-class" *ngIf="positionForm.controls['positionForm']?.errors?.required">
+                Role Name is required.
+              </div>
+            </div>
+            <div class="ml-3 mt-3">
+              <ion-checkbox formControlName="isActive" justify="end">Active</ion-checkbox>
+            </div>
+          </ion-card-content>
+          <div class="d-flex-end p-4">
+            <ion-button (click)="onBack()">Back</ion-button>
+            <ion-button (click)="onSave()">Save</ion-button>
+          </div>
+        </ion-card>
+      </ion-row>
+    </ion-grid>
+  </div>
+</form>

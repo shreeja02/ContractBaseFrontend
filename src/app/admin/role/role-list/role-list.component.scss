@@ -1,0 +1,8 @@
+table {
+    width: 100%;
+}
+::ng-deep {
+    .mat-mdc-header-cell {
+        font-weight: bold !important;
+    }
+}

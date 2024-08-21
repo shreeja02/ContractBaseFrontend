@@ -12,4 +12,16 @@ export class TechnologyService {
   getAllTechologies() {
     return this._http.get(this.apiEndPoint + "Technologies");
   }
+
+  addNewTechnology(technologyForm: any) {
+    return this._http.post(this.apiEndPoint + "Technologies", technologyForm);
+  }
+
+  editTechnology(technologyForm: any, id: any) {
+    return this._http.put(this.apiEndPoint + `Technologies/${id}`, technologyForm);
+  }
+
+  deleteTechnology(id: any) {
+    return this._http.delete(this.apiEndPoint + `Technologies/${id}`);
+  }
 }

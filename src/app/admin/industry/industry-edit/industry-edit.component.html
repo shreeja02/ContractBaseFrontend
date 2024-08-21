@@ -1,0 +1,47 @@
+<form [formGroup]="industryForm">
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-card class="p-2">
+          <ion-card-content>
+            <div>
+              <b>
+                <h2>Industry Form</h2>
+              </b>
+            </div>
+            <div class="row d-flex-center mt-3 w-100">
+              <ion-input formControlName="industryName" type="text" class="p-2" label="Industry Name*"
+                label-placement="floating" fill="outline"></ion-input>
+            </div>
+            <div
+              *ngIf="industryForm.controls['industryName']?.invalid && (industryForm.controls['industryName']?.dirty || industryForm.controls['industryName'].touched)">
+              <div class="error-class" *ngIf="industryForm.controls['industryName']?.errors?.required">
+                Industry Name is required.
+              </div>
+            </div>
+            <div class="row w-100 mt-3">
+              <ion-select fill="outline" formControlName="positionId" interface="popover" placeholder="Positions"
+                class="d-flex-center">
+                <ion-select-option *ngFor="let item of allPositions"
+                  [value]="item._id">{{item.positionName}}</ion-select-option>
+              </ion-select>
+            </div>
+            <div
+              *ngIf="industryForm.controls['positionId']?.invalid && (industryForm.controls['positionId']?.dirty || industryForm.controls['positionId'].touched)">
+              <div class="error-class" *ngIf="industryForm.controls['positionId']?.errors?.required">
+                Please select any position.
+              </div>
+            </div>
+            <div class="ml-3 mt-3">
+              <ion-checkbox formControlName="isActive" justify="end">Active</ion-checkbox>
+            </div>
+          </ion-card-content>
+          <div class="d-flex-end p-4">
+            <ion-button (click)="onBack()">Back</ion-button>
+            <ion-button (click)="onSave()">Save</ion-button>
+          </div>
+        </ion-card>
+      </ion-row>
+    </ion-grid>
+  </div>
+</form>

@@ -22,9 +22,11 @@
       </ion-item>
 
       <ion-button class="login-btn my-4" expand="block" (click)="onLogin()">Login</ion-button>
-      <ion-text color="primary" class="text-center">
-        <h4>Forgot Password?</h4>
-      </ion-text>
+      <a [routerLink]="['/contractor']">
+        <ion-text color="primary" class="text-center">
+          <h4>New? Create an account</h4>
+        </ion-text>
+      </a>
 
     </ion-card-content>
   </ion-card>

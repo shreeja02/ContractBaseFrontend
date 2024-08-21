@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TechnologyService } from 'src/app/shared/services/technology.service';
 import { TechnologyEditComponent } from '../technology-edit/technology-edit.component';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-technology-list',
@@ -12,9 +13,12 @@ import { TechnologyEditComponent } from '../technology-edit/technology-edit.comp
 export class TechnologyListComponent implements OnInit {
   activeTechnologies: any[] = [];
   inActiveTechnologies: any[] = [];
-  displayedColumns: any = ["technologyName", "action"]
+  filteredActiveTechnologies: any[] = [];
+  filteredInActiveTechnologies: any[] = [];
+  displayedColumns: any = ["technologyName", "action"];
+  selectedTab: any = 0;
+  searchValue: any = '';
   constructor(private technologyService: TechnologyService,
-    private router: Router,
     public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -32,8 +36,18 @@ export class TechnologyListComponent implements OnInit {
     );
   }
 
+  tabChanged(tabChangeEvent: MatTabChangeEvent): void {
+    this.selectedTab = tabChangeEvent.index;
+  }
+
   onAddNewTechnology() {
-    this.router.navigate(['/admin/technology/add']);
+    const dialogRef = this.dialog.open(TechnologyEditComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.success) {
+        this.getAllTechnologies();
+      }
+    });
   }
 
   onEdit(element: any) {
@@ -42,12 +56,23 @@ export class TechnologyListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      if (result.success) {
+        this.getAllTechnologies();
+      }
     });
   }
 
 
-  onDelete(event: any) {
-    console.log('event: ', event);
-  }
+  // onDelete(event: any) {
+
+  // }
+
+  // applyFilter(event: any) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   if (this.selectedTab == 0) {
+  //     this.activeTechnologies = this.activeTechnologies.filter((elem) => {
+  //       return (JSON.stringify(elem).toLocaleLowerCase()).match(filterValue.trim().toLowerCase())
+  //     });
+  //   }
+  // }
 }

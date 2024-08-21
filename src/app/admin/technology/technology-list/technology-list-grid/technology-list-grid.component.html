@@ -1,16 +1,23 @@
 <div class="example-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource">
-    <ng-container matColumnDef="technologyName">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <ng-container matColumnDef="technologyName" style="width: 100%;">
+      <mat-header-cell *matHeaderCellDef width="100%"> Name </mat-header-cell>
       <mat-cell *matCellDef="let element">
         {{element.technologyName}}
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+    <ng-container matColumnDef="positionName" style="width: 100%;">
+      <mat-header-cell *matHeaderCellDef width="100%"> Position </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <div class="d-flex-center example-flex-container">
+        {{element.positionId?.positionName}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div class="d-flex-center example-flex-container" class="text-right" style="width: 100%;">
           <button (click)="onDeleteCalled(element)" *ngIf="isActive" mat-icon-button>
             <mat-icon>delete</mat-icon>
           </button>
@@ -25,5 +32,6 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+    showFirstLastButtons></mat-paginator>
 </div>

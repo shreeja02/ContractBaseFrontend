@@ -31,3 +31,8 @@
         padding: 8px 24px;
     }
 }
+::ng-deep {
+    .mat-mdc-header-cell {
+        font-weight: bold !important;
+    }
+}

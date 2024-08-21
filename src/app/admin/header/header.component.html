@@ -8,7 +8,7 @@
   </ion-header>
   <ion-content class="ion-padding cursor-pointer">
     <ion-list>
-      <ion-item>
+      <ion-item [routerLink]="['/admin/contractor']">
         <ion-icon aria-hidden="true" name="people" slot="start"></ion-icon>
         <ion-label>Contractor</ion-label>
       </ion-item>
@@ -16,9 +16,37 @@
         <ion-icon aria-hidden="true" name="book" slot="start"></ion-icon>
         <ion-label>Jobs</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item [routerLink]="['/admin/technology']">
         <ion-icon aria-hidden="true" name="server-outline" slot="start"></ion-icon>
         <ion-label>Technology</ion-label>
+      </ion-item>
+      <ion-item [routerLink]="['/admin/role']">
+        <ion-icon aria-hidden="true" name="person-circle-outline" slot="start"></ion-icon>
+        <ion-label>Role</ion-label>
+      </ion-item>
+      <ion-item [routerLink]="['/admin/position']">
+        <ion-icon aria-hidden="true" name="person-circle-outline" slot="start"></ion-icon>
+        <ion-label>Position</ion-label>
+      </ion-item>
+      <ion-item [routerLink]="['/admin/industry']">
+        <ion-icon aria-hidden="true" name="business-outline" slot="start"></ion-icon>
+        <ion-label>Industry</ion-label>
+      </ion-item>
+      <ion-item [routerLink]="['/admin/certification']">
+        <ion-icon aria-hidden="true" name="star-outline" slot="start"></ion-icon>
+        <ion-label>Certification</ion-label>
+      </ion-item>
+      <ion-item [routerLink]="['/admin/province']">
+        <ion-icon aria-hidden="true" name="globe-outline" slot="start"></ion-icon>
+        <ion-label>Provinces</ion-label>
+      </ion-item>
+      <ion-item [routerLink]="['/admin/city']">
+        <ion-icon aria-hidden="true" name="airplane-outline" slot="start"></ion-icon>
+        <ion-label>Cities</ion-label>
+      </ion-item>
+      <ion-item [routerLink]="['/admin/user']">
+        <ion-icon aria-hidden="true" name="people-circle-outline" slot="start"></ion-icon>
+        <ion-label>Users</ion-label>
       </ion-item>
     </ion-list>
   </ion-content>

@@ -10,6 +10,27 @@ const adminRoutes: Routes = [
             },
             {
                 path: 'technology', loadChildren: () => import('./technology/technology.module').then(m => m.TechnologyModule)
+            },
+            {
+                path: 'role', loadChildren: () => import('./role/role.module').then(m => m.RoleModule)
+            },
+            {
+                path: 'position', loadChildren: () => import('./position/position.module').then(m => m.PositionModule)
+            },
+            {
+                path: 'industry', loadChildren: () => import('./industry/industry.module').then(m => m.IndustryModule)
+            },
+            {
+                path: 'certification', loadChildren: () => import('./certification/certification.module').then(m => m.CertificationModule)
+            },
+            {
+                path: 'province', loadChildren: () => import('./provinces/provinces.module').then(m => m.ProvincesModule)
+            },
+            {
+                path: 'city', loadChildren: () => import('./city/city.module').then(m => m.CityModule)
+            },
+            {
+                path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule)
             }]
     }
 ];

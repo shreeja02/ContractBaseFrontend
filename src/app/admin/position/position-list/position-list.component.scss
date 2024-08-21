@@ -1,0 +1,23 @@
+::ng-deep {
+    .mat-mdc-header-cell {
+        font-weight: bold !important;
+    }
+}
+.input-icons {
+    margin-bottom: 10px;
+}
+
+.input-icons ion-icon {
+    position: absolute;
+}
+
+.icon {
+    padding: 15px;
+    min-width: 50px;
+    text-align: center;
+}
+
+.input-field {
+    padding: 10px;
+    text-align: left;
+}

@@ -7,17 +7,21 @@
           <ion-card-content class="p-5">
             <div class="d-flex-space-between">
               <h1>Technologies</h1>
-              <ion-button (click)="onAddNewTechnology()" size="default" color="primary">
+              <ion-button size="small" (click)="onAddNewTechnology()" size="default" color="primary">
                 <ion-icon slot="start" name="add-outline"></ion-icon>
                 Add New</ion-button>
             </div>
-            <mat-tab-group>
+            <div class="mt-3 input-icons">
+              <ion-searchbar [(ngModel)]="searchValue" show-clear-button="never" size="small"></ion-searchbar>
+            </div>
+            <mat-tab-group (selectedTabChange)="tabChanged($event)">
               <mat-tab label="Active">
-                <app-technology-list-grid (onEdit)="onEdit($event)" (onDelete)="onDelete($event)" [isActive]="true"
-                  [data]="activeTechnologies"></app-technology-list-grid>
+                <app-technology-list-grid (onEdit)="onEdit($event)" [isActive]="true"
+                  [data]="activeTechnologies | filterData:searchValue"></app-technology-list-grid>
               </mat-tab>
               <mat-tab label="InActive">
-                <app-technology-list-grid [isActive]="false" [data]="inActiveTechnologies"></app-technology-list-grid>
+                <app-technology-list-grid (onEdit)="onEdit($event)" [isActive]="false"
+                  [data]="inActiveTechnologies | filterData:searchValue"></app-technology-list-grid>
               </mat-tab>
             </mat-tab-group>
           </ion-card-content>
