@@ -133,3 +133,18 @@ body {
         padding: 8px 24px;
     }
 }
+
+.page-header {
+    h1 {
+        font-weight: 600;
+        text-transform: capitalize;
+        margin: 0 10px;
+    }
+}
+mat-table {
+    overflow: auto;
+    max-height: 500px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}

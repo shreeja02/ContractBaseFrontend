@@ -31,7 +31,7 @@ export class ProvinceListComponent implements OnInit {
   }
 
   onAddNewProvince() {
-    const dialogRef = this.dialog.open(ProvinceEditComponent);
+    const dialogRef = this.dialog.open(ProvinceEditComponent, { width: '600px' });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result.success) {
         this.getAllProvinces();
@@ -71,6 +71,7 @@ export class ProvinceListComponent implements OnInit {
   onEditCalled(element: any) {
     const dialogRef = this.dialog.open(ProvinceEditComponent, {
       data: element,
+      width: '600px'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {

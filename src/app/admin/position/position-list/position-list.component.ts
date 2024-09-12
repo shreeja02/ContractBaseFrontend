@@ -31,7 +31,7 @@ export class PositionListComponent implements OnInit {
   }
 
   onAddNewPosition() {
-    const dialogRef = this.dialog.open(PositionEditComponent);
+    const dialogRef = this.dialog.open(PositionEditComponent, { width: '600px' });
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
         this.getAllPositions();
@@ -71,6 +71,7 @@ export class PositionListComponent implements OnInit {
   onEditCalled(element: any) {
     const dialogRef = this.dialog.open(PositionEditComponent, {
       data: element,
+      width: '600px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -25,4 +25,8 @@ export class CityService {
     return this._http.delete(this.apiEndPoint + `Cities/${id}`);
   }
 
+  getCitiesByProvince(id: any) {
+    return this._http.get(this.apiEndPoint + `Cities/${id}`);
+  }
+
 }

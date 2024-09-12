@@ -1,33 +1,30 @@
 <form [formGroup]="provinceForm">
-  <div>
+  <div class="p-2">
     <ion-grid>
       <ion-row>
-        <ion-card class="p-2">
-          <ion-card-content>
-            <div>
-              <b>
-                <h2>Province Form</h2>
-              </b>
+        <ion-col>
+          <div class="page-header d-flex-center mt-2">
+            <h1 *ngIf="!isEdit">ADD NEW PROVINCE</h1>
+            <h1 *ngIf="isEdit">EDIT PROVINCE</h1>
+          </div>
+          <div class="row d-flex-center mt-3">
+            <ion-input formControlName="provinceName" type="text" class="p-2" label="Province Name*"
+              label-placement="floating" fill="outline"></ion-input>
+          </div>
+          <div class="ml-2"
+            *ngIf="provinceForm.controls['provinceName']?.invalid && (provinceForm.controls['provinceName']?.dirty || provinceForm.controls['provinceName'].touched)">
+            <div class="error-class" *ngIf="provinceForm.controls['provinceName']?.errors?.required">
+              Province Name is required.
             </div>
-            <div class="row d-flex-center mt-3">
-              <ion-input formControlName="provinceName" type="text" class="p-2" label="Province Name*"
-                label-placement="floating" fill="outline"></ion-input>
-            </div>
-            <div
-              *ngIf="provinceForm.controls['provinceName']?.invalid && (provinceForm.controls['provinceName']?.dirty || provinceForm.controls['provinceName'].touched)">
-              <div class="error-class" *ngIf="provinceForm.controls['provinceName']?.errors?.required">
-                Province Name is required.
-              </div>
-            </div>
-            <div class="ml-3 mt-3">
-              <ion-checkbox formControlName="isActive" justify="end">Active</ion-checkbox>
-            </div>
-          </ion-card-content>
+          </div>
+          <div class="ml-3 mt-3">
+            <ion-checkbox formControlName="isActive" justify="end">Active</ion-checkbox>
+          </div>
           <div class="d-flex-end p-4">
             <ion-button (click)="onBack()">Back</ion-button>
             <ion-button (click)="onSave()">Save</ion-button>
           </div>
-        </ion-card>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </div>

@@ -1,46 +1,43 @@
 <form [formGroup]="certificationForm">
-  <div>
+  <div class="p-2">
     <ion-grid>
       <ion-row>
-        <ion-card class="p-2">
-          <ion-card-content>
-            <div>
-              <b>
-                <h2>Certification Form</h2>
-              </b>
+        <ion-col>
+          <div class="d-flex-center page-header mt-2">
+            <h1 *ngIf="!isEdit">ADD NEW CERTIFICATION</h1>
+            <h1 *ngIf="isEdit">EDIT CERTIFICATION</h1>
+          </div>
+          <div class="row d-flex-center mt-3 w-100">
+            <ion-input formControlName="certificationName" type="text" class="p-2" label="Certification Name*"
+              label-placement="floating" fill="outline"></ion-input>
+          </div>
+          <div class="ml-2"
+            *ngIf="certificationForm.controls['certificationName']?.invalid && (certificationForm.controls['certificationName']?.dirty || certificationForm.controls['certificationName'].touched)">
+            <div class="error-class" *ngIf="certificationForm.controls['certificationName']?.errors?.required">
+              Certification Name is required.
             </div>
-            <div class="row d-flex-center mt-3 w-100">
-              <ion-input formControlName="certificationName" type="text" class="p-2" label="Certification Name*"
-                label-placement="floating" fill="outline"></ion-input>
+          </div>
+          <div class="row w-100 mt-3 p-2">
+            <ion-select fill="outline" formControlName="positionId" interface="popover" placeholder="Positions"
+              class="d-flex-center">
+              <ion-select-option *ngFor="let item of allPositions"
+                [value]="item._id">{{item?.positionName}}</ion-select-option>
+            </ion-select>
+          </div>
+          <div class="ml-2"
+            *ngIf="certificationForm.controls['positionId']?.invalid && (certificationForm.controls['positionId']?.dirty || certificationForm.controls['positionId'].touched)">
+            <div class="error-class" *ngIf="certificationForm.controls['positionId']?.errors?.required">
+              Please select any position.
             </div>
-            <div
-              *ngIf="certificationForm.controls['certificationName']?.invalid && (certificationForm.controls['certificationName']?.dirty || certificationForm.controls['certificationName'].touched)">
-              <div class="error-class" *ngIf="certificationForm.controls['certificationName']?.errors?.required">
-                Certification Name is required.
-              </div>
-            </div>
-            <div class="row w-100 mt-3">
-              <ion-select fill="outline" formControlName="positionId" interface="popover" placeholder="Positions"
-                class="d-flex-center">
-                <ion-select-option *ngFor="let item of allPositions"
-                  [value]="item._id">{{item?.positionName}}</ion-select-option>
-              </ion-select>
-            </div>
-            <div
-              *ngIf="certificationForm.controls['positionId']?.invalid && (certificationForm.controls['positionId']?.dirty || certificationForm.controls['positionId'].touched)">
-              <div class="error-class" *ngIf="certificationForm.controls['positionId']?.errors?.required">
-                Please select any position.
-              </div>
-            </div>
-            <div class="ml-3 mt-3">
-              <ion-checkbox formControlName="isActive" justify="end">Active</ion-checkbox>
-            </div>
-          </ion-card-content>
+          </div>
+          <div class="ml-3 mt-3">
+            <ion-checkbox formControlName="isActive" justify="end">Active</ion-checkbox>
+          </div>
           <div class="d-flex-end p-4">
             <ion-button (click)="onBack()">Back</ion-button>
             <ion-button (click)="onSave()">Save</ion-button>
           </div>
-        </ion-card>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </div>

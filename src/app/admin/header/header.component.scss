@@ -1,3 +1,24 @@
 .cursor-pointer {
     cursor: pointer;
 }
+.d-flex-space-between {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.person-img {
+    height: 50px;
+    width: 50px;
+    margin-right: 15px;
+}
+ion-popover {
+    --width: 150px;
+}
+
+.container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 80px;
+}

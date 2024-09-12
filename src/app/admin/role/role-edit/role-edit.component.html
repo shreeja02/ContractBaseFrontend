@@ -1,33 +1,33 @@
+<div *ngIf="!isEdit" class="page-header p-2 d-flex-center mt-3">
+  <h1>ADD NEW ROLE</h1>
+</div>
+<div *ngIf="isEdit" class="page-header p-2 d-flex-center mt-3">
+  <h1>EDIT ROLE</h1>
+</div>
 <form [formGroup]="roleForm">
-  <div>
+  <div class="p-2">
     <ion-grid>
       <ion-row>
-        <ion-card class="p-2">
-          <ion-card-content>
-            <div>
-              <b>
-                <h2>Role Form</h2>
-              </b>
+        <ion-col>
+          <div class="row d-flex-center">
+            <ion-input formControlName="roleName" type="text" class="p-2" label="Role Name*" label-placement="floating"
+              fill="outline"></ion-input>
+          </div>
+          <div
+            *ngIf="roleForm.controls['roleName']?.invalid && (roleForm.controls['roleName']?.dirty || roleForm.controls['roleName'].touched)">
+            <div class="error-class" *ngIf="roleForm.controls['roleName']?.errors?.required">
+              Role Name is required.
             </div>
-            <div class="row d-flex-center mt-3">
-              <ion-input formControlName="roleName" type="text" class="p-2" label="Role Name*"
-                label-placement="floating" fill="outline"></ion-input>
-            </div>
-            <div
-              *ngIf="roleForm.controls['roleName']?.invalid && (roleForm.controls['roleName']?.dirty || roleForm.controls['roleName'].touched)">
-              <div class="error-class" *ngIf="roleForm.controls['roleName']?.errors?.required">
-                Role Name is required.
-              </div>
-            </div>
-            <div class="ml-3 mt-3">
-              <ion-checkbox formControlName="isActive" justify="end">Active</ion-checkbox>
-            </div>
-          </ion-card-content>
+          </div>
+          <div class="ml-3 mt-3">
+            <ion-checkbox formControlName="isActive" justify="end">Active</ion-checkbox>
+          </div>
+
           <div class="d-flex-end p-4">
             <ion-button (click)="onBack()">Back</ion-button>
             <ion-button (click)="onSave()">Save</ion-button>
           </div>
-        </ion-card>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </div>

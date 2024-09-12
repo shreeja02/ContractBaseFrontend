@@ -13,6 +13,10 @@ export class RoleService {
     return this._http.get(this.apiEndPoint + "Roles");
   }
 
+  getAllActiveRoles() {
+    return this._http.get(this.apiEndPoint + "Roles/active");
+  }
+
   addNewRole(roleForm: any) {
     return this._http.post(this.apiEndPoint + "Roles", roleForm);
   }

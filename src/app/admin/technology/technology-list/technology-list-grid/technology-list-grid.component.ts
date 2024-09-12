@@ -31,25 +31,7 @@ export class TechnologyListGridComponent implements OnInit {
   }
 
   onDeleteCalled(element: any) {
-    const dialogRef = this.dialog.open(DeleteRecordComponent);
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result.success) {
-        this.technologyService.deleteTechnology(element._id).subscribe(
-          (res: any) => {
-            if (res.success) {
-              this.technologyService.getAllTechologies().subscribe(
-                (result: any) => {
-                  if (result.success) {
-                    this.dataSource = new MatTableDataSource<Element>(result.result);
-                  }
-                }
-              );
-            }
-          }
-        );
-      }
-    });
+    this.onDelete.emit(element);
   }
 
   setResult(ev: any) {

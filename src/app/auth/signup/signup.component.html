@@ -1,0 +1,68 @@
+<div class="d-flex-center" style="overflow: auto;" *ngIf="formGroup">
+  <!-- <ion-grid>
+    <ion-row>
+      <ion-col size-lg="3" size="0"></ion-col>
+      <ion-col size-lg="6" size="12"> -->
+  <ion-card class="signup-card" [formGroup]="formGroup">
+    <ion-card-content>
+      <div class="d-flex-center m-3">
+        <img src="../../../assets/images/contractbase-logo.png">
+      </div>
+      <div class="d-flex-center">
+        <ion-input class="p-2" formControlName="firstName" label="First Name*" label-placement="floating" fill="outline"
+          placeholder="First Name*"></ion-input>
+      </div>
+      <div class="d-flex-center">
+        <ion-input class="p-2" formControlName="lastName" label="Last Name*" label-placement="floating" fill="outline"
+          placeholder="Last Name*"></ion-input>
+      </div>
+      <div class="d-flex-center">
+        <ion-input class="p-2" formControlName="email" label="Email*" label-placement="floating" fill="outline"
+          placeholder="Email*"></ion-input>
+      </div>
+      <div class="d-flex-center">
+        <ion-input type="password" formControlName="password" class="p-2" label="Password*" label-placement="floating"
+          fill="outline" placeholder="Password*"></ion-input>
+      </div>
+      <div class="d-flex-center">
+        <ion-input class="p-2" formControlName="phoneNumber" label="Phone Number*" label-placement="floating"
+          fill="outline" placeholder="Phone Number*"></ion-input>
+      </div>
+      <div class="d-flex-center">
+        <ion-input class="p-2" formControlName="linkedInUrl" label="LinkedIn/Portfolio*" label-placement="floating"
+          fill="outline" placeholder="LinkedIn/Portfolio*"></ion-input>
+      </div>
+      <div class="d-flex-center">
+        <ion-list>
+          <ion-item>
+            <ion-select aria-label="Fruit" interface="popover" placeholder="Select Province">
+              <ion-select-option value="apples">Alberta</ion-select-option>
+              <ion-select-option value="oranges">Ontario</ion-select-option>
+              <ion-select-option value="bananas">British Columbia</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+
+        <ion-list>
+          <ion-item>
+            <ion-select aria-label="Fruit" interface="popover" placeholder="Select City">
+              <ion-select-option value="apples">Calgary</ion-select-option>
+              <ion-select-option value="oranges">Toronto</ion-select-option>
+              <ion-select-option value="bananas">Surrey</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-card-content>
+    <div class="text-center">
+      <ion-button (click)="signup()">Create Account</ion-button>
+    </div>
+    <div class="text-center m-3">
+      <a [routerLink]="['/auth/login']">Already registered? Login here
+      </a>
+    </div>
+  </ion-card>
+  <!-- </ion-col>
+    </ion-row>
+  </ion-grid> -->
+</div>

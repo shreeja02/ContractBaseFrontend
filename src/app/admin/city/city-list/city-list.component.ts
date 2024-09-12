@@ -31,7 +31,7 @@ export class CityListComponent implements OnInit {
   }
 
   onAddNewCity() {
-    const dialogRef = this.dialog.open(CityEditComponent);
+    const dialogRef = this.dialog.open(CityEditComponent, { width: '600px' });
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
         this.getAllCities();
@@ -71,6 +71,7 @@ export class CityListComponent implements OnInit {
   onEditCalled(element: any) {
     const dialogRef = this.dialog.open(CityEditComponent, {
       data: element,
+      width: '600px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -28,7 +28,7 @@ export class CertificationListComponent implements OnInit {
   }
 
   onAddNewCertification() {
-    const dialogRef = this.dialog.open(CertificationEditComponent);
+    const dialogRef = this.dialog.open(CertificationEditComponent, { width: '600px' });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result.success) {
         this.getAllCertifications();
@@ -68,6 +68,7 @@ export class CertificationListComponent implements OnInit {
   onEditCalled(element: any) {
     const dialogRef = this.dialog.open(CertificationEditComponent, {
       data: element,
+      width: '600px'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {

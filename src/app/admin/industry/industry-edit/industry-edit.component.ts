@@ -92,7 +92,6 @@ export class IndustryEditComponent implements OnInit {
     return this.fb.group(
       {
         industryName: new FormControl(formValues?.industryName || '', Validators.required),
-        positionId: new FormControl(formValues?.positionId?._id || '', Validators.required),
         isActive: new FormControl(formValues?.isActive)
       });
   }

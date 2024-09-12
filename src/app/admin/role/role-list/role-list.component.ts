@@ -31,7 +31,9 @@ export class RoleListComponent implements OnInit, AfterViewInit {
   }
 
   onAddNewRole() {
-    const dialogRef = this.dialog.open(RoleEditComponent);
+    const dialogRef = this.dialog.open(RoleEditComponent, {
+      width: '500px'
+    });
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
         this.getAllRoles();
@@ -71,6 +73,7 @@ export class RoleListComponent implements OnInit, AfterViewInit {
   onEditCalled(element: any) {
     const dialogRef = this.dialog.open(RoleEditComponent, {
       data: element,
+      width: '500px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

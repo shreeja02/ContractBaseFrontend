@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TechnologyService } from 'src/app/shared/services/technology.service';
 import { TechnologyEditComponent } from '../technology-edit/technology-edit.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { DeleteRecordComponent } from 'src/app/shared/components/delete-record/delete-record.component';
 
 @Component({
   selector: 'app-technology-list',
@@ -41,7 +42,9 @@ export class TechnologyListComponent implements OnInit {
   }
 
   onAddNewTechnology() {
-    const dialogRef = this.dialog.open(TechnologyEditComponent);
+    const dialogRef = this.dialog.open(TechnologyEditComponent, {
+      width: '500px',
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
@@ -53,6 +56,7 @@ export class TechnologyListComponent implements OnInit {
   onEdit(element: any) {
     const dialogRef = this.dialog.open(TechnologyEditComponent, {
       data: element,
+      width: '500px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -63,9 +67,21 @@ export class TechnologyListComponent implements OnInit {
   }
 
 
-  // onDelete(event: any) {
+  onDelete(element: any) {
+    const dialogRef = this.dialog.open(DeleteRecordComponent);
 
-  // }
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result.success) {
+        this.technologyService.deleteTechnology(element._id).subscribe(
+          (res: any) => {
+            if (res.success) {
+              this.getAllTechnologies();
+            }
+          }
+        );
+      }
+    });
+  }
 
   // applyFilter(event: any) {
   //   const filterValue = (event.target as HTMLInputElement).value;

@@ -13,7 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class IndustryListComponent implements OnInit {
 
-  displayedColumns: any[] = ["industryName", "positionName", "action"];
+  displayedColumns: any[] = ["industryName", "action"];
   dataSource: any;
   allIndustries: any;
   selectedTab: any = 0;
@@ -29,7 +29,7 @@ export class IndustryListComponent implements OnInit {
   }
 
   onAddNewIndustry() {
-    const dialogRef = this.dialog.open(IndustryEditComponent);
+    const dialogRef = this.dialog.open(IndustryEditComponent, { width: '600px' });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result.success) {
         this.getAllIndustries();
@@ -69,6 +69,7 @@ export class IndustryListComponent implements OnInit {
   onEditCalled(element: any) {
     const dialogRef = this.dialog.open(IndustryEditComponent, {
       data: element,
+      width: '600px'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
