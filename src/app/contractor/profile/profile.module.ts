@@ -9,6 +9,7 @@ import { BusinessInfoComponent } from './business-info/business-info.component';
 import { IndustryInfoComponent } from './industry-info/industry-info.component';
 import { LocationInfoComponent } from './location-info/location-info.component';
 import { ProfessionalInfoComponent } from './professional-info/professional-info.component';
+import { IonicComponentsModule } from 'src/app/shared/ionic-components.module';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ProfessionalInfoComponent } from './professional-info/professional-info
   ],
   imports: [
     CommonModule,
+    IonicComponentsModule,
     ProfileRoutingModule,
     ReactiveFormsModule
   ]

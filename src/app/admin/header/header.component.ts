@@ -14,7 +14,14 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService) { }
   @ViewChild('popover') popover: any;
-  ngOnInit() { }
+  user: any;
+  ngOnInit() {
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    this.authService.currentUser$.subscribe((user) => this.user = user);
+  }
 
   logout() {
     this.popover.dismiss();

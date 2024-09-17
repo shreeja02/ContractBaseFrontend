@@ -25,4 +25,8 @@ export class CertificationService {
     return this._http.delete(this.apiEndPoint + `Certifications/${id}`);
   }
 
+  getCertificationByPosition(id: any) {
+    return this._http.get(this.apiEndPoint + `Certifications/get/certificationByPosition/${id}`);
+  }
+
 }

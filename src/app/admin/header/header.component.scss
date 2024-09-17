@@ -10,10 +10,9 @@
 .person-img {
     height: 50px;
     width: 50px;
-    margin-right: 15px;
 }
 ion-popover {
-    --width: 150px;
+    --width: 200px;
 }
 
 .container {
@@ -21,4 +20,7 @@ ion-popover {
     display: flex;
     flex-direction: column;
     padding: 80px;
+}
+.d-flex {
+    display: flex;
 }

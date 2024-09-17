@@ -24,4 +24,8 @@ export class TechnologyService {
   deleteTechnology(id: any) {
     return this._http.delete(this.apiEndPoint + `Technologies/${id}`);
   }
+
+  getTechnologiesByPositionId(id: any) {
+    return this._http.get(this.apiEndPoint + `Technologies/get/technologyByPosition/${id}`);
+  }
 }

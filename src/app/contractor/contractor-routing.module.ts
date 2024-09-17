@@ -5,7 +5,18 @@ import { ContractorRoutingGuard } from '../shared/guards/contractor-routing.guar
 
 const contractorRoutes: Routes = [
     {
-        path: '', component: ContractorComponent, canActivate: [ContractorRoutingGuard]
+        path: '', component: ContractorComponent, canActivate: [ContractorRoutingGuard],
+        children: [
+            {
+                path: 'profile',
+                loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)
+            },
+            {
+                path: '',
+                redirectTo: 'profile',
+                pathMatch: 'full'
+            }
+        ]
     }
 ];
 @NgModule({

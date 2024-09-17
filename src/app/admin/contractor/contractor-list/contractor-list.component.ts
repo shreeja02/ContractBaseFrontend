@@ -33,12 +33,13 @@ export class ContractorListComponent implements OnInit {
   }
 
   onAddNewContractor() {
-    const dialogRef = this.dialog.open(ContractorEditComponent, { width: '600px' });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result.success) {
-        this.getAllContractors();
-      }
-    });
+    this.router.navigateByUrl(`/admin/contractor/add`);
+    // const dialogRef = this.dialog.open(ContractorEditComponent, { width: '600px' });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.success) {
+    //     this.getAllContractors();
+    //   }
+    // });
   }
 
 }

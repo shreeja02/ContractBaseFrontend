@@ -1,3 +1,18 @@
-<p>
-  profile works!
-</p>
+<ion-grid>
+  <ion-row>
+    <ion-col [size]="3">
+      <ion-card>
+        <ion-card-content>
+          <div class="text-center">
+            <ion-icon class="avatar" name="person-circle"></ion-icon>
+            <h1>{{user?.firstName}} {{user?.lastName}}</h1>
+          </div>
+          <hr>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col>
+      <router-outlet></router-outlet>
+    </ion-col>
+  </ion-row>
+</ion-grid>

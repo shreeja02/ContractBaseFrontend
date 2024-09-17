@@ -9,7 +9,7 @@ import { ProfessionalInfoComponent } from './professional-info/professional-info
 
 const routes: Routes = [
   {
-    path: 'profile',
+    path: '',
     component: ProfileComponent,
     children: [
       {

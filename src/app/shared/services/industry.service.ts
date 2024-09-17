@@ -14,6 +14,10 @@ export class IndustryService {
     return this._http.get(this.apiEndPoint + "industry");
   }
 
+  getAllActiveIndustries() {
+    return this._http.get(this.apiEndPoint + "industry/get/active");
+  }
+
   addNewIndustry(industryForm: any) {
     return this._http.post(this.apiEndPoint + "industry", industryForm);
   }

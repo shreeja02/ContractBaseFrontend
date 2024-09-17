@@ -2,6 +2,7 @@
   <div>
     <ion-grid>
       <ion-row>
+        <ion-col size="1"></ion-col>
         <ion-col>
           <div class="d-flex-center page-header mt-2">
             <h1 *ngIf="isEdit">EDIT CONTRACTOR</h1>
@@ -48,15 +49,15 @@
           <ion-row>
             <ion-col>
               <div class="d-flex-column">
-                <ion-select (ionChange)="handleChangeForProvince($event)" fill="outline" formControlName="provinceId"
-                  interface="popover" placeholder="Provinces">
+                <ion-select (ionChange)="handleChangeForProvince($event)" fill="outline"
+                  formControlName="businessProvinceId" interface="popover" placeholder="Provinces">
                   <ion-select-option *ngFor="let item of allProvinces"
                     [value]="item._id">{{item.provinceName}}</ion-select-option>
                 </ion-select>
 
                 <div class="ml-2 mt-2"
-                  *ngIf="contractorForm.controls['provinceId']?.invalid && (contractorForm.controls['provinceId']?.dirty || contractorForm.controls['provinceId'].touched)">
-                  <div class="error-class" *ngIf="contractorForm.controls['provinceId']?.errors?.required">
+                  *ngIf="contractorForm.controls['businessProvinceId']?.invalid && (contractorForm.controls['businessProvinceId']?.dirty || contractorForm.controls['businessProvinceId'].touched)">
+                  <div class="error-class" *ngIf="contractorForm.controls['businessProvinceId']?.errors?.required">
                     Province is required.
                   </div>
                 </div>
@@ -64,14 +65,14 @@
             </ion-col>
             <ion-col>
               <div class="d-flex-column">
-                <ion-select class="w-100" fill="outline" formControlName="cityId" interface="popover"
+                <ion-select class="w-100" fill="outline" formControlName="businessCityId" interface="popover"
                   placeholder="City">
                   <ion-select-option *ngFor="let item of allCities"
                     [value]="item._id">{{item.cityName}}</ion-select-option>
                 </ion-select>
                 <div class="ml-2 mt-2"
-                  *ngIf="contractorForm.controls['cityId']?.invalid && (contractorForm.controls['cityId']?.dirty || contractorForm.controls['cityId'].touched)">
-                  <div class="error-class" *ngIf="contractorForm.controls['cityId']?.errors?.required">
+                  *ngIf="contractorForm.controls['businessCityId']?.invalid && (contractorForm.controls['businessCityId']?.dirty || contractorForm.controls['businessCityId'].touched)">
+                  <div class="error-class" *ngIf="contractorForm.controls['businessCityId']?.errors?.required">
                     City is required.
                   </div>
                 </div>
@@ -99,7 +100,8 @@
             </ion-col>
             <ion-col>
               <div class="d-flex-column">
-                <ion-select fill="outline" formControlName="position" interface="popover" placeholder="Positions">
+                <ion-select fill="outline" (ionChange)="handleChangeForPosition($event)" formControlName="position"
+                  interface="popover" placeholder="Positions">
                   <ion-select-option *ngFor="let item of allPositions"
                     [value]="item._id">{{item.positionName}}</ion-select-option>
                 </ion-select>
@@ -115,14 +117,122 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-list>
-                <ion-item>
-                  <ion-select fill="outline" placeholder="Select all Positions that apply" [multiple]="true">
-                    <ion-select-option *ngFor="let item of allLocations"
-                      [value]="item">{{item.location}}</ion-select-option>
-                  </ion-select>
-                </ion-item>
-              </ion-list>
+              <ion-select (ionChange)="handleChange($event)" interface="popover" fill="outline"
+                placeholder="Select all Positions those apply" [multiple]="true">
+                <ion-select-option *ngFor="let item of allLocations"
+                  [value]="item">{{item.location}}</ion-select-option>
+              </ion-select>
+            </ion-col>
+            <ion-col *ngIf="hybridSelected">
+              <ion-input formControlName="hybridDays" type="number"
+                label="Number of days you would like to be at the office*" label-placement="floating"
+                fill="outline"></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-select formControlName="industries" (ionChange)="handleChangeForIndustries($event)"
+                interface="popover" fill="outline" placeholder="Please select top 3 industries" [multiple]="true">
+                <ion-select-option *ngFor="let item of allIndustries"
+                  [value]="item._id">{{item.industryName}}</ion-select-option>
+              </ion-select>
+              <div *ngIf="industrySelectionErrorMessage" class="ml-2 mt-2 error-class">
+                {{industrySelectionErrorMessage}}
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-select formControlName="technologies" (ionChange)="handleChangeForTechnologies($event)"
+                interface="popover" fill="outline" placeholder="Please select top 3 Technologies" [multiple]="true">
+                <ion-select-option *ngFor="let item of allTechnologies"
+                  [value]="item._id">{{item.technologyName}}</ion-select-option>
+              </ion-select>
+              <div *ngIf="technologySelectionErrorMessage" class="ml-2 mt-2 error-class">
+                {{technologySelectionErrorMessage}}
+              </div>
+            </ion-col>
+            <ion-col>
+              <ion-select formControlName="certifications" (ionChange)="handleChangeForCertifications($event)"
+                interface="popover" fill="outline" placeholder="Please select top 3 Certifications" [multiple]="true">
+                <ion-select-option *ngFor="let item of allCerifications"
+                  [value]="item._id">{{item.certificationName}}</ion-select-option>
+              </ion-select>
+              <div *ngIf="certificationSelectionErrorMessage" class="ml-2 mt-2 error-class">
+                {{certificationSelectionErrorMessage}}
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-input formControlName="yearsOfExperience" type="number" label="Years of Experience*"
+                label-placement="floating" fill="outline"></ion-input>
+              <div class="ml-2 mt-2"
+                *ngIf="contractorForm.controls['yearsOfExperience']?.invalid && (contractorForm.controls['yearsOfExperience']?.dirty || contractorForm.controls['yearsOfExperience'].touched)">
+                <div class="error-class" *ngIf="contractorForm.controls['yearsOfExperience']?.errors?.required">
+                  Experience is required.
+                </div>
+              </div>
+            </ion-col>
+            <ion-col>
+              <ion-input formControlName="hourlyRate" type="number" label="Hourly Rate (CAD)*"
+                label-placement="floating" fill="outline"></ion-input>
+              <div class="ml-2 mt-2"
+                *ngIf="contractorForm.controls['hourlyRate']?.invalid && (contractorForm.controls['hourlyRate']?.dirty || contractorForm.controls['hourlyRate'].touched)">
+                <div class="error-class" *ngIf="contractorForm.controls['hourlyRate']?.errors?.required">
+                  Hourly Rate is required.
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-select formControlName="projectBudget" interface="popover" fill="outline"
+                placeholder="Please select Project Budget" [multiple]="true">
+                <ion-select-option *ngFor="let item of projectBudget" [value]="item">{{item.budget}}</ion-select-option>
+              </ion-select>
+              <div class="ml-2 mt-2"
+                *ngIf="contractorForm.controls['projectBudget']?.invalid && (contractorForm.controls['projectBudget']?.dirty || contractorForm.controls['projectBudget'].touched)">
+                <div class="error-class" *ngIf="contractorForm.controls['projectBudget']?.errors?.required">
+                  Selection of Project Budget is required.
+                </div>
+              </div>
+            </ion-col>
+            <ion-col>
+              <ion-select formControlName="teamSize" interface="popover" fill="outline"
+                placeholder="Please select Team Size" [multiple]="true">
+                <ion-select-option *ngFor="let item of teamSize" [value]="item">{{item.teamSize}}</ion-select-option>
+              </ion-select>
+              <div class="ml-2 mt-2"
+                *ngIf="contractorForm.controls['teamSize']?.invalid && (contractorForm.controls['teamSize']?.dirty || contractorForm.controls['teamSize'].touched)">
+                <div class="error-class" *ngIf="contractorForm.controls['teamSize']?.errors?.required">
+                  Selection of Team Size is required.
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-select formControlName="contractLength" interface="popover" fill="outline"
+                placeholder="Please select Contract Length" [multiple]="true">
+                <ion-select-option *ngFor="let item of contractLength"
+                  [value]="item">{{item.length}}</ion-select-option>
+              </ion-select>
+              <div class="ml-2 mt-2"
+                *ngIf="contractorForm.controls['contractLength']?.invalid && (contractorForm.controls['contractLength']?.dirty || contractorForm.controls['contractLength'].touched)">
+                <div class="error-class" *ngIf="contractorForm.controls['contractLength']?.errors?.required">
+                  Selection of Contract Length is required.
+                </div>
+              </div>
+            </ion-col>
+            <ion-col>
+              <ion-datetime formControlName="availableDate" presentation="date"></ion-datetime>
+              <div class="ml-2 mt-2"
+                *ngIf="contractorForm.controls['availableDate']?.invalid && (contractorForm.controls['availableDate']?.dirty || contractorForm.controls['availableDate'].touched)">
+                <div class="error-class" *ngIf="contractorForm.controls['availableDate']?.errors?.required">
+                  Selection of Available Date is required.
+                </div>
+              </div>
             </ion-col>
           </ion-row>
           <div class="ml-3 mt-3">
@@ -133,6 +243,7 @@
             <ion-button (click)="onSave()">Save</ion-button>
           </div>
         </ion-col>
+        <ion-col size="1"></ion-col>
       </ion-row>
     </ion-grid>
   </div>
