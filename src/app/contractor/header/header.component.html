@@ -1,0 +1,44 @@
+<ion-menu contentId="main-content" class="cursor-pointer">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        <img src="../../../assets/images/contractbase-logo.png">
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding cursor-pointer">
+    <ion-list>
+      <ion-item>My Profile</ion-item>
+      <ion-item>Logout</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start" class="toolbar-button">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <div class="d-flex-space-between toolbar-info">
+        <img src="../../../assets/images/contractbase-logo.png">
+        <div id="bottom-start" class="d-flex align-items-center profile-summary">
+          <ion-icon class="person-img" slot="icon-only" name="person-circle"></ion-icon>
+          <ion-text>Shreenil Patel</ion-text>
+        </div>
+        <ion-popover #popover trigger="bottom-start" side="bottom" alignment="start">
+          <ng-template>
+            <ion-list class="cursor-pointer" lines="full">
+              <ion-item>
+                <ion-label>My Profile</ion-label>
+              </ion-item>
+              <ion-item (click)="logout()">
+                <ion-label>Logout</ion-label>
+              </ion-item>
+            </ion-list>
+          </ng-template>
+        </ion-popover>
+      </div>
+
+    </ion-toolbar>
+  </ion-header>
+</div>

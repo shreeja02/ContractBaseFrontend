@@ -1,0 +1,139 @@
+<form [formGroup]="contractorForm">
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div class="d-flex-center page-header mt-2">
+            <h1 *ngIf="isEdit">EDIT CONTRACTOR</h1>
+            <h1 *ngIf="!isEdit">ADD NEW CONTRACTOR</h1>
+          </div>
+          <div class="row d-flex-center p-2">
+            <input type="text" class="search-user" placeholder="Search User..." matInput [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              @for (option of filteredContractors | async; track option) {
+              <mat-option [value]="option">{{option.firstName}} {{option.lastName}}</mat-option>
+              }
+            </mat-autocomplete>
+          </div>
+          <div class="ml-2"
+            *ngIf="contractorForm.controls['userId']?.invalid && (contractorForm.controls['userId']?.dirty || contractorForm.controls['userId'].touched)">
+            <div class="error-class" *ngIf="contractorForm.controls['userId']?.errors?.required">
+              User selection is required.
+            </div>
+          </div>
+          <div class="row d-flex-center w-100">
+            <ion-input formControlName="businessNumber" type="text" class="p-2" label="Business Number*"
+              label-placement="floating" fill="outline"></ion-input>
+          </div>
+          <div class="ml-2"
+            *ngIf="contractorForm.controls['businessNumber']?.invalid && (contractorForm.controls['businessNumber']?.dirty || contractorForm.controls['businessNumber'].touched)">
+            <div class="error-class" *ngIf="contractorForm.controls['businessNumber']?.errors?.required">
+              Business Number is required.
+            </div>
+          </div>
+          <div class="row d-flex-center w-100">
+            <ion-input formControlName="businessAddressLine1" type="text" class="p-2" label="Business Address Line 1*"
+              label-placement="floating" fill="outline"></ion-input>
+          </div>
+          <div class="ml-2"
+            *ngIf="contractorForm.controls['businessAddressLine1']?.invalid && (contractorForm.controls['businessAddressLine1']?.dirty || contractorForm.controls['businessAddressLine1'].touched)">
+            <div class="error-class" *ngIf="contractorForm.controls['businessAddressLine1']?.errors?.required">
+              Business Address is required.
+            </div>
+          </div>
+          <div class="row d-flex-center w-100">
+            <ion-input formControlName="businessAddressLine2" type="text" class="p-2" label="Business Address Line 2"
+              label-placement="floating" fill="outline"></ion-input>
+          </div>
+          <ion-row>
+            <ion-col>
+              <div class="d-flex-column">
+                <ion-select (ionChange)="handleChangeForProvince($event)" fill="outline" formControlName="provinceId"
+                  interface="popover" placeholder="Provinces">
+                  <ion-select-option *ngFor="let item of allProvinces"
+                    [value]="item._id">{{item.provinceName}}</ion-select-option>
+                </ion-select>
+
+                <div class="ml-2 mt-2"
+                  *ngIf="contractorForm.controls['provinceId']?.invalid && (contractorForm.controls['provinceId']?.dirty || contractorForm.controls['provinceId'].touched)">
+                  <div class="error-class" *ngIf="contractorForm.controls['provinceId']?.errors?.required">
+                    Province is required.
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div class="d-flex-column">
+                <ion-select class="w-100" fill="outline" formControlName="cityId" interface="popover"
+                  placeholder="City">
+                  <ion-select-option *ngFor="let item of allCities"
+                    [value]="item._id">{{item.cityName}}</ion-select-option>
+                </ion-select>
+                <div class="ml-2 mt-2"
+                  *ngIf="contractorForm.controls['cityId']?.invalid && (contractorForm.controls['cityId']?.dirty || contractorForm.controls['cityId'].touched)">
+                  <div class="error-class" *ngIf="contractorForm.controls['cityId']?.errors?.required">
+                    City is required.
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <div class="row d-flex-center w-100">
+                <ion-input formControlName="businessZipCode" type="text" label="Business Zipcode*"
+                  label-placement="floating" fill="outline"></ion-input>
+              </div>
+              <div class="ml-2"
+                *ngIf="contractorForm.controls['businessZipCode']?.invalid && (contractorForm.controls['businessZipCode']?.dirty || contractorForm.controls['businessZipCode'].touched)">
+                <div class="error-class" *ngIf="contractorForm.controls['businessZipCode']?.errors?.required">
+                  Business Zipcode is required.
+                </div>
+              </div>
+              <div class="ml-2"
+                *ngIf="contractorForm.controls['businessZipCode']?.invalid && (contractorForm.controls['businessZipCode']?.dirty || contractorForm.controls['businessZipCode'].touched)">
+                <div class="error-class" *ngIf="contractorForm.controls['businessZipCode']?.errors?.pattern">
+                  Business Zipcode is in incorrect form.
+                </div>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div class="d-flex-column">
+                <ion-select fill="outline" formControlName="position" interface="popover" placeholder="Positions">
+                  <ion-select-option *ngFor="let item of allPositions"
+                    [value]="item._id">{{item.positionName}}</ion-select-option>
+                </ion-select>
+
+                <div class="ml-2 mt-2"
+                  *ngIf="contractorForm.controls['position']?.invalid && (contractorForm.controls['position']?.dirty || contractorForm.controls['position'].touched)">
+                  <div class="error-class" *ngIf="contractorForm.controls['position']?.errors?.required">
+                    Position is required.
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-list>
+                <ion-item>
+                  <ion-select fill="outline" placeholder="Select all Positions that apply" [multiple]="true">
+                    <ion-select-option *ngFor="let item of allLocations"
+                      [value]="item">{{item.location}}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <div class="ml-3 mt-3">
+            <ion-checkbox formControlName="isActive" justify="end">Active</ion-checkbox>
+          </div>
+          <div class="d-flex-end p-4">
+            <ion-button (click)="onBack()">Back</ion-button>
+            <ion-button (click)="onSave()">Save</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</form>

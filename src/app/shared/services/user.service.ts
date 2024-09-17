@@ -14,8 +14,8 @@ export class UserService {
     return this._http.get(this.apiEndPoint + "Users");
   }
 
-  getAllActiveUsers() {
-    return this._http.get(this.apiEndPoint + "Users/get/active");
+  getAllActiveContractorFromUser() {
+    return this._http.get(this.apiEndPoint + "Users/get/contractors");
   }
 
   addNewUser(userForm: any) {
@@ -29,4 +29,6 @@ export class UserService {
   deleteUser(id: any) {
     return this._http.delete(this.apiEndPoint + `Users/${id}`);
   }
+
+
 }

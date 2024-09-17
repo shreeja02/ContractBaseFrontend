@@ -1,0 +1,43 @@
+.cursor-pointer {
+    cursor: pointer;
+}
+.d-flex-space-between {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.person-img {
+    height: 50px;
+    width: 50px;
+}
+ion-popover {
+    --width: 150px;
+}
+
+.profile-summary {
+    margin-right: 2rem;
+    cursor: pointer;
+}
+
+.container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 80px;
+}
+
+.toolbar-info {
+    margin-left: 1rem;
+}
+
+@media (max-width: 600px) {
+    .profile-summary {
+        display: none;
+    }
+}
+@media (min-width: 599px) {
+    .toolbar-button {
+        display: none !important;
+    }
+}

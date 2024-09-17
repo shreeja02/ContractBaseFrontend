@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (data: any) => {
           if (data) {
-            console.log('data: ', data);
             this.errorMessage = "";
             if ((data.roleName + "").toLowerCase() == 'admin') {
               this.router.navigate(['/admin/contractor']);

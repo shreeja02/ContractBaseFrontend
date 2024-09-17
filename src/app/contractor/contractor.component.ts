@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BasicInfoComponent } from './basic-info/basic-info.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @Component({
   selector: 'app-contractor',
@@ -7,7 +7,7 @@ import { BasicInfoComponent } from './basic-info/basic-info.component';
   styleUrls: ['./contractor.component.scss'],
 })
 export class ContractorComponent implements OnInit {
-  component = BasicInfoComponent;
+  component = ProfileComponent;
   constructor() { }
 
   ngOnInit() { }

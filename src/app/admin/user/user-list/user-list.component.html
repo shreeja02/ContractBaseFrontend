@@ -68,7 +68,7 @@
                 <ng-container matColumnDef="action">
                   <mat-header-cell *matHeaderCellDef> </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <div class="d-flex-center example-flex-container text-right" style="width: 100%;">
+                    <div class="d-flex-end example-flex-container text-right" style="width: 100%;">
                       <button *ngIf="selectedTab==0" (click)="onDeleteCalled(element)" mat-icon-button>
                         <mat-icon>delete</mat-icon>
                       </button>
