@@ -35,9 +35,9 @@ export class AuthService {
     return null;
   }
 
-  initUser() {
-    if (this.tokenData) {
-      this.currentUser.next(this.tokenData);
+  initUser(data = this.tokenData) {
+    if (data) {
+      this.currentUser.next(data);
     }
   }
 

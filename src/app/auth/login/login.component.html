@@ -26,7 +26,7 @@
 
       <ion-button class="login-btn my-4" expand="block" (click)="onLogin()">
         <ion-spinner *ngIf="loading"></ion-spinner>
-        Login
+        <span *ngIf="!loading">Login</span>
       </ion-button>
       <a [routerLink]="['/auth/signup']">
         <ion-text color="primary" class="text-center">

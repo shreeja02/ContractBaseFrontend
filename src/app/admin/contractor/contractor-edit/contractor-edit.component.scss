@@ -2,3 +2,25 @@
     width: 100%;
     padding: 1rem;
 }
+.calender-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.5rem;
+    z-index: 2;
+}
+.w-100 {
+    width: 100%;
+}
+
+::ng-deep {
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background: none !important;
+        border-top: 1px solid darkgray;
+        border-right: 1px solid darkgray;
+        border-left: 1px solid darkgray;
+    }
+}
+.searchbar-style {
+    // border: 1px solid darkgray;
+}

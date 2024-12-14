@@ -42,8 +42,8 @@ export class ProvinceListComponent implements OnInit {
   getAllProvinces() {
     this.provinceService.getAllProvinces().subscribe(
       (res: any) => {
-        if (res.result.length) {
-          this.allProvinces = res.result;
+        if (res && res.length) {
+          this.allProvinces = res;
           this.onTabChange({ index: this.selectedTab });
         }
       }

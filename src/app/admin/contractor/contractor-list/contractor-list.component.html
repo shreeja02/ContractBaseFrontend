@@ -8,8 +8,8 @@
 </div>
 <ion-grid>
   <ion-row>
-    <ion-col size="12" size-md="4" size-lg="3" *ngFor="let item of contractorList">
-      <ion-card class="cursor-pointer" (click)="onViewMoreClicked(item.contractorId)">
+    <ion-col size="12" size-md="4" size-lg="3" *ngFor="let item of allContractors">
+      <ion-card class="cursor-pointer" (click)="onViewMoreClicked(item._id)">
         <ion-card-header>
           <ion-card-title>{{item.name}}</ion-card-title>
         </ion-card-header>

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map, of } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -7,10 +8,22 @@ import { environment } from 'src/environments/environment.development';
 })
 export class CityService {
   apiEndPoint = environment.apiEndPoint;
+  allCities!: any[];
+
   constructor(private _http: HttpClient) { }
 
   getAllCities() {
-    return this._http.get(this.apiEndPoint + "Cities");
+    if (this.allCities) {
+      return of(this.allCities)
+    }
+    return this._http.get(this.apiEndPoint + "Cities")
+      .pipe(map((data: any) => {
+        if (data && data.success) {
+          this.allCities = data.result;
+          return this.allCities;
+        }
+        return null;
+      }))
   }
 
   addNewCity(cityForm: any) {

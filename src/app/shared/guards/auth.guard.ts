@@ -7,12 +7,18 @@ import { AuthService } from '../services/auth.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.authService.currentUser$.pipe(map((auth: any | null) => {
       if (auth && auth !== null) {
+        if ((auth.role?.roleName + '').toLowerCase() == 'contractor') {
+          this.router.navigateByUrl('/contractor/profile');
+        }
+        else if ((auth.role?.roleName + '').toLowerCase() == 'admin') {
+          this.router.navigateByUrl('/admin/contractor');
+        }
         return false;
       }
       return true;

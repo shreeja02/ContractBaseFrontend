@@ -8,22 +8,38 @@
             <h1 *ngIf="isEdit">EDIT CONTRACTOR</h1>
             <h1 *ngIf="!isEdit">ADD NEW CONTRACTOR</h1>
           </div>
-          <div class="row d-flex-center p-2">
-            <input type="text" class="search-user" placeholder="Search User..." matInput [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-              @for (option of filteredContractors | async; track option) {
-              <mat-option [value]="option">{{option.firstName}} {{option.lastName}}</mat-option>
-              }
-            </mat-autocomplete>
-          </div>
-          <div class="ml-2"
-            *ngIf="contractorForm.controls['userId']?.invalid && (contractorForm.controls['userId']?.dirty || contractorForm.controls['userId'].touched)">
-            <div class="error-class" *ngIf="contractorForm.controls['userId']?.errors?.required">
-              User selection is required.
-            </div>
-          </div>
+          <ion-row>
+            <ion-col>
+              <div class="row d-flex-center">
+                <input [formControl]="myControl" type="text" class="search-user" placeholder="Search User..." matInput
+                  [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  @for (option of filteredContractors | async; track option) {
+                  <mat-option [value]="option">{{option.firstName}} {{option.lastName}}</mat-option>
+                  }
+                </mat-autocomplete>
+              </div>
+              <div class="ml-2" *ngIf="myControl?.invalid && (myControl?.dirty || myControl.touched)">
+                <div class="error-class" *ngIf="myControl?.errors?.required">
+                  User selection is required.
+                </div>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div class="row d-flex-center w-100">
+                <ion-input formControlName="linkedInProfile" type="text" label="Linkedin Profile*"
+                  label-placement="floating" fill="outline"></ion-input>
+              </div>
+              <div class="ml-2"
+                *ngIf="contractorForm.controls['linkedInProfile']?.invalid && (contractorForm.controls['linkedInProfile']?.dirty || contractorForm.controls['linkedInProfile'].touched)">
+                <div class="error-class" *ngIf="contractorForm.controls['linkedInProfile']?.errors?.required">
+                  LinkedIn Profile is required.
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
           <div class="row d-flex-center w-100">
-            <ion-input formControlName="businessNumber" type="text" class="p-2" label="Business Number*"
+            <ion-input formControlName="businessNumber" type="number" class="p-2" label="Business Number*"
               label-placement="floating" fill="outline"></ion-input>
           </div>
           <div class="ml-2"
@@ -50,7 +66,7 @@
             <ion-col>
               <div class="d-flex-column">
                 <ion-select (ionChange)="handleChangeForProvince($event)" fill="outline"
-                  formControlName="businessProvinceId" interface="popover" placeholder="Provinces">
+                  formControlName="businessProvinceId" interface="popover" placeholder="Province">
                   <ion-select-option *ngFor="let item of allProvinces"
                     [value]="item._id">{{item.provinceName}}</ion-select-option>
                 </ion-select>
@@ -101,7 +117,7 @@
             <ion-col>
               <div class="d-flex-column">
                 <ion-select fill="outline" (ionChange)="handleChangeForPosition($event)" formControlName="position"
-                  interface="popover" placeholder="Positions">
+                  interface="popover" placeholder="Position">
                   <ion-select-option *ngFor="let item of allPositions"
                     [value]="item._id">{{item.positionName}}</ion-select-option>
                 </ion-select>
@@ -117,10 +133,9 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-select (ionChange)="handleChange($event)" interface="popover" fill="outline"
-                placeholder="Select all Positions those apply" [multiple]="true">
-                <ion-select-option *ngFor="let item of allLocations"
-                  [value]="item">{{item.location}}</ion-select-option>
+              <ion-select formControlName="location" (ionChange)="handleChange($event)" interface="popover"
+                fill="outline" placeholder="Select all Positions those apply" [multiple]="true">
+                <ion-select-option *ngFor="let item of allLocations" [value]="item">{{item}}</ion-select-option>
               </ion-select>
             </ion-col>
             <ion-col *ngIf="hybridSelected">
@@ -143,14 +158,18 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-select formControlName="technologies" (ionChange)="handleChangeForTechnologies($event)"
-                interface="popover" fill="outline" placeholder="Please select top 3 Technologies" [multiple]="true">
-                <ion-select-option *ngFor="let item of allTechnologies"
-                  [value]="item._id">{{item.technologyName}}</ion-select-option>
-              </ion-select>
-              <div *ngIf="technologySelectionErrorMessage" class="ml-2 mt-2 error-class">
-                {{technologySelectionErrorMessage}}
-              </div>
+              <ion-searchbar class="w-100 searchbar-style" formControlName="technologies" search-icon="search-circle"
+                show-clear-button="always" placeholder="Please select contractor's top 3 technologies.." type="text"
+                debounce="100" (ionInput)="getTechnologies($event)"></ion-searchbar>
+              <ion-list *ngIf="isTechnologyAvailable">
+                <ion-item class="cursor-pointer" *ngFor="let item of filteredTechnologies"
+                  (click)="onTechnologySelected(item)">
+                  {{item?.technologyName}}</ion-item>
+              </ion-list>
+              <ion-chip *ngFor="let item of selectedTechnologies">
+                <ion-label>{{item.technologyName}}</ion-label>
+                <ion-icon name="close-circle" (click)="onTechnologySelectedRemoved(item)"></ion-icon>
+              </ion-chip>
             </ion-col>
             <ion-col>
               <ion-select formControlName="certifications" (ionChange)="handleChangeForCertifications($event)"
@@ -189,7 +208,7 @@
             <ion-col>
               <ion-select formControlName="projectBudget" interface="popover" fill="outline"
                 placeholder="Please select Project Budget" [multiple]="true">
-                <ion-select-option *ngFor="let item of projectBudget" [value]="item">{{item.budget}}</ion-select-option>
+                <ion-select-option *ngFor="let item of projectBudget" [value]="item">{{item}}</ion-select-option>
               </ion-select>
               <div class="ml-2 mt-2"
                 *ngIf="contractorForm.controls['projectBudget']?.invalid && (contractorForm.controls['projectBudget']?.dirty || contractorForm.controls['projectBudget'].touched)">
@@ -201,7 +220,7 @@
             <ion-col>
               <ion-select formControlName="teamSize" interface="popover" fill="outline"
                 placeholder="Please select Team Size" [multiple]="true">
-                <ion-select-option *ngFor="let item of teamSize" [value]="item">{{item.teamSize}}</ion-select-option>
+                <ion-select-option *ngFor="let item of teamSize" [value]="item">{{item}}</ion-select-option>
               </ion-select>
               <div class="ml-2 mt-2"
                 *ngIf="contractorForm.controls['teamSize']?.invalid && (contractorForm.controls['teamSize']?.dirty || contractorForm.controls['teamSize'].touched)">
@@ -215,8 +234,7 @@
             <ion-col>
               <ion-select formControlName="contractLength" interface="popover" fill="outline"
                 placeholder="Please select Contract Length" [multiple]="true">
-                <ion-select-option *ngFor="let item of contractLength"
-                  [value]="item">{{item.length}}</ion-select-option>
+                <ion-select-option *ngFor="let item of contractLength" [value]="item">{{item}}</ion-select-option>
               </ion-select>
               <div class="ml-2 mt-2"
                 *ngIf="contractorForm.controls['contractLength']?.invalid && (contractorForm.controls['contractLength']?.dirty || contractorForm.controls['contractLength'].touched)">
@@ -226,7 +244,16 @@
               </div>
             </ion-col>
             <ion-col>
-              <ion-datetime formControlName="availableDate" presentation="date"></ion-datetime>
+              <div>
+                <mat-form-field class="w-100">
+                  <mat-label>Choose a date</mat-label>
+                  <input formControlName="availableDate" [min]="todayDate" fill="outline" matInput
+                    [matDatepicker]="picker">
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker disabled="false"></mat-datepicker>
+                </mat-form-field>
+              </div>
               <div class="ml-2 mt-2"
                 *ngIf="contractorForm.controls['availableDate']?.invalid && (contractorForm.controls['availableDate']?.dirty || contractorForm.controls['availableDate'].touched)">
                 <div class="error-class" *ngIf="contractorForm.controls['availableDate']?.errors?.required">

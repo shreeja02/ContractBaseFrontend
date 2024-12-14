@@ -119,6 +119,10 @@ body {
     display: none;
 }
 
+.dropdown-container {
+    padding: 0.8rem;
+}
+
 @media (max-width: 600px) {
     .mobile-label {
         width: 80px;
@@ -150,4 +154,16 @@ mat-table {
 }
 .cursor-pointer {
     cursor: pointer;
+}
+
+.searchbar-style {
+    border: 1px solid lightgrey;
+    border-radius: 0.3rem;
+    .searchbar-input-container.sc-ion-searchbar-md {
+        --box-shadow: none;
+    }
+}
+
+.w-100 {
+    width: 100%;
 }

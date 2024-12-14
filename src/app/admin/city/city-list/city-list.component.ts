@@ -42,8 +42,8 @@ export class CityListComponent implements OnInit {
   getAllCities() {
     this.cityService.getAllCities().subscribe(
       (res: any) => {
-        if (res.result.length) {
-          this.allCities = res.result;
+        if (res) {
+          this.allCities = res;
           this.onTabChange({ index: this.selectedTab });
         }
       }

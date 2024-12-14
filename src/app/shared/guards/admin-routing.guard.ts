@@ -12,7 +12,7 @@ export class AdminRoutingGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.authService.currentUser$.pipe(map((auth: any | null) => {
-      if (auth && auth.roleName && (auth.roleName + "").toLowerCase() === 'admin') {
+      if (auth && auth.role.roleName && (auth.role.roleName + "").toLowerCase() === 'admin') {
         return true;
       }
       this.router.navigate(['/auth/login']);

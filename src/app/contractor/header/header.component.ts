@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+  @ViewChild('popover') popover: any;
+  user: any;
+  constructor(
+    private authService: AuthService
+  ) { }
 
-  constructor() { }
+  ngOnInit() {
+    this.authService.currentUser$.subscribe((data: any) => {
+      if (data) {
+        this.user = data;
+      }
+    })
+  }
 
-  ngOnInit() { }
-
-  logout() { }
+  logout() {
+    this.popover.dismiss();
+    this.authService.logout();
+  }
 }

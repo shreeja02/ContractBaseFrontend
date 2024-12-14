@@ -1,91 +1,192 @@
-<div class="d-flex-center">
-  <ion-grid>
-    <ion-row>
-      <ion-col size="3"></ion-col>
-      <ion-col size="6">
-        <ion-card>
-          <ion-card-content>
-            <div class="d-flex-center">
-              <img src="../../../assets/images/contractbase-logo.png">
-            </div>
-            <div>
-              <form [formGroup]="professionalInfoForm">
-                <div class="d-flex-center">
-                  <h4># years of experience*</h4>
-                  <ion-list>
-                    <ion-radio-group>
-                      <ion-item class="font-13">
-                        <ion-radio labelPlacement="end" class="ml-2">5-10 years</ion-radio>
-                        <ion-radio labelPlacement="end" class="ml-2">>10 years</ion-radio>
-                        <ion-radio labelPlacement="end" class="ml-2">>15 years</ion-radio>
-                      </ion-item>
-                    </ion-radio-group>
-                  </ion-list>
+<ion-grid>
+  <ion-row>
+    <ion-col size="12">
+      <ion-card>
+        <ion-card-content>
+          <div>
+            <form [formGroup]="form">
+              <!-- <div class="d-flex-center">
+                <h4># years of experience*</h4>
+                <ion-list>
+                  <ion-radio-group>
+                    <ion-item class="font-13">
+                      <ion-radio labelPlacement="end" class="ml-2">5-10 years</ion-radio>
+                      <ion-radio labelPlacement="end" class="ml-2">>10 years</ion-radio>
+                      <ion-radio labelPlacement="end" class="ml-2">>15 years</ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+                </ion-list>
+              </div>
+              <div class="d-flex-center">
+                <h4>Project Budget*</h4>
+                <ion-list>
+                  <ion-radio-group>
+                    <ion-item class="font-13">
+                      <ion-radio labelPlacement="end" class="ml-2">
+                        < 10 MIO</ion-radio>
+                          <ion-radio labelPlacement="end" class="ml-2">10 MIO - 100 MIO</ion-radio>
+                          <ion-radio labelPlacement="end" class="ml-2">100 MIO - 500 MIO</ion-radio>
+                          <ion-radio labelPlacement="end" class="ml-2">>500 MIO</ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+                </ion-list>
+              </div>
+              <div class="d-flex-center">
+                <h4>Team Size*</h4>
+                <ion-list>
+                  <ion-radio-group>
+                    <ion-item class="font-13">
+                      <ion-radio labelPlacement="end" class="ml-2">
+                        < 10</ion-radio>
+                          <ion-radio labelPlacement="end" class="ml-2">10 - 50</ion-radio>
+                          <ion-radio labelPlacement="end" class="ml-2">50 - 100</ion-radio>
+                          <ion-radio labelPlacement="end" class="ml-2">>100</ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+                </ion-list>
+              </div>
+              <div class="d-flex-center">
+                <div>Location</div>
+                <div class="ml-2">
+                  <ion-button fill="outline">
+                    <ion-checkbox labelPlacement="end">Remote</ion-checkbox>
+                  </ion-button>
+                  <ion-button fill="outline">
+                    <ion-checkbox labelPlacement="end">In-person</ion-checkbox>
+                  </ion-button>
+                  <ion-button fill="outline">
+                    <ion-checkbox labelPlacement="end" (ionChange)="hybridSelected($event)">Hybrid</ion-checkbox>
+                  </ion-button>
                 </div>
                 <div class="d-flex-center">
-                  <h4>Project Budget*</h4>
-                  <ion-list>
-                    <ion-radio-group>
-                      <ion-item class="font-13">
-                        <ion-radio labelPlacement="end" class="ml-2">
-                          < 10 MIO</ion-radio>
-                            <ion-radio labelPlacement="end" class="ml-2">10 MIO - 100 MIO</ion-radio>
-                            <ion-radio labelPlacement="end" class="ml-2">100 MIO - 500 MIO</ion-radio>
-                            <ion-radio labelPlacement="end" class="ml-2">>500 MIO</ion-radio>
-                      </ion-item>
-                    </ion-radio-group>
-                  </ion-list>
+                  <div class="ml-2">
+                    <input type="text" *ngIf="isHybridSelected" class="p-2" label="Number of days in the Office*"
+                      label-placement="floating" placeholder="Number of days in the office*">
+                  </div>
                 </div>
-                <div class="d-flex-center">
-                  <h4>Team Size*</h4>
-                  <ion-list>
-                    <ion-radio-group>
-                      <ion-item class="font-13">
-                        <ion-radio labelPlacement="end" class="ml-2">
-                          < 10</ion-radio>
-                            <ion-radio labelPlacement="end" class="ml-2">10 - 50</ion-radio>
-                            <ion-radio labelPlacement="end" class="ml-2">50 - 100</ion-radio>
-                            <ion-radio labelPlacement="end" class="ml-2">>100</ion-radio>
-                      </ion-item>
-                    </ion-radio-group>
-                  </ion-list>
-                </div>
-                <div class="d-flex-center">
-                  <h4>Contract Length*</h4>
-                  <ion-list>
-                    <ion-radio-group>
-                      <ion-item class="font-13">
-                        <ion-radio labelPlacement="end" class="ml-2">
-                          < 6 months</ion-radio>
-                            <ion-radio labelPlacement="end" class="ml-2">6 months - 1 year</ion-radio>
-                            <ion-radio labelPlacement="end" class="ml-2">>1 year</ion-radio>
-                      </ion-item>
-                    </ion-radio-group>
-                  </ion-list>
-                </div>
-                <div class="d-flex-center">
-                  <h4>Hourly Rate*</h4>
-                  <input type="text">
-                </div>
-                <div class="d-flex-center">
-                  <h4>Availability*</h4>
-                  <ion-datetime presentation="date" [preferWheel]="true"></ion-datetime>
-                </div>
-              </form>
-            </div>
-          </ion-card-content>
-          <div class="d-flex-end p-4">
-            <ion-nav-link router-direction="forward" [component]="previousComponentName">
-              <ion-button>Previous</ion-button>
-            </ion-nav-link>
-            <ion-nav-link router-direction="forward">
-              <ion-button>Next</ion-button>
-            </ion-nav-link>
+              </div>
+              <div class="d-flex-center">
+                <h4>Contract Length*</h4>
+                <ion-list>
+                  <ion-radio-group>
+                    <ion-item class="font-13">
+                      <ion-radio labelPlacement="end" class="ml-2">
+                        < 6 months</ion-radio>
+                          <ion-radio labelPlacement="end" class="ml-2">6 months - 1 year</ion-radio>
+                          <ion-radio labelPlacement="end" class="ml-2">>1 year</ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+                </ion-list>
+              </div>
+              <div class="d-flex-center">
+                <h4>Hourly Rate*</h4>
+                <input type="text">
+              </div>
+              <div class="d-flex-center">
+                <h4>Availability*</h4>
+                <ion-datetime presentation="date" [preferWheel]="true"></ion-datetime>
+              </div> -->
+              <ion-row>
+                <ion-col>
+                  <ion-input formControlName="yearsOfExperience" type="number" label="Years of Experience*"
+                    label-placement="floating" fill="outline"></ion-input>
+                  <div class="ml-2 mt-2"
+                    *ngIf="form.get('yearsOfExperience')?.invalid && (form.get('yearsOfExperience')?.dirty || form.get('yearsOfExperience')?.touched)">
+                    <div class="error-class" *ngIf="form.get('yearsOfExperience')?.errors?.required">
+                      Experience is required.
+                    </div>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <ion-input formControlName="hourlyRate" type="number" label="Hourly Rate (CAD)*"
+                    label-placement="floating" fill="outline"></ion-input>
+                  <div class="ml-2 mt-2"
+                    *ngIf="form.get('hourlyRate')?.invalid && (form.get('hourlyRate')?.dirty || form.get('hourlyRate')?.touched)">
+                    <div class="error-class" *ngIf="form.get('hourlyRate')?.errors?.required">
+                      Hourly Rate is required.
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-select formControlName="projectBudget" interface="popover" fill="outline"
+                    placeholder="Please select Project Budget" [multiple]="true">
+                    <ion-select-option *ngFor="let item of projectBudget" [value]="item">{{item}}</ion-select-option>
+                  </ion-select>
+                  <div class="ml-2 mt-2"
+                    *ngIf="form.get('projectBudget')?.invalid && (form.get('projectBudget')?.dirty || form.get('projectBudget')?.touched)">
+                    <div class="error-class" *ngIf="form.get('projectBudget')?.errors?.required">
+                      Selection of Project Budget is required.
+                    </div>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <ion-select formControlName="teamSize" interface="popover" fill="outline"
+                    placeholder="Please select Team Size" [multiple]="true">
+                    <ion-select-option *ngFor="let item of teamSize" [value]="item">{{item}}</ion-select-option>
+                  </ion-select>
+                  <div class="ml-2 mt-2"
+                    *ngIf="form.get('teamSize')?.invalid && (form.get('teamSize')?.dirty || form.get('teamSize')?.touched)">
+                    <div class="error-class" *ngIf="form.get('teamSize')?.errors?.required">
+                      Selection of Team Size is required.
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-select formControlName="location" (ionChange)="handleChange($event)" interface="popover"
+                    fill="outline" placeholder="Select all location preferences those apply" [multiple]="true">
+                    <ion-select-option *ngFor="let item of allLocations" [value]="item">{{item}}</ion-select-option>
+                  </ion-select>
+                </ion-col>
+                <ion-col *ngIf="isHybridSelected">
+                  <ion-input formControlName="hybridDays" type="number"
+                    label="Number of days you would like to be at the office*" label-placement="floating"
+                    fill="outline"></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-select formControlName="contractLength" interface="popover" fill="outline"
+                    placeholder="Please select Contract Length" [multiple]="true">
+                    <ion-select-option *ngFor="let item of contractLength" [value]="item">{{item}}</ion-select-option>
+                  </ion-select>
+                  <div class="ml-2 mt-2"
+                    *ngIf="form.get('contractLength')?.invalid && (form.get('contractLength')?.dirty || form.get('contractLength')?.touched)">
+                    <div class="error-class" *ngIf="form.get('contractLength')?.errors?.required">
+                      Selection of Contract Length is required.
+                    </div>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <mat-form-field class="w-100">
+                    <mat-label>Available Date</mat-label>
+                    <input formControlName="availableDate" [min]="todayDate" fill="outline" matInput
+                      [matDatepicker]="picker">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker disabled="false"></mat-datepicker>
+                  </mat-form-field>
+                  <div class="ml-2 mt-2"
+                    *ngIf="form.get('availableDate')?.invalid && (form.get('availableDate')?.dirty || form.get('availableDate')?.touched)">
+                    <div class="error-class" *ngIf="form.get('availableDate')?.errors?.required">
+                      Selection of Available Date is required.
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </form>
           </div>
-        </ion-card>
-      </ion-col>
-      <ion-col size="2">
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</div>
+        </ion-card-content>
+        <div class="d-flex-end p-4">
+          <ion-button (click)="previous()">Previous</ion-button>
+          <ion-button (click)="save()">Save</ion-button>
+        </div>
+      </ion-card>
+    </ion-col>
+    <ion-col size="2">
+    </ion-col>
+  </ion-row>
+</ion-grid>

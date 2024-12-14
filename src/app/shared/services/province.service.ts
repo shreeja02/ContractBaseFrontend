@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -7,10 +8,22 @@ import { environment } from 'src/environments/environment.development';
 })
 export class ProvinceService {
   apiEndPoint = environment.apiEndPoint;
+  allProvinces!: any[];
+
   constructor(private _http: HttpClient) { }
 
   getAllProvinces() {
-    return this._http.get(this.apiEndPoint + "Provinces");
+    if (this.allProvinces) {
+      return of(this.allProvinces);
+    }
+    return this._http.get(this.apiEndPoint + "Provinces")
+      .pipe(map((data: any) => {
+        if (data && data.success) {
+          this.allProvinces = data.result;
+          return this.allProvinces;
+        }
+        return null;
+      }))
   }
 
   getAllActiveProvinces() {

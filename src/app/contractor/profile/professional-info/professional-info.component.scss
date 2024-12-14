@@ -1,3 +1,11 @@
 .font-13 {
     font-size: 13px;
 }
+::ng-deep {
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background: none !important;
+        border-top: 1px solid darkgray;
+        border-right: 1px solid darkgray;
+        border-left: 1px solid darkgray;
+    }
+}

@@ -10,6 +10,7 @@ import { IndustryInfoComponent } from './industry-info/industry-info.component';
 import { LocationInfoComponent } from './location-info/location-info.component';
 import { ProfessionalInfoComponent } from './professional-info/professional-info.component';
 import { IonicComponentsModule } from 'src/app/shared/ionic-components.module';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { IonicComponentsModule } from 'src/app/shared/ionic-components.module';
     CommonModule,
     IonicComponentsModule,
     ProfileRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MaterialModule
   ]
 })
 export class ProfileModule { }

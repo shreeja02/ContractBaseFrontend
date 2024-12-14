@@ -11,8 +11,8 @@ import { ContractorEditComponent } from '../contractor-edit/contractor-edit.comp
   styleUrls: ['./contractor-list.component.scss'],
 })
 export class ContractorListComponent implements OnInit {
-  allContractors = [];
-  contractorList = ContractorData;
+  allContractors: any = [];
+  // contractorList: any[] = ContractorData;
   constructor(private router: Router, private contractorService: ContractorService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -22,9 +22,11 @@ export class ContractorListComponent implements OnInit {
   onViewMoreClicked(id: number) {
     this.router.navigateByUrl(`/admin/contractor/details/${id}`);
   }
+
   getAllContractors() {
     this.contractorService.getAllContractors().subscribe(
       (res: any) => {
+        console.log('res: ', res);
         if (res.result.length) {
           this.allContractors = res.result;
         }
@@ -34,12 +36,6 @@ export class ContractorListComponent implements OnInit {
 
   onAddNewContractor() {
     this.router.navigateByUrl(`/admin/contractor/add`);
-    // const dialogRef = this.dialog.open(ContractorEditComponent, { width: '600px' });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result.success) {
-    //     this.getAllContractors();
-    //   }
-    // });
   }
 
 }

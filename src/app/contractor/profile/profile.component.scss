@@ -2,3 +2,48 @@
     height: 80px;
     width: 80px;
 }
+.info {
+    margin-top: 0.5rem;
+
+    ion-icon {
+        vertical-align: middle;
+        margin-right: 0.6rem;
+    }
+    span {
+        font-size: small;
+    }
+}
+.form-container {
+    padding: 1rem;
+}
+.space-between {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.chip-container {
+    margin-top: -2.4rem;
+    ion-chip {
+        border: 1px solid lightgray;
+    }
+    .default {
+        background-color: white;
+        color: black;
+    }
+
+    .selected {
+        background-color: #335a02;
+        color: white;
+    }
+
+    .current {
+        box-shadow: 0px 1px 2px 4px #335a02;
+    }
+}
+
+@media (max-width: 768px) {
+    .sm-hidden {
+        display: none !important;
+    }
+}
