@@ -13,6 +13,11 @@ const routes: Routes = [
   {
     path: 'contractor',
     loadChildren: () => import('./contractor/contractor.module').then(m => m.ContractorModule)
+  },
+  {
+    path: '',
+    redirectTo: 'auth',
+    pathMatch: 'full'
   }
 ];
 @NgModule({
