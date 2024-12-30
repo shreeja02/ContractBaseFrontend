@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiEndPoint: 'https://contractbase.ca:3000/'
+  apiEndPoint: 'https://api.contractbase.ca/'
 };
