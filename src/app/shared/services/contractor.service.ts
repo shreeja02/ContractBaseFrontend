@@ -49,4 +49,8 @@ export class ContractorService {
   getAllContractorsFromUser() {
     return this._http.get(this.apiEndPoint + `Users/get/contractors`);
   }
+
+  getContractorById(id: string) {
+    return this._http.get(this.apiEndPoint + "Contractors/" + id);
+  }
 }

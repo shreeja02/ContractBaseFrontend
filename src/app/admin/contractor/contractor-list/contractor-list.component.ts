@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { ContractorData } from 'src/app/shared/data/contractor-data';
 import { ContractorService } from 'src/app/shared/services/contractor.service';
 import { ContractorEditComponent } from '../contractor-edit/contractor-edit.component';
+import { FormControl } from '@angular/forms';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'app-contractor-list',
@@ -12,11 +14,35 @@ import { ContractorEditComponent } from '../contractor-edit/contractor-edit.comp
 })
 export class ContractorListComponent implements OnInit {
   allContractors: any = [];
-  // contractorList: any[] = ContractorData;
+  filteredContractors: any = [];
+  searchbarControl:FormControl=new FormControl('');
   constructor(private router: Router, private contractorService: ContractorService, public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.search();
     this.getAllContractors();
+  }
+
+  search(){
+    this.allContractors = this.searchbarControl.valueChanges.subscribe(
+      (term)=>{
+        if(term){
+          this.filteredContractors = this.allContractors.filter((item:any)=>{
+            return(
+            item.businessAddressLine1.toLowerCase().includes(term) ||
+            item.businessNumber.includes(term) ||
+            item.position.positionName.toLowerCase().includes(term) ||
+            item.businessCityId.cityName.toLowerCase().includes(term) ||
+            item.industries.some((ind:any) => ind.industryName.toLowerCase().includes(term)) ||
+            item.certifications.some((ind:any) => ind.industryName.toLowerCase().includes(term)) ||
+            item.location.some((ind:any) => ind.industryName.toLowerCase().includes(term)) ||
+            item.technologies.some((ind:any) => ind.industryName.toLowerCase().includes(term)) ||
+            (item.userId.firstName.toLowerCase() + ' ' + item.userId.lastName.toLowerCase()).includes(term) ||
+            item.yearsOfExperience.toString().includes(term));
+          });
+        }
+      }
+    );
   }
 
   onViewMoreClicked(id: number) {
@@ -26,9 +52,9 @@ export class ContractorListComponent implements OnInit {
   getAllContractors() {
     this.contractorService.getAllContractors().subscribe(
       (res: any) => {
-        console.log('res: ', res);
         if (res.result.length) {
           this.allContractors = res.result;
+          this.filteredContractors = this.allContractors;
         }
       }
     );
@@ -38,4 +64,7 @@ export class ContractorListComponent implements OnInit {
     this.router.navigateByUrl(`/admin/contractor/add`);
   }
 
+  onEdit(item:any){
+    this.router.navigateByUrl(`/admin/contractor/edit/contractor/${item._id}`);
+  }
 }

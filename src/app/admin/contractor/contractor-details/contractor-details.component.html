@@ -7,48 +7,47 @@
         </div>
         <div class="p-3">
           <div>
-            <h3>{{contractorDetails.name}}</h3>
-            <h3>{{contractorDetails.position}} || {{contractorDetails.yearsOfExperience}} years</h3>
+            <h3><b>{{contractorDetails?.userId?.firstName +' '+contractorDetails?.userId?.lastName}}</b></h3>
+            <h3><b>{{contractorDetails?.position?.positionName}} || {{contractorDetails.yearsOfExperience}} years</b></h3>
             <div class="d-flex">
               <div>
                 <div class="d-flex mt-1">
                   <ion-icon class="p-1 icon-font" name="location"></ion-icon>
-                  <h3 class="p-1">{{contractorDetails.location}}</h3>
+                  <h3 class="p-1" *ngFor="let location of contractorDetails.location">{{location.type}}</h3>
                 </div>
                 <div class="d-flex mt-1">
                   <ion-icon class="p-1 icon-font" name="call"></ion-icon>
-                  <h3 class="p-1">{{contractorDetails.phone}}</h3>
+                  <h3 class="p-1">{{contractorDetails?.userId?.phone}}</h3>
                 </div>
                 <div class="d-flex mt-1">
                   <ion-icon class="p-1 icon-font" name="mail"></ion-icon>
-                  <h3 class="p-1">{{contractorDetails.email}}</h3>
+                  <h3 class="p-1">{{contractorDetails?.userId?.email}}</h3>
                 </div>
                 <div class="d-flex mt-1">
                   <ion-icon class="p-1 mt-3 icon-font" name="pin"></ion-icon>
                   <div class="d-flex-column">
                     <h3 class="p-1">Business Number -{{contractorDetails.businessNumber}}</h3>
-                    <h3 class="p-1">Business Address -{{contractorDetails.businessAddress}}</h3>
+                    <h3 class="p-1">Business Address -{{contractorDetails.businessAddressLine1 + ' '+contractorDetails.businessAddressLine2}} </h3>
                   </div>
                 </div>
                 <div class="d-flex mt-1">
                   <ion-icon class="p-1 icon-font" name="logo-linkedin"></ion-icon>
-                  <h3 class="p-1">{{contractorDetails.linkedIn}}</h3>
+                  <h3 class="p-1">{{contractorDetails.linkedInProfile}}</h3>
                 </div>
                 <div class="d-flex mt-1">
+                  <ion-label>Industries</ion-label>
                   <ion-icon class="p-1 icon-font" name="people-circle-outline"></ion-icon>
-                  <h3 class="p-1">{{contractorDetails.industry}}</h3>
+                  <h3 class="p-1" *ngFor="let industry of contractorDetails.industries">{{industry.industryName}}</h3>
                 </div>
-                <div>
-                  <ion-grid class="grid-border">
-                    <ion-row>
-                      <ion-col class="grid-border">Skills</ion-col>
-                      <ion-col class="grid-border">Experience</ion-col>
-                    </ion-row>
-                    <ion-row *ngFor="let item of contractorDetails.skills">
-                      <ion-col class="grid-border">{{item.technology}}</ion-col>
-                      <ion-col class="grid-border">{{item.experience}} years</ion-col>
-                    </ion-row>
-                  </ion-grid>
+                <div class="d-flex mt-1">
+                  <ion-label>Technologies</ion-label>
+                  <ion-icon class="p-1 icon-font" name="people-circle-outline"></ion-icon>
+                  <h3 class="p-1" *ngFor="let technology of contractorDetails.technologies">{{technology.technologyName}}</h3>
+                </div>
+                <div class="d-flex mt-1">
+                  <ion-label>Certifications</ion-label>
+                  <ion-icon class="p-1 icon-font" name="people-circle-outline"></ion-icon>
+                  <h3 class="p-1" *ngFor="let certification of contractorDetails.certifications">{{certification.certificationName}}</h3>
                 </div>
               </div>
               <div>
@@ -70,13 +69,13 @@
                 </div>
                 <div class="d-flex mt-1">
                   <ion-icon class="p-1 icon-font" name="calendar"></ion-icon>
-                  <h3 class="p-1">Availability - {{contractorDetails.availability}}</h3>
+                  <h3 class="p-1">Availability - {{contractorDetails.availableDate | date}}</h3>
                 </div>
                 <div class="d-flex mt-1">
                   <ion-icon class="p-1 icon-font" name="car"></ion-icon>
 
                   <h3 class="p-1">Work Location - </h3>
-                  <h3 class="p-1" *ngFor="let item of contractorDetails.workLocation">
+                  <h3 class="p-1" *ngFor="let item of contractorDetails.location">
                     {{item.type=='Hybrid' ?
                     item.type + '-' + item.days + ' days' : item.type}},</h3>
                 </div>

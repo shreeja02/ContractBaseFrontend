@@ -10,7 +10,7 @@
           </div>
           <ion-row>
             <ion-col>
-              <div class="row d-flex-center">
+              <div class="row d-flex-center" *ngIf="!isEdit">
                 <input [formControl]="myControl" type="text" class="search-user" placeholder="Search User..." matInput
                   [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -19,15 +19,19 @@
                   }
                 </mat-autocomplete>
               </div>
-              <div class="ml-2" *ngIf="myControl?.invalid && (myControl?.dirty || myControl.touched)">
+              <div class="ml-2" *ngIf="!isEdit && myControl?.invalid && (myControl?.dirty || myControl.touched)">
                 <div class="error-class" *ngIf="myControl?.errors?.required">
                   User selection is required.
                 </div>
               </div>
+              <div *ngIf="isEdit">
+                <ion-input readonly type="text" [value]="contractorDetails?.userId?.firstName+' '+contractorDetails?.userId?.lastName"
+                label-placement="floating" fill="outline"></ion-input>
+              </div>
             </ion-col>
             <ion-col>
               <div class="row d-flex-center w-100">
-                <ion-input formControlName="linkedInProfile" type="text" label="Linkedin Profile*"
+                <ion-input formControlName="linkedInProfile" [value]="contractorForm.get('linkedInProfile')?.value" type="text" label="LinkedIn Profile*"
                   label-placement="floating" fill="outline"></ion-input>
               </div>
               <div class="ml-2"
@@ -135,11 +139,11 @@
             <ion-col>
               <ion-select formControlName="location" (ionChange)="handleChange($event)" interface="popover"
                 fill="outline" placeholder="Select all Positions those apply" [multiple]="true">
-                <ion-select-option *ngFor="let item of allLocations" [value]="item">{{item}}</ion-select-option>
+                <ion-select-option *ngFor="let item of allLocations" [value]="item">{{item.type}}</ion-select-option>
               </ion-select>
             </ion-col>
             <ion-col *ngIf="hybridSelected">
-              <ion-input formControlName="hybridDays" type="number"
+              <ion-input [formControl]="hybridDays" type="number"
                 label="Number of days you would like to be at the office*" label-placement="floating"
                 fill="outline"></ion-input>
             </ion-col>
@@ -158,7 +162,7 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-searchbar class="w-100 searchbar-style" formControlName="technologies" search-icon="search-circle"
+              <ion-searchbar class="w-100 searchbar-style" search-icon="search-circle"
                 show-clear-button="always" placeholder="Please select contractor's top 3 technologies.." type="text"
                 debounce="100" (ionInput)="getTechnologies($event)"></ion-searchbar>
               <ion-list *ngIf="isTechnologyAvailable">

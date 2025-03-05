@@ -12,21 +12,75 @@
         <ion-input class="p-2" formControlName="firstName" label="First Name*" label-placement="floating" fill="outline"
           placeholder="First Name*"></ion-input>
       </div>
+      <div class="ml-2 mt-2"
+        *ngIf="formGroup.controls['firstName']?.invalid && (formGroup.controls['firstName']?.dirty || formGroup.controls['firstName'].touched)">
+        <div class="error-class" *ngIf="formGroup.controls['firstName']?.errors?.required">
+          First Name is required.
+        </div>
+      </div>
       <div class="d-flex-center">
         <ion-input class="p-2" formControlName="lastName" label="Last Name*" label-placement="floating" fill="outline"
           placeholder="Last Name*"></ion-input>
+      </div>
+      <div class="ml-2 mt-2"
+        *ngIf="formGroup.controls['lastName']?.invalid && (formGroup.controls['lastName']?.dirty || formGroup.controls['lastName'].touched)">
+        <div class="error-class" *ngIf="formGroup.controls['lastName']?.errors?.required">
+          Last Name is required.
+        </div>
       </div>
       <div class="d-flex-center">
         <ion-input class="p-2" formControlName="email" label="Email*" label-placement="floating" fill="outline"
           placeholder="Email*"></ion-input>
       </div>
+      <div class="ml-2 mt-2"
+        *ngIf="formGroup.controls['email']?.invalid && (formGroup.controls['email']?.dirty || formGroup.controls['email'].touched)">
+        <div class="error-class" *ngIf="formGroup.controls['email']?.errors?.required">
+          Email is required.
+        </div>
+      </div>
       <div class="d-flex-center">
-        <ion-input type="password" formControlName="password" class="p-2" label="Password*" label-placement="floating"
+        <ion-input [type]="isPasswordHidden ? 'password' : 'text'" placeholder="********" formControlName="password" class="p-2" label="Password*" label-placement="floating"
+          fill="outline" placeholder="Password*">
+          <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="isPasswordHidden=!isPasswordHidden">
+            <ion-icon slot="icon-only" *ngIf="isPasswordHidden" name="eye" aria-hidden="true"></ion-icon>
+            <ion-icon slot="icon-only" *ngIf="!isPasswordHidden" name="eye-off-outline" aria-hidden="true"></ion-icon>
+          </ion-button></ion-input>
+      </div>
+      <div class="ml-2 mt-2"
+        *ngIf="formGroup.controls['password']?.invalid && (formGroup.controls['password']?.dirty || formGroup.controls['password'].touched)">
+        <div class="error-class" *ngIf="formGroup.controls['password']?.errors?.required">
+          Password is required.
+        </div>
+      </div>
+      <div class="d-flex-center">
+        <ion-input type="text" placeholder="********" formControlName="confirmPassword" class="p-2" label="Confirm Password*" label-placement="floating"
           fill="outline" placeholder="Password*"></ion-input>
+      </div>
+      <div class="error-message" *ngIf="!formGroup.controls['confirmpassword']?.errors && formGroup.hasError('passwordNotMatch') && (formGroup.get('confirmpassword').dirty || formGroup.get('confirmpassword').touched)">
+        Password and Confirm Password fields should match
+      </div>
+      <div class="ml-2 mt-2"
+      *ngIf="passwordsDiffer">
+        Email is required.
       </div>
       <div class="d-flex-center">
         <ion-input class="p-2" formControlName="phoneNumber" label="Phone Number*" label-placement="floating"
           fill="outline" placeholder="Phone Number*"></ion-input>
+      </div>
+      <div class="ml-2 mt-2"
+        *ngIf="formGroup.controls['phoneNumber']?.invalid && (formGroup.controls['phoneNumber']?.dirty || formGroup.controls['phoneNumber'].touched)">
+        <div class="error-class" *ngIf="formGroup.controls['phoneNumber']?.errors?.required">
+          Phone Number is required.
+        </div>
+        <div class="error-class" *ngIf="formGroup.controls['phone']?.hasError('minLength')">
+          Phone Number should be 10 digits long.
+        </div>
+        <div class="error-class" *ngIf="formGroup.controls['phone']?.hasError('maxLength')">
+          Phone Number should be 10 digits long.
+        </div>
+        <div class="error-class" *ngIf="formGroup.controls['phone']?.hasError('pattern')">
+          Phone Number is in wrong format.
+        </div>
       </div>
       <div class="d-flex-center">
         <ion-input class="p-2" formControlName="linkedInUrl" label="LinkedIn/Portfolio*" label-placement="floating"
@@ -35,23 +89,35 @@
       <div class="d-flex-center">
         <ion-list>
           <ion-item>
-            <ion-select aria-label="Fruit" interface="popover" placeholder="Select Province">
-              <ion-select-option value="apples">Alberta</ion-select-option>
-              <ion-select-option value="oranges">Ontario</ion-select-option>
-              <ion-select-option value="bananas">British Columbia</ion-select-option>
+            <ion-select (ionChange)="handleChangeForProvince($event)" aria-label="Fruit" interface="popover"
+              placeholder="Select Province*">
+              <ion-select-option *ngFor="let item of allProvinces"
+                [value]="item._id">{{item.provinceName}}</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-list>
 
+        <div class="ml-2 mt-2"
+          *ngIf="formGroup.controls['provinceId']?.invalid && (formGroup.controls['provinceId']?.dirty || formGroup.controls['provinceId'].touched)">
+          <div class="error-class" *ngIf="formGroup.controls['provinceId']?.errors?.required">
+            Province is required.
+          </div>
+        </div>
+
         <ion-list>
           <ion-item>
-            <ion-select aria-label="Fruit" interface="popover" placeholder="Select City">
-              <ion-select-option value="apples">Calgary</ion-select-option>
-              <ion-select-option value="oranges">Toronto</ion-select-option>
-              <ion-select-option value="bananas">Surrey</ion-select-option>
+            <ion-select aria-label="Fruit" interface="popover" placeholder="Select City*">
+              <ion-select-option *ngFor="let item of allCities" [value]="item._id">{{item.cityName}}</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-list>
+
+        <div class="ml-2 mt-2"
+          *ngIf="formGroup.controls['cityId']?.invalid && (formGroup.controls['cityId']?.dirty || formGroup.controls['cityId'].touched)">
+          <div class="error-class" *ngIf="formGroup.controls['cityId']?.errors?.required">
+            City is required.
+          </div>
+        </div>
       </div>
     </ion-card-content>
     <div class="text-center">

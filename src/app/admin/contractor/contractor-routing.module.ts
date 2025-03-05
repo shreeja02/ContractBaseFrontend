@@ -21,6 +21,10 @@ const contractorRoutes: Routes = [
             {
                 path: 'add',
                 component: ContractorEditComponent
+            },
+            {
+                path: 'edit/contractor/:id',
+                component: ContractorEditComponent
             }
         ]
     }
