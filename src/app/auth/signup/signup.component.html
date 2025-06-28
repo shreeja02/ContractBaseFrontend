@@ -56,7 +56,7 @@
         <ion-input type="text" placeholder="********" formControlName="confirmPassword" class="p-2" label="Confirm Password*" label-placement="floating"
           fill="outline" placeholder="Password*"></ion-input>
       </div>
-      <div class="error-message" *ngIf="!formGroup.controls['confirmpassword']?.errors && formGroup.hasError('passwordNotMatch') && (formGroup.get('confirmpassword').dirty || formGroup.get('confirmpassword').touched)">
+      <div class="error-message" *ngIf="!formGroup.controls['confirmpassword']?.errors && (formGroup.get('confirmpassword')?.dirty || formGroup.get('confirmpassword')?.touched)">
         Password and Confirm Password fields should match
       </div>
       <div class="ml-2 mt-2"

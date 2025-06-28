@@ -56,7 +56,7 @@ export class SignupComponent implements OnInit {
       lastName: [null, [Validators.required]],
       email: [null, [Validators.required]],
       password: [null, [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]],
-      confirmPassword: [null, [Validators.required,]],
+      confirmPassword: [null, [Validators.required]],
       phoneNumber: [null, [Validators.required, Validators.minLength(10),
         Validators.maxLength(10), Validators.pattern('[0-9]*')]],
       provinceId: [null, [Validators.required]],
@@ -78,12 +78,6 @@ export class SignupComponent implements OnInit {
           //this.router.navigateByUrl('/contractor');
         }
       })
-  }
-
-  password(formGroup: FormGroup) {
-    const { value: password } = formGroup.get('password');
-    const { value: confirmPassword } = formGroup.get('confirmpassword');
-    return password === confirmPassword ? null : { passwordNotMatch: true };
   }
 
 }
