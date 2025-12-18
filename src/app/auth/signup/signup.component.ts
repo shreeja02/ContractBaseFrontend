@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CityService } from 'src/app/shared/services/city.service';
 import { ProvinceService } from 'src/app/shared/services/province.service';
+import { RoleService } from 'src/app/shared/services/role.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 
 @Component({
@@ -24,7 +25,8 @@ export class SignupComponent implements OnInit {
     private router: Router,
     private provinceService: ProvinceService,
     private cityService: CityService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private roleService: RoleService
   ) { }
 
   ngOnInit() {
@@ -57,12 +59,22 @@ export class SignupComponent implements OnInit {
       email: [null, [Validators.required]],
       password: [null, [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]],
       confirmPassword: [null, [Validators.required]],
-      phoneNumber: [null, [Validators.required, Validators.minLength(10),
+      phone: [null, [Validators.required, Validators.minLength(10),
         Validators.maxLength(10), Validators.pattern('[0-9]*')]],
       provinceId: [null, [Validators.required]],
       cityId: [null, [Validators.required]],
       linkedInUrl: [null],
-    })
+    }, { validator: this.passwordMatchValidator } )
+  }
+
+   passwordMatchValidator(formGroup: AbstractControl) {
+    const password = formGroup.get('password')?.value;
+    const confirmPassword = formGroup.get('confirmPassword')?.value;
+    if (password !== confirmPassword) {
+      formGroup.get('confirmPassword')?.setErrors({ mismatch: true });
+    } else {
+      formGroup.get('confirmPassword')?.setErrors(null);
+    }
   }
 
   signup() {
@@ -70,12 +82,22 @@ export class SignupComponent implements OnInit {
       this.formGroup.markAllAsTouched();
       return;
     }
+    console.log('this.formGroup.value: ', this.formGroup.value);
     this.authService.signup(this.formGroup.value)
       .subscribe((data: any) => {
         if (data) {
           console.log('data: ', data);
-          this.toastService.presentToast('Registration has been done Successfully!');
-          //this.router.navigateByUrl('/contractor');
+          if(data.result && !data.result.errors)
+          {
+            console.log('inside if');
+            this.toastService.presentToast('Registration has been done Successfully!');
+            this.router.navigateByUrl('/auth/login');
+          }
+          else{
+            const errorMessages = data.result.errors.map((err: any) => err.msg).join(' ');
+            this.toastService.presentToast(`Registration failed: ${errorMessages}`);
+            return;
+          }
         }
       })
   }
