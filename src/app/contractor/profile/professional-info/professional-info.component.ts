@@ -98,7 +98,7 @@ export class ProfessionalInfoComponent implements OnInit {
           this.isLoading = false;
           loading.dismiss();
           if (data && data.success) {
-            this.router.navigateByUrl('contractor/profile/basic');
+            this.router.navigateByUrl('contractor/profile/view');
           }
         },
         (error) => {

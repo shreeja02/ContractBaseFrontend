@@ -1,0 +1,163 @@
+<div class="d-flex-center">
+  <ion-card>
+    <ion-card-content>
+      <div class="profile-header">
+        <img class="img-person" src="../../../assets/images/blank-profile.png" alt="Profile">
+        <div class="profile-info">
+          <h1 class="profile-name">{{contractorDetails?.userId?.firstName}} {{contractorDetails?.userId?.lastName}}</h1>
+          <h2 class="profile-title">{{contractorDetails?.position?.positionName}}</h2>
+          <p class="profile-description">{{contractorDetails?.yearsOfExperience}} years of experience</p>
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <!-- Left Column -->
+        <div class="info-section">
+          <h3 class="section-title">Contact Information</h3>
+
+          <div class="detail-item">
+            <ion-icon name="mail-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Email</span>
+              <span class="detail-value">{{contractorDetails?.userId?.email}}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="call-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Phone</span>
+              <span class="detail-value">{{contractorDetails?.userId?.phone}}</span>
+            </div>
+          </div>
+
+          <h3 class="section-title" style="margin-top: 1.5rem;">Business Information</h3>
+
+          <div class="detail-item">
+            <ion-icon name="business-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Business Number</span>
+              <span class="detail-value">{{contractorDetails?.businessNumber}}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="pin-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Business Address</span>
+              <span class="detail-value">{{contractorDetails?.businessAddressLine1}} {{contractorDetails?.businessAddressLine2}}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="logo-linkedin"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">LinkedIn Profile</span>
+              <span class="detail-value">{{contractorDetails?.linkedInProfile}}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="info-section">
+          <h3 class="section-title">Professional Details</h3>
+
+          <div class="detail-item">
+            <ion-icon name="briefcase-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Industries</span>
+              <div class="tag-list">
+                <span class="tag" *ngFor="let industry of contractorDetails?.industries">{{industry?.industryName}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="server-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Technologies</span>
+              <div class="tag-list">
+                <span class="tag" *ngFor="let tech of contractorDetails?.technologies">{{tech?.technologyName}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="star-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Certifications</span>
+              <div class="tag-list">
+                <span class="tag" *ngFor="let cert of contractorDetails?.certifications">{{cert?.certificationName}}</span>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="section-title" style="margin-top: 1.5rem;">Work Preferences</h3>
+
+          <div class="detail-item">
+            <ion-icon name="location-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Work Location</span>
+              <div class="tag-list">
+                <span class="location-tag" *ngFor="let location of contractorDetails?.location">
+                  {{location?.type}} {{location?.days ? '- ' + location.days + ' days' : ''}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="people-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Team Size</span>
+              <span class="detail-value">{{contractorDetails?.teamSize}}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="cash-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Project Budget</span>
+              <span class="detail-value">{{contractorDetails?.projectBudget}} Million</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="contract-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Contract Length</span>
+              <span class="detail-value">{{contractorDetails?.contractLength}}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="pricetag-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Hourly Rate</span>
+              <span class="detail-value">${{contractorDetails?.hourlyRate}}/hr CAD</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <div class="detail-content">
+              <span class="detail-label">Available Since</span>
+              <span class="detail-value">{{contractorDetails?.availableDate | date: 'MMM dd, yyyy'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-section">
+        <ion-button fill="outline" (click)="onBack()">
+          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          Back
+        </ion-button>
+        <ion-button fill="solid" color="primary" (click)="onEditProfile()">
+          <ion-icon slot="start" name="pencil-outline"></ion-icon>
+          Edit Profile
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>

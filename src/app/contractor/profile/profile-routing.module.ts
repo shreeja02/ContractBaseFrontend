@@ -6,6 +6,7 @@ import { BusinessInfoComponent } from './business-info/business-info.component';
 import { IndustryInfoComponent } from './industry-info/industry-info.component';
 import { LocationInfoComponent } from './location-info/location-info.component';
 import { ProfessionalInfoComponent } from './professional-info/professional-info.component';
+import { ViewProfileComponent } from './view-profile/view-profile.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
       {
         path: 'professional',
         component: ProfessionalInfoComponent
+      },
+      {
+        path: 'view',
+        component: ViewProfileComponent
       },
       {
         path: '',

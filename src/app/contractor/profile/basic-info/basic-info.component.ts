@@ -36,11 +36,22 @@ export class BasicInfoComponent implements OnInit {
   ngOnInit() {
     this.getAllProvinces();
     this.getAllCities();
+    
+    // Subscribe to current contractor data if coming from view profile
+    this.contractorService.currentContractor$.subscribe((contractorData: any) => {
+      if (contractorData && contractorData.userId) {
+        // If we have contractor data, use it to populate the form
+        this.currentUser = contractorData.userId;
+        this.form = this.createFormGroup(contractorData.userId);
+      }
+    });
+    
     this.authService.currentUser$.subscribe((data) => {
-      if (data)
+      if (data) {
         this.currentUser = data;
-      console.log('this.currentUser: ', this.currentUser);
-      this.form = this.createFormGroup(data);
+        console.log('this.currentUser: ', this.currentUser);
+        this.form = this.createFormGroup(data);
+      }
     })
   }
 

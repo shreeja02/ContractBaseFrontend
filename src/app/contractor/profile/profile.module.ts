@@ -9,6 +9,7 @@ import { BusinessInfoComponent } from './business-info/business-info.component';
 import { IndustryInfoComponent } from './industry-info/industry-info.component';
 import { LocationInfoComponent } from './location-info/location-info.component';
 import { ProfessionalInfoComponent } from './professional-info/professional-info.component';
+import { ViewProfileComponent } from './view-profile/view-profile.component';
 import { IonicComponentsModule } from 'src/app/shared/ionic-components.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 
@@ -20,7 +21,8 @@ import { MaterialModule } from 'src/app/shared/material.module';
     BusinessInfoComponent,
     LocationInfoComponent,
     IndustryInfoComponent,
-    ProfessionalInfoComponent
+    ProfessionalInfoComponent,
+    ViewProfileComponent
   ],
   imports: [
     CommonModule,

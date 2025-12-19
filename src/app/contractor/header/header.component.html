@@ -1,6 +1,6 @@
 <ion-menu contentId="main-content" class="side-menu">
   <ion-header>
-    <ion-toolbar >
+    <ion-toolbar>
       <ion-title class="menu-title">
         <img class="img-header-logo" src="../../../assets/images/top3talent-logo1.png" alt="Top 3 Talent">
       </ion-title>
@@ -8,10 +8,10 @@
   </ion-header>
   <ion-content class="menu-content">
     <ion-list lines="none" class="menu-list">
-      <!-- <ion-item routerLink="/contractor/profile" class="menu-item" lines="none">
+      <ion-item routerLink="/contractor/profile" class="menu-item" lines="none">
         <ion-icon slot="start" name="person-outline"></ion-icon>
         <ion-label>My Profile</ion-label>
-      </ion-item> -->
+      </ion-item>
       <ion-item (click)="logout()" class="menu-item menu-logout" lines="none">
         <ion-icon slot="start" name="log-out-outline"></ion-icon>
         <ion-label>Logout</ion-label>
@@ -32,7 +32,8 @@
       </div>
 
       <div class="profile-section">
-        <div id="profile-trigger" class="profile-badge" [attr.aria-label]="'User profile: ' + user?.firstName + ' ' + user?.lastName">
+        <div id="profile-trigger" class="profile-badge"
+          [attr.aria-label]="'User profile: ' + user?.firstName + ' ' + user?.lastName">
           <ion-icon class="profile-icon" name="person-circle"></ion-icon>
           <div class="profile-info">
             <p class="profile-name">{{user?.firstName}} {{user?.lastName}}</p>
@@ -43,6 +44,10 @@
         <ion-popover #popover trigger="profile-trigger" side="bottom" alignment="end" class="profile-popover">
           <ng-template>
             <ion-list class="profile-menu" lines="none">
+              <ion-item routerLink="/contractor/profile/view" class="menu-item" lines="none">
+                <ion-icon slot="start" name="person-outline"></ion-icon>
+                <ion-label>My Profile</ion-label>
+              </ion-item>
               <ion-item (click)="logout()" class="menu-item-popover logout-item" lines="none">
                 <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
                 <ion-label color="danger">Logout</ion-label>
