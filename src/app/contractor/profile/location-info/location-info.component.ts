@@ -8,6 +8,7 @@ import { CertificationService } from 'src/app/shared/services/certification.serv
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContractorService } from 'src/app/shared/services/contractor.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-location-info',
@@ -29,6 +30,7 @@ export class LocationInfoComponent implements OnInit {
   selectedCertifications: any[] = [];
   certificationSelectionErrorMessage: string = "";
   currentUser: any;
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -36,7 +38,8 @@ export class LocationInfoComponent implements OnInit {
     private positionService: PositionService,
     private technologyService: TechnologyService,
     private certificationService: CertificationService,
-    private authService: AuthService  
+    private authService: AuthService,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
@@ -122,7 +125,7 @@ export class LocationInfoComponent implements OnInit {
     this.router.navigateByUrl('contractor/profile/industry');
   }
 
-  next() {
+  async next() {
     this.form.markAllAsTouched();
     // Validate position is selected
     if (!this.form.valid) {
@@ -136,17 +139,33 @@ export class LocationInfoComponent implements OnInit {
     if (this.selectedCertifications.length !== 3) {
       return;
     }
+    
+    this.isLoading = true;
+    const loading = await this.loadingController.create({
+      message: 'Saving position and skills...',
+      spinner: 'circular'
+    });
+    await loading.present();
+    
     this.contractorService.editContractor({
       ...this.currentUser,
       ...this.form.value,
       technologies: this.selectedTechnologies.map((x: any) => x._id),
       certifications: this.selectedCertifications.map((x: any) => x._id)
     }, this.currentUser._id)
-      .subscribe((data) => {
-        if (data && data.success) {
-          this.router.navigateByUrl('contractor/profile/professional');
+      .subscribe(
+        (data) => {
+          this.isLoading = false;
+          loading.dismiss();
+          if (data && data.success) {
+            this.router.navigateByUrl('contractor/profile/professional');
+          }
+        },
+        (error) => {
+          this.isLoading = false;
+          loading.dismiss();
         }
-      });
+      );
   }
 
   getTechnologies(ev: any) {

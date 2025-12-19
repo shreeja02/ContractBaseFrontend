@@ -10,7 +10,7 @@
           </div>
           <ion-row>
             <ion-col>
-              <div class="row d-flex-center" *ngIf="!isEdit">
+              <div class="d-flex-center" *ngIf="!isEdit">
                 <input [formControl]="myControl" type="text" class="search-user" placeholder="Search User..." matInput
                   [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -30,7 +30,7 @@
               </div>
             </ion-col>
             <ion-col>
-              <div class="row d-flex-center w-100">
+              <div class=" d-flex-center w-100">
                 <ion-input formControlName="linkedInProfile" [value]="contractorForm.get('linkedInProfile')?.value" type="text" label="LinkedIn Profile*"
                   label-placement="floating" fill="outline"></ion-input>
               </div>
@@ -42,7 +42,7 @@
               </div>
             </ion-col>
           </ion-row>
-          <div class="row d-flex-center w-100">
+          <div class="d-flex-center w-100">
             <ion-input formControlName="businessNumber" type="number" class="p-2" label="Business Number*"
               label-placement="floating" fill="outline"></ion-input>
           </div>
@@ -52,7 +52,7 @@
               Business Number is required.
             </div>
           </div>
-          <div class="row d-flex-center w-100">
+          <div class="d-flex-center w-100">
             <ion-input formControlName="businessAddressLine1" type="text" class="p-2" label="Business Address Line 1*"
               label-placement="floating" fill="outline"></ion-input>
           </div>
@@ -62,7 +62,7 @@
               Business Address is required.
             </div>
           </div>
-          <div class="row d-flex-center w-100">
+          <div class="d-flex-center w-100">
             <ion-input formControlName="businessAddressLine2" type="text" class="p-2" label="Business Address Line 2"
               label-placement="floating" fill="outline"></ion-input>
           </div>
@@ -101,7 +101,7 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <div class="row d-flex-center w-100">
+              <div class="d-flex-center w-100">
                 <ion-input formControlName="businessZipCode" type="text" label="Business Zipcode*"
                   label-placement="floating" fill="outline"></ion-input>
               </div>

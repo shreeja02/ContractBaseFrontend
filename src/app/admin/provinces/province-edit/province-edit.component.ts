@@ -65,7 +65,6 @@ export class ProvinceEditComponent implements OnInit {
         }
       );
     }
-    this.dialogRef.close({ success: true });
   }
 
   createForm(formValues?: any) {

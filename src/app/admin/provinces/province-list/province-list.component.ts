@@ -75,7 +75,8 @@ export class ProvinceListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      if (result.success) {
+      console.log('result: ', result);
+      if (result.success == true) {
         this.getAllProvinces();
       }
     });

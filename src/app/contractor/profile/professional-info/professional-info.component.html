@@ -118,13 +118,19 @@
           </div>
         </ion-card-content>
         <div class="button-section">
-          <ion-button fill="outline" (click)="previous()">
+          <ion-button fill="outline" (click)="previous()" [disabled]="isLoading">
             <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
             Previous
           </ion-button>
-          <ion-button (click)="save()">
-            <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-            Complete Profile
+          <ion-button (click)="save()" [disabled]="isLoading">
+            <span *ngIf="!isLoading">
+              <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+              Complete Profile
+            </span>
+            <span *ngIf="isLoading">
+              <ion-spinner name="crescent"></ion-spinner>
+              Saving...
+            </span>
           </ion-button>
         </div>
       </ion-card>

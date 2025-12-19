@@ -1,57 +1,75 @@
 <div class="d-flex-end">
-  <ion-searchbar [formControl]="searchbarControl" class="searchbar-width"></ion-searchbar>
-</div>
-<div class="d-flex-end">
+  <ion-searchbar [formControl]="searchbarControl" class="searchbar-width" placeholder="Search contractors..."></ion-searchbar>
   <ion-button (click)="onAddNewContractor()" color="primary">
     <ion-icon slot="start" name="add-outline"></ion-icon>
-    Add New</ion-button>
+    Add New
+  </ion-button>
 </div>
 <ion-grid>
   <ion-row>
     <ion-col size="12" size-md="4" size-lg="3" *ngFor="let item of filteredContractors">
-      <ion-card class="cursor-pointer" (click)="onViewMoreClicked(item._id)">
+      <ion-card class="form-card" (click)="onViewMoreClicked(item._id)">
         <ion-card-header>
-          <ion-card-title>{{item?.userId.name}}</ion-card-title>
+          <ion-card-title>{{item?.userId.firstName}} {{item?.userId.lastName}}</ion-card-title>
         </ion-card-header>
 
         <ion-card-content>
-          <div class="d-flex-space-between">
-            <h3><b>{{item?.userId?.firstName+' '+item?.userId?.lastName}}</b></h3>
-            <div>
-              <ion-button (click)="onEdit(item)" shape="round" size="small">
-                <ion-icon slot="icon-only" name="pencil"></ion-icon>
-              </ion-button>
-              <ion-button shape="round" size="small">
-                <ion-icon slot="icon-only" name="trash"></ion-icon>
-              </ion-button>
+          <div class="contractor-info">
+            <div class="info-row">
+              <ion-icon name="briefcase-outline"></ion-icon>
+              <div class="info-content">
+                <span class="info-label">Position</span>
+                <span class="info-value">{{item?.position?.positionName}}</span>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <ion-icon name="mail-outline"></ion-icon>
+              <div class="info-content">
+                <span class="info-label">Email</span>
+                <span class="info-value">{{item?.userId?.email}}</span>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <ion-icon name="call-outline"></ion-icon>
+              <div class="info-content">
+                <span class="info-label">Phone</span>
+                <span class="info-value">{{item?.userId?.phone}}</span>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <ion-icon name="location-outline"></ion-icon>
+              <div class="info-content">
+                <span class="info-label">Work Location</span>
+                <span class="info-value">{{item?.location?.[0]?.type || 'N/A'}}</span>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <ion-icon name="person-outline"></ion-icon>
+              <div class="info-content">
+                <span class="info-label">Experience</span>
+                <span class="info-value">{{item?.yearsOfExperience}} years</span>
+              </div>
             </div>
           </div>
-          <div class="d-flex">
-            <ion-icon class="p-1 mt-1 icon-font" name="mail"></ion-icon>
-            <h3 class="p-1">{{item?.userId.email}}</h3>
-          </div>
-          <div class="d-flex">
-            <ion-icon class="p-1 mt-1 icon-font" name="location"></ion-icon>
-            <h3 class="p-1" *ngFor="let location of item.location">{{location.type +' '}}</h3>
-          </div>
-          <div class="d-flex">
-            <ion-icon class="p-1 mt-1 icon-font" name="school"></ion-icon>
-            <h3 class="p-1">{{item?.position.positionName}}</h3>
-          </div>
-          <div class="d-flex">
-            <ion-icon class="p-1 mt-1 icon-font" name="person"></ion-icon>
-            <h3 class="p-1">Experience - {{item.yearsOfExperience}} years</h3>
-          </div>
-          <div class="d-flex">
-            <ion-icon class="p-1 mt-1 icon-font" name="call"></ion-icon>
-            <h3 class="p-1">{{item?.userId.phone}}</h3>
+
+          <div class="card-actions">
+            <div class="action-buttons">
+              <ion-button shape="round" size="small" fill="clear" (click)="onEdit(item)">
+                <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+              </ion-button>
+              <ion-button (click)="onDelete(item)" shape="round" size="small" fill="clear" color="danger">
+                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+              </ion-button>
+            </div>
+            <ion-button class="view-more-btn" (click)="onViewMoreClicked(item._id)" fill="clear" size="small">
+              <ion-icon slot="start" name="arrow-forward-outline"></ion-icon>
+            </ion-button>
           </div>
         </ion-card-content>
-        <div class="d-flex-center">
-          <ion-button color="primary" (click)="onViewMoreClicked(item._id)">
-            <ion-icon slot="start" name="arrow-forward"></ion-icon>
-            View More</ion-button>
-        </div>
       </ion-card>
     </ion-col>
   </ion-row>

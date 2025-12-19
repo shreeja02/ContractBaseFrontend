@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ContractorService } from 'src/app/shared/services/contractor.service';
 import { IndustryService } from 'src/app/shared/services/industry.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-industry-info',
@@ -19,13 +20,16 @@ export class IndustryInfoComponent implements OnInit {
   filteredItems: any[] = [];
   currentUser: any;
   maxIndustries = 3;
+  isLoading = false;
+
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private contractorService: ContractorService,
     private industryService: IndustryService,
-    private authService: AuthService
+    private authService: AuthService,
+      private loadingController: LoadingController
   ) {
     this.industryForm = this.createFormGroup();
   }
@@ -100,18 +104,34 @@ export class IndustryInfoComponent implements OnInit {
     this.router.navigateByUrl('contractor/profile/business');
   }
 
-  next() {
+  async next() {
     this.formTouched = true;
     if (!this.selectedItems?.length || this.selectedItems.length !== this.maxIndustries) {
       return;
     }
+    
+    this.isLoading = true;
+    const loading = await this.loadingController.create({
+      message: 'Saving industries...',
+      spinner: 'circular'
+    });
+    await loading.present();
+    
     this.contractorService.editContractor(
       { ...this.currentUser, industries: this.selectedItems.map(x => x._id) },
       this.currentUser._id
-    ).subscribe((data) => {
-      if (data && data.success) {
-        this.router.navigateByUrl('contractor/profile/location');
+    ).subscribe(
+      (data) => {
+        this.isLoading = false;
+        loading.dismiss();
+        if (data && data.success) {
+          this.router.navigateByUrl('contractor/profile/location');
+        }
+      },
+      (error) => {
+        this.isLoading = false;
+        loading.dismiss();
       }
-    });
-  }
+   );
+}
 }

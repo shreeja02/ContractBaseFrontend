@@ -13,9 +13,7 @@ export class ProvinceService {
   constructor(private _http: HttpClient) { }
 
   getAllProvinces() {
-    if (this.allProvinces) {
-      return of(this.allProvinces);
-    }
+
     return this._http.get(this.apiEndPoint + "Provinces")
       .pipe(map((data: any) => {
         if (data && data.success) {

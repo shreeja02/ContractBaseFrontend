@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ContractorService } from 'src/app/shared/services/contractor.service';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-professional-info',
@@ -25,12 +26,14 @@ export class ProfessionalInfoComponent implements OnInit {
   form = this.createFormGroup();
   isHybridSelected: boolean = false;
   currentUser: any;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private contractorService: ContractorService,
-    private authService:AuthService
+    private authService: AuthService,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
@@ -78,15 +81,31 @@ export class ProfessionalInfoComponent implements OnInit {
     this.router.navigateByUrl('contractor/profile/location');
   }
 
-  save() {
+  async save() {
     this.form.markAllAsTouched();
     if (!this.form.valid) return;
+
+    this.isLoading = true;
+    const loading = await this.loadingController.create({
+      message: 'Completing profile...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
     this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser._id)
-      .subscribe((data) => {
-        if (data && data.success) {
-          this.router.navigateByUrl('contractor/profile/basic');
+      .subscribe(
+        (data) => {
+          this.isLoading = false;
+          loading.dismiss();
+          if (data && data.success) {
+            this.router.navigateByUrl('contractor/profile/basic');
+          }
+        },
+        (error) => {
+          this.isLoading = false;
+          loading.dismiss();
         }
-      });
+      );
   }
 
 }

@@ -68,9 +68,13 @@
     </ion-grid>
   </ion-card-content>
   <div class="button-section">
-    <ion-button (click)="next()">
-      Save & Next
-      <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+    <ion-button (click)="next()" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Save & Next</span>
+      <span *ngIf="isLoading">
+        <ion-spinner name="crescent"></ion-spinner>
+        Saving...
+      </span>
+      <ion-icon slot="end" name="arrow-forward-outline" *ngIf="!isLoading"></ion-icon>
     </ion-button>
   </div>
 </ion-card>

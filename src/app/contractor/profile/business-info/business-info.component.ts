@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { CityService } from 'src/app/shared/services/city.service';
 import { ProvinceService } from 'src/app/shared/services/province.service';
 import { ContractorService } from 'src/app/shared/services/contractor.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-business-info',
@@ -20,6 +21,7 @@ export class BusinessInfoComponent implements OnInit {
   allCities: any[] = [];
   currentContractor: any;
   currentUser: any;
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -27,7 +29,8 @@ export class BusinessInfoComponent implements OnInit {
     private fb: FormBuilder,
     private provinceService: ProvinceService,
     private cityService: CityService,
-    private authService: AuthService
+    private authService: AuthService,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
@@ -114,15 +117,33 @@ export class BusinessInfoComponent implements OnInit {
     this.router.navigateByUrl('contractor/profile/basic');
   }
 
-  next() {
+  async next() {
     this.form.markAllAsTouched();
     if (!this.form.valid) return;
+    
+    this.isLoading = true;
+    const loading = await this.loadingController.create({
+      message: 'Saving business information...',
+      spinner: 'circular',
+      cssClass: 'custom-loading'
+    });
+    await loading.present();
+    
     this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser._id)
-      .subscribe((data) => {
-        if (data && data.success) {
-          this.router.navigateByUrl('contractor/profile/industry');
+      .subscribe(
+        (data) => {
+          this.isLoading = false;
+          loading.dismiss();
+          if (data && data.success) {
+            this.router.navigateByUrl('contractor/profile/industry');
+          }
+        },
+        (error) => {
+          this.isLoading = false;
+          loading.dismiss();
+          console.error('Error saving contractor:', error);
         }
-      });
+      );
   }
 
 }

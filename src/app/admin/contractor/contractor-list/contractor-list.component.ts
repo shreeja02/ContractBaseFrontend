@@ -15,7 +15,7 @@ import { startWith } from 'rxjs';
 export class ContractorListComponent implements OnInit {
   allContractors: any = [];
   filteredContractors: any = [];
-  searchbarControl:FormControl=new FormControl('');
+  searchbarControl: FormControl = new FormControl('');
   constructor(private router: Router, private contractorService: ContractorService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -23,22 +23,22 @@ export class ContractorListComponent implements OnInit {
     this.getAllContractors();
   }
 
-  search(){
+  search() {
     this.allContractors = this.searchbarControl.valueChanges.subscribe(
-      (term)=>{
-        if(term){
-          this.filteredContractors = this.allContractors.filter((item:any)=>{
-            return(
-            item.businessAddressLine1.toLowerCase().includes(term) ||
-            item.businessNumber.includes(term) ||
-            item.position.positionName.toLowerCase().includes(term) ||
-            item.businessCityId.cityName.toLowerCase().includes(term) ||
-            item.industries.some((ind:any) => ind.industryName.toLowerCase().includes(term)) ||
-            item.certifications.some((ind:any) => ind.industryName.toLowerCase().includes(term)) ||
-            item.location.some((ind:any) => ind.industryName.toLowerCase().includes(term)) ||
-            item.technologies.some((ind:any) => ind.industryName.toLowerCase().includes(term)) ||
-            (item.userId.firstName.toLowerCase() + ' ' + item.userId.lastName.toLowerCase()).includes(term) ||
-            item.yearsOfExperience.toString().includes(term));
+      (term) => {
+        if (term) {
+          this.filteredContractors = this.allContractors.filter((item: any) => {
+            return (
+              item.businessAddressLine1.toLowerCase().includes(term) ||
+              item.businessNumber.includes(term) ||
+              item.position.positionName.toLowerCase().includes(term) ||
+              item.businessCityId.cityName.toLowerCase().includes(term) ||
+              item.industries.some((ind: any) => ind.industryName.toLowerCase().includes(term)) ||
+              item.certifications.some((ind: any) => ind.industryName.toLowerCase().includes(term)) ||
+              item.location.some((ind: any) => ind.industryName.toLowerCase().includes(term)) ||
+              item.technologies.some((ind: any) => ind.industryName.toLowerCase().includes(term)) ||
+              (item.userId.firstName.toLowerCase() + ' ' + item.userId.lastName.toLowerCase()).includes(term) ||
+              item.yearsOfExperience.toString().includes(term));
           });
         }
       }
@@ -64,7 +64,22 @@ export class ContractorListComponent implements OnInit {
     this.router.navigateByUrl(`/admin/contractor/add`);
   }
 
-  onEdit(item:any){
+  onEdit(item: any) {
     this.router.navigateByUrl(`/admin/contractor/edit/contractor/${item._id}`);
   }
+
+  onDelete(item: any) {
+    if (confirm("Are you sure to delete " + item.userId.firstName + " " + item.userId.lastName + "?")) {
+      this.contractorService.deleteContractor(item._id).subscribe(
+        (res: any) => {
+          if (res.success) {
+            this.getAllContractors();
+            this.router.navigateByUrl(`/admin/contractor/list`);
+            alert("Contractor deleted successfully.");
+          }
+        }
+      );
+    }
+  }
+
 }

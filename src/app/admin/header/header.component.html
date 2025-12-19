@@ -12,10 +12,6 @@
         <ion-icon aria-hidden="true" name="people" slot="start"></ion-icon>
         <ion-label>Contractor</ion-label>
       </ion-item>
-      <ion-item>
-        <ion-icon aria-hidden="true" name="book" slot="start"></ion-icon>
-        <ion-label>Jobs</ion-label>
-      </ion-item>
       <ion-item [routerLink]="['/admin/technology']">
         <ion-icon aria-hidden="true" name="server-outline" slot="start"></ion-icon>
         <ion-label>Technology</ion-label>
@@ -65,14 +61,14 @@
         </div>
         <ion-popover #popover trigger="bottom-start" side="bottom" alignment="start">
           <ng-template>
-            <ion-list class="cursor-pointer" lines="full">
-              <ion-item>
-                <ion-icon name="person-outline"></ion-icon>
-                <ion-label class="ml-2">My Profile</ion-label>
-              </ion-item>
-              <ion-item (click)="logout()">
-                <ion-icon name="log-out-outline"></ion-icon>
-                <ion-label class="ml-2">Logout</ion-label>
+            <ion-list lines="none" class="menu-list">
+              <!-- <ion-item routerLink="/contractor/profile" class="menu-item" lines="none">
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        <ion-label>My Profile</ion-label>
+      </ion-item> -->
+              <ion-item (click)="logout()" class="menu-item menu-logout" lines="none">
+                <ion-icon slot="start" name="log-out-outline"></ion-icon>
+                <ion-label>Logout</ion-label>
               </ion-item>
             </ion-list>
           </ng-template>

@@ -181,7 +181,7 @@ export class ContractorEditComponent implements OnInit {
         userId: new FormControl(formValues?.userId?._id || '', Validators.required),
         businessNumber: new FormControl(formValues?.businessNumber || '', Validators.required),
         businessAddressLine1: new FormControl(formValues?.businessAddressLine1 || '', Validators.required),
-        businessAddressLine2: new FormControl(formValues?.businessAddressLine2 || '', Validators.required),
+        businessAddressLine2: new FormControl(formValues?.businessAddressLine2),
         businessProvinceId: new FormControl(formValues?.businessProvinceId || '', Validators.required),
         businessCityId: new FormControl(formValues?.businessCityId || '', Validators.required),
         businessZipCode: new FormControl(formValues?.businessZipCode || '', Validators.required),
