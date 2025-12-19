@@ -30,11 +30,19 @@
         <ion-spinner *ngIf="loading"></ion-spinner>
         <span *ngIf="!loading">Login</span>
       </ion-button>
-      <a [routerLink]="['/auth/signup']">
-        <ion-text color="primary" class="text-center">
-          <h4>New? Create an account</h4>
-        </ion-text>
-      </a>
+
+      <div class="auth-links">
+        <a [routerLink]="['/auth/forgot-password']" class="forgot-password-link">
+          <ion-text color="primary" class="text-center">
+            <p>Forgot Password?</p>
+          </ion-text>
+        </a>
+        <a [routerLink]="['/auth/signup']" class="signup-link">
+          <ion-text color="primary" class="text-center">
+            <h4>New? Create an account</h4>
+          </ion-text>
+        </a>
+      </div>
 
     </ion-card-content>
   </ion-card>

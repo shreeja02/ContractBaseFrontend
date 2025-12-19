@@ -21,46 +21,44 @@
                 Personal Information
               </h2>
               
-              <ion-grid class="form-row-grid">
-                <ion-row>
-                  <ion-col sizeSm="12" sizeMd="6">
-                    <div class="form-field-wrapper">
-                      <ion-input 
-                        formControlName="firstName" 
-                        label="First Name" 
-                        label-placement="floating"
-                        fill="outline" 
-                        placeholder="John"
-                        class="form-input"
-                        [class.input-error]="formGroup.controls['firstName']?.invalid && (formGroup.controls['firstName']?.dirty || formGroup.controls['firstName'].touched)">
-                      </ion-input>
-                      <div class="error-message" 
-                        *ngIf="formGroup.controls['firstName']?.invalid && (formGroup.controls['firstName']?.dirty || formGroup.controls['firstName'].touched)">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span *ngIf="formGroup.controls['firstName']?.errors?.required">First Name is required</span>
-                      </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="form-field-wrapper">
+                    <ion-input 
+                      formControlName="firstName" 
+                      label="First Name" 
+                      label-placement="floating"
+                      fill="outline" 
+                      placeholder="John"
+                      class="form-input"
+                      [class.input-error]="formGroup.controls['firstName']?.invalid && (formGroup.controls['firstName']?.dirty || formGroup.controls['firstName'].touched)">
+                    </ion-input>
+                    <div class="error-message" 
+                      *ngIf="formGroup.controls['firstName']?.invalid && (formGroup.controls['firstName']?.dirty || formGroup.controls['firstName'].touched)">
+                      <ion-icon name="alert-circle-outline"></ion-icon>
+                      <span *ngIf="formGroup.controls['firstName']?.errors?.required">First Name is required</span>
                     </div>
-                  </ion-col>
-                  <ion-col sizeSm="12" sizeMd="6">
-                    <div class="form-field-wrapper">
-                      <ion-input 
-                        formControlName="lastName" 
-                        label="Last Name" 
-                        label-placement="floating"
-                        fill="outline" 
-                        placeholder="Doe"
-                        class="form-input"
-                        [class.input-error]="formGroup.controls['lastName']?.invalid && (formGroup.controls['lastName']?.dirty || formGroup.controls['lastName'].touched)">
-                      </ion-input>
-                      <div class="error-message"
-                        *ngIf="formGroup.controls['lastName']?.invalid && (formGroup.controls['lastName']?.dirty || formGroup.controls['lastName'].touched)">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span *ngIf="formGroup.controls['lastName']?.errors?.required">Last Name is required</span>
-                      </div>
+                  </div>
+                </div>
+                <div class="form-col">
+                  <div class="form-field-wrapper">
+                    <ion-input 
+                      formControlName="lastName" 
+                      label="Last Name" 
+                      label-placement="floating"
+                      fill="outline" 
+                      placeholder="Doe"
+                      class="form-input"
+                      [class.input-error]="formGroup.controls['lastName']?.invalid && (formGroup.controls['lastName']?.dirty || formGroup.controls['lastName'].touched)">
+                    </ion-input>
+                    <div class="error-message"
+                      *ngIf="formGroup.controls['lastName']?.invalid && (formGroup.controls['lastName']?.dirty || formGroup.controls['lastName'].touched)">
+                      <ion-icon name="alert-circle-outline"></ion-icon>
+                      <span *ngIf="formGroup.controls['lastName']?.errors?.required">Last Name is required</span>
                     </div>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
+                  </div>
+                </div>
+              </div>
 
               <div class="form-field-wrapper">
                 <ion-input 
@@ -77,6 +75,7 @@
                   *ngIf="formGroup.controls['email']?.invalid && (formGroup.controls['email']?.dirty || formGroup.controls['email'].touched)">
                   <ion-icon name="alert-circle-outline"></ion-icon>
                   <span *ngIf="formGroup.controls['email']?.errors?.required">Email is required</span>
+                  <span *ngIf="formGroup.controls['email']?.errors?.email">Please enter a valid email address</span>
                 </div>
               </div>
 
@@ -94,6 +93,9 @@
                   *ngIf="formGroup.controls['phone']?.invalid && (formGroup.controls['phone']?.dirty || formGroup.controls['phone'].touched)">
                   <ion-icon name="alert-circle-outline"></ion-icon>
                   <span *ngIf="formGroup.controls['phone']?.errors?.required">Phone Number is required</span>
+                  <span *ngIf="formGroup.controls['phone']?.errors?.pattern">Phone Number is invalid</span> 
+                  <span *ngIf="formGroup.controls['phone']?.errors?.minlength">Phone Number is too short</span>
+                  <span *ngIf="formGroup.controls['phone']?.errors?.maxlength">Phone Number is too long</span>
                 </div>
               </div>
             </div>
@@ -171,7 +173,7 @@
                 Professional Information
               </h2>
 
-              <div class="form-field-wrapper">
+              <!-- <div class="form-field-wrapper">
                 <ion-input 
                   formControlName="linkedInUrl" 
                   label="LinkedIn/Portfolio URL" 
@@ -187,7 +189,7 @@
                   <ion-icon name="alert-circle-outline"></ion-icon>
                   <span *ngIf="formGroup.controls['linkedInUrl']?.errors?.required">LinkedIn/Portfolio URL is required</span>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <!-- Location Section -->
@@ -197,61 +199,59 @@
                 Location
               </h2>
 
-              <ion-grid class="form-row-grid">
-                <ion-row>
-                  <ion-col sizeSm="12" sizeMd="6">
-                    <div class="form-field-wrapper">
-                      <ion-label class="select-label">Province *</ion-label>
-                      <ion-select 
-                        formControlName="provinceId" 
-                        (ionChange)="handleChangeForProvince($event)"
-                        interface="popover" 
-                        placeholder="Select Province"
-                        class="form-select"
-                        [class.select-error]="formGroup.controls['provinceId']?.invalid && (formGroup.controls['provinceId']?.dirty || formGroup.controls['provinceId'].touched)">
-                        <ion-select-option *ngFor="let item of allProvinces" [value]="item._id">
-                          {{item.provinceName}}
-                        </ion-select-option>
-                      </ion-select>
-                      <div class="error-message"
-                        *ngIf="formGroup.controls['provinceId']?.invalid && (formGroup.controls['provinceId']?.dirty || formGroup.controls['provinceId'].touched)">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span *ngIf="formGroup.controls['provinceId']?.errors?.required">Province is required</span>
-                      </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="form-field-wrapper">
+                    <ion-label class="select-label">Province *</ion-label>
+                    <ion-select 
+                      formControlName="provinceId" 
+                      (ionChange)="handleChangeForProvince($event)"
+                      interface="popover" 
+                      placeholder="Select Province"
+                      class="form-select"
+                      [class.select-error]="formGroup.controls['provinceId']?.invalid && (formGroup.controls['provinceId']?.dirty || formGroup.controls['provinceId'].touched)">
+                      <ion-select-option *ngFor="let item of allProvinces" [value]="item._id">
+                        {{item.provinceName}}
+                      </ion-select-option>
+                    </ion-select>
+                    <div class="error-message"
+                      *ngIf="formGroup.controls['provinceId']?.invalid && (formGroup.controls['provinceId']?.dirty || formGroup.controls['provinceId'].touched)">
+                      <ion-icon name="alert-circle-outline"></ion-icon>
+                      <span *ngIf="formGroup.controls['provinceId']?.errors?.required">Province is required</span>
                     </div>
-                  </ion-col>
-                  <ion-col sizeSm="12" sizeMd="6">
-                    <div class="form-field-wrapper">
-                      <ion-label class="select-label">City *</ion-label>
-                      <ion-select 
-                        formControlName="cityId" 
-                        interface="popover"
-                        placeholder="Select City"
-                        class="form-select"
-                        [class.select-error]="formGroup.controls['cityId']?.invalid && (formGroup.controls['cityId']?.dirty || formGroup.controls['cityId'].touched)">
-                        <ion-select-option *ngFor="let item of allCities" [value]="item._id">
-                          {{item.cityName}}
-                        </ion-select-option>
-                      </ion-select>
-                      <div class="error-message"
-                        *ngIf="formGroup.controls['cityId']?.invalid && (formGroup.controls['cityId']?.dirty || formGroup.controls['cityId'].touched)">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span *ngIf="formGroup.controls['cityId']?.errors?.required">City is required</span>
-                      </div>
+                  </div>
+                </div>
+                <div class="form-col">
+                  <div class="form-field-wrapper">
+                    <ion-label class="select-label">City *</ion-label>
+                    <ion-select 
+                      formControlName="cityId" 
+                      interface="popover"
+                      placeholder="Select City"
+                      class="form-select"
+                      [class.select-error]="formGroup.controls['cityId']?.invalid && (formGroup.controls['cityId']?.dirty || formGroup.controls['cityId'].touched)">
+                      <ion-select-option *ngFor="let item of allCities" [value]="item._id">
+                        {{item.cityName}}
+                      </ion-select-option>
+                    </ion-select>
+                    <div class="error-message"
+                      *ngIf="formGroup.controls['cityId']?.invalid && (formGroup.controls['cityId']?.dirty || formGroup.controls['cityId'].touched)">
+                      <ion-icon name="alert-circle-outline"></ion-icon>
+                      <span *ngIf="formGroup.controls['cityId']?.errors?.required">City is required</span>
                     </div>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- Terms Section -->
-            <div class="terms-section">
+            <!-- <div class="terms-section">
               <p class="terms-text">
                 By creating an account, you agree to our
                 <a href="#" class="terms-link">Terms of Service</a> and
                 <a href="#" class="terms-link">Privacy Policy</a>
               </p>
-            </div>
+            </div> -->
           </ion-card-content>
 
           <!-- Action Buttons -->
@@ -260,9 +260,12 @@
               expand="block" 
               (click)="signup()"
               class="signup-button"
-              [disabled]="formGroup.invalid">
-              <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
-              Create Account
+              [disabled]="formGroup.invalid || loading">
+              <ion-spinner *ngIf="loading" class="button-spinner"></ion-spinner>
+              <span *ngIf="!loading">
+                <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+                Create Account
+              </span>
             </ion-button>
           </div>
 

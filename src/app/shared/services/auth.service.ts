@@ -38,6 +38,8 @@ export class AuthService {
   initUser(data = this.tokenData) {
     if (data) {
       this.currentUser.next(data);
+    } else {
+      this.currentUser.next(null);
     }
   }
 

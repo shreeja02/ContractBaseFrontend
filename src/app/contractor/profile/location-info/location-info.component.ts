@@ -152,7 +152,7 @@ export class LocationInfoComponent implements OnInit {
       ...this.form.value,
       technologies: this.selectedTechnologies.map((x: any) => x._id),
       certifications: this.selectedCertifications.map((x: any) => x._id)
-    }, this.currentUser._id)
+    }, this.currentUser.id)
       .subscribe(
         (data) => {
           this.isLoading = false;

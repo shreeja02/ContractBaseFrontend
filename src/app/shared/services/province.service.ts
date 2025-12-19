@@ -25,7 +25,14 @@ export class ProvinceService {
   }
 
   getAllActiveProvinces() {
-    return this._http.get(this.apiEndPoint + "Provinces/get/active");
+    return this._http.get(this.apiEndPoint + "Provinces/get/active")
+    .pipe(map((data: any) => {
+        if (data && data.success) {
+          this.allProvinces = data.result;
+          return this.allProvinces;
+        }
+        return null;
+      }));
   }
 
   addNewProvince(provinceForm: any) {

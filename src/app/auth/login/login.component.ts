@@ -37,8 +37,6 @@ export class LoginComponent implements OnInit {
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: (data: any) => {
-          console.log('data: ', data);
-          console.log('data.contractor: ', data.contractor);
           if(data && data.contractor){
               this.router.navigate(['/contractor'])
           }

@@ -33,7 +33,7 @@ export class ContractorService {
   }
 
   editContractor(contractorForm: any, id: any) {
-    return this._http.put(this.apiEndPoint + `Contractors/${id}`, contractorForm)
+    return this._http.post(this.apiEndPoint + `Contractors`, contractorForm)
       .pipe(map((data: any) => {
         if (data && data.success) {
           this.setContractor(contractorForm);
@@ -52,5 +52,9 @@ export class ContractorService {
 
   getContractorById(id: string) {
     return this._http.get(this.apiEndPoint + "Contractors/" + id);
+  }
+
+  getContractorByUserId(userId: string) {
+    return this._http.get(this.apiEndPoint + "Contractors/user/" + userId);
   }
 }

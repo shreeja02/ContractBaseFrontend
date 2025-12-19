@@ -119,7 +119,7 @@ export class IndustryInfoComponent implements OnInit {
     
     this.contractorService.editContractor(
       { ...this.currentUser, industries: this.selectedItems.map(x => x._id) },
-      this.currentUser._id
+      this.currentUser.id
     ).subscribe(
       (data) => {
         this.isLoading = false;

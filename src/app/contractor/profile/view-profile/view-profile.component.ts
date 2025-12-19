@@ -28,8 +28,8 @@ export class ViewProfileComponent implements OnInit {
   }
 
   getContractorDetails() {
-    if (!this.currentUser || !this.currentUser._id) return;
-    this.contractorService.getContractorById(this.currentUser._id).subscribe(
+    if (!this.currentUser || !this.currentUser.id) return;
+    this.contractorService.getContractorById(this.currentUser.id).subscribe(
       (data: any) => {
         if (data.success) {
           this.contractorDetails = data.result;

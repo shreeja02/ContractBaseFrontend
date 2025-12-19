@@ -49,7 +49,6 @@ export class BasicInfoComponent implements OnInit {
     this.authService.currentUser$.subscribe((data) => {
       if (data) {
         this.currentUser = data;
-        console.log('this.currentUser: ', this.currentUser);
         this.form = this.createFormGroup(data);
       }
     })

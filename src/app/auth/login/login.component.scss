@@ -1,12 +1,13 @@
 
 .login-btn {
     margin-top: 10px;
+    --background: #00BCD4;
+    --background-activated: #00ACC1;
+    --color: white;
 }
 .card-width {
     width: 400px;
-    height: 400px;
     max-width: 100%;
-    max-height: 100%;
     padding: 30px;
 }
 .card-div {
@@ -17,4 +18,26 @@
 }
 .header-class{
     padding:0 !important;
+}
+
+.auth-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.forgot-password-link,
+.signup-link {
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    p, h4 {
+        margin: 0;
+        font-weight: 500;
+    }
+
+    &:hover ion-text {
+        opacity: 0.8;
+    }
 }

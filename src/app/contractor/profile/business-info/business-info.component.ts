@@ -39,12 +39,23 @@ export class BusinessInfoComponent implements OnInit {
       this.authService.currentUser$.subscribe((data) => {
       if (data)
         this.currentUser = data;
-      this.form = this.createFormGroup(data);
+      this.getContractorByUserId(this.currentUser.id);
     })
   }
 
+  getContractorByUserId(contractorId:any){
+    this.contractorService.getContractorByUserId(contractorId).subscribe(
+      (data: any) => {
+        if (data && data.success) {
+          this.currentContractor = data.result;
+          this.form = this.createFormGroup(this.currentContractor || {});
+        }
+      }
+    );
+  }
+
   getAllProvinces() {
-    this.provinceService.getAllProvinces().subscribe((data: any) => {
+    this.provinceService.getAllActiveProvinces().subscribe((data: any) => {
       if (data) {
         this.allProvinces = data;
       }
@@ -129,7 +140,7 @@ export class BusinessInfoComponent implements OnInit {
     });
     await loading.present();
     
-    this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser._id)
+    this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser.id)
       .subscribe(
         (data) => {
           this.isLoading = false;

@@ -108,7 +108,7 @@ $text-dark: #212529;
 }
 
 .section-title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: $text-dark;
   margin: 0 0 1.5rem 0;
@@ -124,14 +124,43 @@ $text-dark: #212529;
 
 // Form Row Grid
 .form-row-grid {
-  padding: 0;
-  margin: 0 0 1.5rem 0;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.form-row-grid ion-row {
+  margin: 0 !important;
+}
+
+.form-row-grid ion-col {
+  padding: 0.75rem 0.5rem !important;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-col {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 // Form Field Wrapper
 .form-field-wrapper {
   margin-bottom: 1.5rem;
   position: relative;
+}
+
+.form-row .form-field-wrapper {
+  margin-bottom: 0;
 }
 
 // Form Input
@@ -309,6 +338,11 @@ $text-dark: #212529;
     margin-right: 0.5rem;
   }
 }
+
+.button-spinner {
+  margin-right: 0.5rem;
+}
+
 
 // Login Link Section
 .login-link-section {

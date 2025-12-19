@@ -92,7 +92,7 @@ export class ProfessionalInfoComponent implements OnInit {
     });
     await loading.present();
 
-    this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser._id)
+    this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser.id)
       .subscribe(
         (data) => {
           this.isLoading = false;
