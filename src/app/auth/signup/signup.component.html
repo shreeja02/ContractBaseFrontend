@@ -1,171 +1,279 @@
-<!-- <div style="overflow: auto;"> -->
-  <ion-grid>
+<div class="signup-container">
+  <ion-grid class="signup-grid">
     <ion-row>
-      <ion-col>
-        <div *ngIf="formGroup">
-          <ion-card class="signup-card" [formGroup]="formGroup">
-            <ion-card-content>
-              <div class="d-flex-center m-3">
-                <img class="img-logo" src="../../../assets/images/top3talent-logo.png">
-              </div>
-              <div class="d-flex-center">
-                <ion-input class="p-2" formControlName="firstName" label="First Name*" label-placement="floating"
-                  fill="outline" placeholder="First Name*"></ion-input>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.controls['firstName']?.invalid && (formGroup.controls['firstName']?.dirty || formGroup.controls['firstName'].touched)">
-                <div class="error-class" *ngIf="formGroup.controls['firstName']?.errors?.required">
-                  First Name is required.
-                </div>
-              </div>
-              <div class="d-flex-center">
-                <ion-input class="p-2" formControlName="lastName" label="Last Name*" label-placement="floating"
-                  fill="outline" placeholder="Last Name*"></ion-input>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.controls['lastName']?.invalid && (formGroup.controls['lastName']?.dirty || formGroup.controls['lastName'].touched)">
-                <div class="error-class" *ngIf="formGroup.controls['lastName']?.errors?.required">
-                  Last Name is required.
-                </div>
-              </div>
-              <div class="d-flex-center">
-                <ion-input class="p-2" formControlName="email" label="Email*" label-placement="floating" fill="outline"
-                  placeholder="Email*"></ion-input>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.controls['email']?.invalid && (formGroup.controls['email']?.dirty || formGroup.controls['email'].touched)">
-                <div class="error-class" *ngIf="formGroup.controls['email']?.errors?.required">
-                  Email is required.
-                </div>
-              </div>
-              <div class="d-flex-center">
-                <ion-input [type]="isPasswordHidden ? 'password' : 'text'" placeholder="********"
-                  formControlName="password" class="p-2" label="Password*" label-placement="floating" fill="outline"
-                  placeholder="Password*">
-                  <ion-button fill="clear" slot="end" aria-label="Show/hide"
-                    (click)="isPasswordHidden=!isPasswordHidden">
-                    <ion-icon slot="icon-only" *ngIf="isPasswordHidden" name="eye" aria-hidden="true"></ion-icon>
-                    <ion-icon slot="icon-only" *ngIf="!isPasswordHidden" name="eye-off-outline"
-                      aria-hidden="true"></ion-icon>
-                  </ion-button></ion-input>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.controls['password']?.invalid && (formGroup.controls['password']?.dirty || formGroup.controls['password'].touched)">
-                <div class="error-class" *ngIf="formGroup.controls['password']?.errors?.required">
-                  Password is required.
-                </div>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.controls['password']?.invalid && (formGroup.controls['password']?.dirty || formGroup.controls['password'].touched)">
-                <div class="error-class" *ngIf="formGroup.controls['password']?.errors?.pattern">
-                  Password must contain at least 8 characters, including uppercase, lowercase, number and special
-                  character.
-                </div>
-              </div>
-              <div class="d-flex-center">
-                <ion-input type="password" placeholder="********" formControlName="confirmPassword" class="p-2"
-                  label="Confirm Password*" label-placement="floating" fill="outline"
-                  placeholder="Password*"></ion-input>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.get('confirmPassword')?.touched && formGroup.get('confirmPassword')?.invalid">
-                <span class="error-class" *ngIf="formGroup.get('confirmPassword')?.errors?.['required']">Confirm
-                  password
-                  is
-                  required.</span>
-                <span class="error-class"
-                  *ngIf="!formGroup.get('confirmPassword')?.errors?.['required'] && formGroup.get('confirmPassword')?.errors?.['mismatch']">Passwords
-                  do not match.</span>
-              </div>
-              <!-- <div class="error-message"
-        *ngIf="formGroup.controls['confirmPassword']?.errors && (formGroup.get('confirmPassword')?.dirty || formGroup.get('confirmPassword')?.touched)">
-        Password and Confirm Password fields should match
-      </div> -->
-              <div class="ml-2 mt-2" *ngIf="passwordsDiffer">
-                Email is required.
-              </div>
-              <div class="d-flex-center">
-                <ion-input class="p-2" formControlName="phone" label="Phone Number*" label-placement="floating"
-                  fill="outline" placeholder="Phone Number*"></ion-input>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.controls['phone']?.invalid && (formGroup.controls['phone']?.dirty || formGroup.controls['phone'].touched)">
-                <div class="error-class" *ngIf="formGroup.controls['phone']?.errors?.required">
-                  Phone Number is required.
-                </div>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.controls['phoneNumber']?.invalid && (formGroup.controls['phoneNumber']?.dirty || formGroup.controls['phoneNumber'].touched)">
-                <div class="error-class"
-                  *ngIf="formGroup.controls['phoneNumber']?.errors?.minlength || formGroup.controls['phoneNumber']?.errors?.maxlength">
-                  Phone Number must be 10 digits long.
-                </div>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.controls['phoneNumber']?.invalid && (formGroup.controls['phoneNumber']?.dirty || formGroup.controls['phoneNumber'].touched)">
-                <div class="error-class" *ngIf="formGroup.controls['phoneNumber']?.errors?.pattern">
-                  Phone Number is in wrong format.
-                </div>
-              </div>
-              <div class="d-flex-center">
-                <ion-input class="p-2" formControlName="linkedInUrl" label="LinkedIn/Portfolio*"
-                  label-placement="floating" fill="outline" placeholder="LinkedIn/Portfolio*"></ion-input>
-              </div>
-              <div class="ml-2 mt-2"
-                *ngIf="formGroup.controls['linkedInUrl']?.invalid && (formGroup.controls['linkedInUrl']?.dirty || formGroup.controls['linkedInUrl'].touched)">
-                <div class="error-class" *ngIf="formGroup.controls['linkedInUrl']?.errors?.required">
-                  LinkedIn/Portfolio URL is required.
-                </div>
-              </div>
-              <div class="d-flex-center">
-                <ion-list>
-                  <ion-item>
-                    <ion-select formControlName="provinceId" (ionChange)="handleChangeForProvince($event)"
-                      aria-label="Fruit" interface="popover" placeholder="Select Province*">
-                      <ion-select-option *ngFor="let item of allProvinces"
-                        [value]="item._id">{{item.provinceName}}</ion-select-option>
-                    </ion-select>
-                  </ion-item>
-                </ion-list>
-
-                <div class="ml-2 mt-2"
-                  *ngIf="formGroup.controls['provinceId']?.invalid && (formGroup.controls['provinceId']?.dirty || formGroup.controls['provinceId'].touched)">
-                  <div class="error-class" *ngIf="formGroup.controls['provinceId']?.errors?.required">
-                    Province is required.
-                  </div>
-                </div>
-
-                <ion-list>
-                  <ion-item>
-                    <ion-select formControlName="cityId" aria-label="Fruit" interface="popover"
-                      placeholder="Select City*">
-                      <ion-select-option *ngFor="let item of allCities"
-                        [value]="item._id">{{item.cityName}}</ion-select-option>
-                    </ion-select>
-                  </ion-item>
-                </ion-list>
-
-                <div class="ml-2 mt-2"
-                  *ngIf="formGroup.controls['cityId']?.invalid && (formGroup.controls['cityId']?.dirty || formGroup.controls['cityId'].touched)">
-                  <div class="error-class" *ngIf="formGroup.controls['cityId']?.errors?.required">
-                    City is required.
-                  </div>
-                </div>
-              </div>
-            </ion-card-content>
-            <div class="text-center">
-              <ion-button (click)="signup()">Create Account</ion-button>
+      <ion-col sizeLg="6" sizeMd="8" sizeSm="12" class="signup-col-wrapper">
+        <ion-card class="signup-card" *ngIf="formGroup" [formGroup]="formGroup">
+          <!-- Header Section -->
+          <div class="signup-header">
+            <div class="logo-container">
+              <img class="signup-logo" src="../../../assets/images/top3talent-logo.png" alt="Logo">
             </div>
-            <div class="text-center m-3">
-              <a [routerLink]="['/auth/login']">Already registered? Login here
-              </a>
+            <h1 class="signup-title">Create Your Account</h1>
+            <p class="signup-subtitle">Join our professional community and start your journey</p>
+          </div>
+
+          <ion-card-content class="signup-form-content">
+
+            <!-- Personal Information Section -->
+            <div class="form-section">
+              <h2 class="section-title">
+                <ion-icon name="person-circle-outline"></ion-icon>
+                Personal Information
+              </h2>
+              
+              <ion-grid class="form-row-grid">
+                <ion-row>
+                  <ion-col sizeSm="12" sizeMd="6">
+                    <div class="form-field-wrapper">
+                      <ion-input 
+                        formControlName="firstName" 
+                        label="First Name" 
+                        label-placement="floating"
+                        fill="outline" 
+                        placeholder="John"
+                        class="form-input"
+                        [class.input-error]="formGroup.controls['firstName']?.invalid && (formGroup.controls['firstName']?.dirty || formGroup.controls['firstName'].touched)">
+                      </ion-input>
+                      <div class="error-message" 
+                        *ngIf="formGroup.controls['firstName']?.invalid && (formGroup.controls['firstName']?.dirty || formGroup.controls['firstName'].touched)">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span *ngIf="formGroup.controls['firstName']?.errors?.required">First Name is required</span>
+                      </div>
+                    </div>
+                  </ion-col>
+                  <ion-col sizeSm="12" sizeMd="6">
+                    <div class="form-field-wrapper">
+                      <ion-input 
+                        formControlName="lastName" 
+                        label="Last Name" 
+                        label-placement="floating"
+                        fill="outline" 
+                        placeholder="Doe"
+                        class="form-input"
+                        [class.input-error]="formGroup.controls['lastName']?.invalid && (formGroup.controls['lastName']?.dirty || formGroup.controls['lastName'].touched)">
+                      </ion-input>
+                      <div class="error-message"
+                        *ngIf="formGroup.controls['lastName']?.invalid && (formGroup.controls['lastName']?.dirty || formGroup.controls['lastName'].touched)">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span *ngIf="formGroup.controls['lastName']?.errors?.required">Last Name is required</span>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+              <div class="form-field-wrapper">
+                <ion-input 
+                  formControlName="email" 
+                  label="Email Address" 
+                  label-placement="floating" 
+                  fill="outline"
+                  type="email"
+                  placeholder="john.doe@example.com"
+                  class="form-input"
+                  [class.input-error]="formGroup.controls['email']?.invalid && (formGroup.controls['email']?.dirty || formGroup.controls['email'].touched)">
+                </ion-input>
+                <div class="error-message"
+                  *ngIf="formGroup.controls['email']?.invalid && (formGroup.controls['email']?.dirty || formGroup.controls['email'].touched)">
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  <span *ngIf="formGroup.controls['email']?.errors?.required">Email is required</span>
+                </div>
+              </div>
+
+              <div class="form-field-wrapper">
+                <ion-input 
+                  formControlName="phone" 
+                  label="Phone Number" 
+                  label-placement="floating"
+                  fill="outline" 
+                  placeholder="+1 (555) 000-0000"
+                  class="form-input"
+                  [class.input-error]="formGroup.controls['phone']?.invalid && (formGroup.controls['phone']?.dirty || formGroup.controls['phone'].touched)">
+                </ion-input>
+                <div class="error-message"
+                  *ngIf="formGroup.controls['phone']?.invalid && (formGroup.controls['phone']?.dirty || formGroup.controls['phone'].touched)">
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  <span *ngIf="formGroup.controls['phone']?.errors?.required">Phone Number is required</span>
+                </div>
+              </div>
             </div>
-          </ion-card>
-          <!-- </ion-col>
-    </ion-row>
-  </ion-grid> -->
-        </div>
+
+            <!-- Security Section -->
+            <div class="form-section">
+              <h2 class="section-title">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+                Security
+              </h2>
+
+              <div class="form-field-wrapper">
+                <ion-input 
+                  [type]="isPasswordHidden ? 'password' : 'text'" 
+                  formControlName="password" 
+                  label="Password" 
+                  label-placement="floating" 
+                  fill="outline"
+                  placeholder="••••••••••••"
+                  class="form-input"
+                  [class.input-error]="formGroup.controls['password']?.invalid && (formGroup.controls['password']?.dirty || formGroup.controls['password'].touched)">
+                  <ion-button 
+                    fill="clear" 
+                    slot="end" 
+                    (click)="isPasswordHidden=!isPasswordHidden"
+                    class="password-toggle">
+                    <ion-icon 
+                      slot="icon-only" 
+                      [name]="isPasswordHidden ? 'eye-outline' : 'eye-off-outline'">
+                    </ion-icon>
+                  </ion-button>
+                </ion-input>
+                <div class="password-hint">
+                  <p><strong>Password Requirements:</strong></p>
+                  <ul>
+                    <li>At least 8 characters</li>
+                    <li>One uppercase letter (A-Z)</li>
+                    <li>One lowercase letter (a-z)</li>
+                    <li>One number (0-9)</li>
+                    <li>One special character </li>
+                  </ul>
+                </div>
+                <div class="error-message"
+                  *ngIf="formGroup.controls['password']?.invalid && (formGroup.controls['password']?.dirty || formGroup.controls['password'].touched)">
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  <span *ngIf="formGroup.controls['password']?.errors?.required">Password is required</span>
+                  <span *ngIf="formGroup.controls['password']?.errors?.pattern">Password does not meet requirements</span>
+                </div>
+              </div>
+
+              <div class="form-field-wrapper">
+                <ion-input 
+                  type="password" 
+                  formControlName="confirmPassword" 
+                  label="Confirm Password" 
+                  label-placement="floating" 
+                  fill="outline"
+                  placeholder="••••••••••••"
+                  class="form-input"
+                  [class.input-error]="formGroup.get('confirmPassword')?.touched && formGroup.get('confirmPassword')?.invalid">
+                </ion-input>
+                <div class="error-message"
+                  *ngIf="formGroup.get('confirmPassword')?.touched && formGroup.get('confirmPassword')?.invalid">
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  <span *ngIf="formGroup.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
+                  <span *ngIf="!formGroup.get('confirmPassword')?.errors?.['required'] && formGroup.get('confirmPassword')?.errors?.['mismatch']">Passwords do not match</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Professional Information Section -->
+            <div class="form-section">
+              <h2 class="section-title">
+                <ion-icon name="briefcase-outline"></ion-icon>
+                Professional Information
+              </h2>
+
+              <div class="form-field-wrapper">
+                <ion-input 
+                  formControlName="linkedInUrl" 
+                  label="LinkedIn/Portfolio URL" 
+                  label-placement="floating" 
+                  fill="outline" 
+                  type="url"
+                  placeholder="https://linkedin.com/in/johndoe"
+                  class="form-input"
+                  [class.input-error]="formGroup.controls['linkedInUrl']?.invalid && (formGroup.controls['linkedInUrl']?.dirty || formGroup.controls['linkedInUrl'].touched)">
+                </ion-input>
+                <div class="error-message"
+                  *ngIf="formGroup.controls['linkedInUrl']?.invalid && (formGroup.controls['linkedInUrl']?.dirty || formGroup.controls['linkedInUrl'].touched)">
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  <span *ngIf="formGroup.controls['linkedInUrl']?.errors?.required">LinkedIn/Portfolio URL is required</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Location Section -->
+            <div class="form-section">
+              <h2 class="section-title">
+                <ion-icon name="location-outline"></ion-icon>
+                Location
+              </h2>
+
+              <ion-grid class="form-row-grid">
+                <ion-row>
+                  <ion-col sizeSm="12" sizeMd="6">
+                    <div class="form-field-wrapper">
+                      <ion-label class="select-label">Province *</ion-label>
+                      <ion-select 
+                        formControlName="provinceId" 
+                        (ionChange)="handleChangeForProvince($event)"
+                        interface="popover" 
+                        placeholder="Select Province"
+                        class="form-select"
+                        [class.select-error]="formGroup.controls['provinceId']?.invalid && (formGroup.controls['provinceId']?.dirty || formGroup.controls['provinceId'].touched)">
+                        <ion-select-option *ngFor="let item of allProvinces" [value]="item._id">
+                          {{item.provinceName}}
+                        </ion-select-option>
+                      </ion-select>
+                      <div class="error-message"
+                        *ngIf="formGroup.controls['provinceId']?.invalid && (formGroup.controls['provinceId']?.dirty || formGroup.controls['provinceId'].touched)">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span *ngIf="formGroup.controls['provinceId']?.errors?.required">Province is required</span>
+                      </div>
+                    </div>
+                  </ion-col>
+                  <ion-col sizeSm="12" sizeMd="6">
+                    <div class="form-field-wrapper">
+                      <ion-label class="select-label">City *</ion-label>
+                      <ion-select 
+                        formControlName="cityId" 
+                        interface="popover"
+                        placeholder="Select City"
+                        class="form-select"
+                        [class.select-error]="formGroup.controls['cityId']?.invalid && (formGroup.controls['cityId']?.dirty || formGroup.controls['cityId'].touched)">
+                        <ion-select-option *ngFor="let item of allCities" [value]="item._id">
+                          {{item.cityName}}
+                        </ion-select-option>
+                      </ion-select>
+                      <div class="error-message"
+                        *ngIf="formGroup.controls['cityId']?.invalid && (formGroup.controls['cityId']?.dirty || formGroup.controls['cityId'].touched)">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span *ngIf="formGroup.controls['cityId']?.errors?.required">City is required</span>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+
+            <!-- Terms Section -->
+            <div class="terms-section">
+              <p class="terms-text">
+                By creating an account, you agree to our
+                <a href="#" class="terms-link">Terms of Service</a> and
+                <a href="#" class="terms-link">Privacy Policy</a>
+              </p>
+            </div>
+          </ion-card-content>
+
+          <!-- Action Buttons -->
+          <div class="signup-actions">
+            <ion-button 
+              expand="block" 
+              (click)="signup()"
+              class="signup-button"
+              [disabled]="formGroup.invalid">
+              <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+              Create Account
+            </ion-button>
+          </div>
+
+          <!-- Login Link -->
+          <div class="login-link-section">
+            <p>Already have an account? 
+              <a [routerLink]="['/auth/login']" class="login-link">Sign in here</a>
+            </p>
+          </div>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
-<!-- </div> -->
+</div>

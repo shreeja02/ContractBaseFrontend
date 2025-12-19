@@ -1,6 +1,396 @@
+// Color Variables
+$primary-color: #00BCD4;
+$primary-dark: #00ACC1;
+$secondary-color: #6c757d;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$light-color: #f8f9fa;
+$border-color: #dee2e6;
+$text-muted: #6c757d;
+$text-dark: #212529;
+
+// Signup Container
+.signup-container {
+    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+::ng-deep{
+    .ion-page {
+        overflow: hidden !important;
+    }
+}
+
+.signup-grid ion-row {
+  justify-content: center;
+}
+
+.card-div {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-grid {
+  width: 100%;
+  padding: 0;
+}
+
+.signup-col-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Signup Card
 .signup-card {
-    margin-top: 2rem;
-    width: 600px;
-    max-width: 100%;
-    overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: none;
+  overflow: visible;
+  margin: 0 auto;
+  background: white;
+  width: 100%;
+  max-width: 600px;
+}
+
+// Header Section
+.signup-header {
+  background: linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%);
+  color: white;
+  padding: 1.5rem 2rem 1rem;
+  text-align: center;
+}
+
+.logo-container {
+  margin-bottom: 1rem;
+}
+
+.signup-logo {
+  max-width: 70px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+.signup-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem 0;
+  color: white;
+}
+
+.signup-subtitle {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-weight: 300;
+}
+
+// Form Content
+.signup-form-content {
+  padding: 2.5rem 2rem;
+  max-height: calc(100vh - 400px);
+  overflow-y: auto;
+}
+
+// Form Sections
+.form-section {
+  margin-bottom: 2.5rem;
+
+  &:last-child {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: $text-dark;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  ion-icon {
+    color: $primary-color;
+    font-size: 1.3rem;
+  }
+}
+
+// Form Row Grid
+.form-row-grid {
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+// Form Field Wrapper
+.form-field-wrapper {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+// Form Input
+.form-input {
+  --border-color: $border-color;
+  --padding-top: 1rem;
+  --padding-bottom: 1rem;
+  font-size: 1rem;
+
+  &.input-error {
+    --border-color: $danger-color;
+  }
+}
+
+// Form Select
+.select-label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: $text-dark;
+  margin-bottom: 0.5rem;
+}
+
+.form-select {
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+  --padding-top: 0.75rem;
+  --padding-bottom: 0.75rem;
+
+  &.select-error {
+    --border-color: $danger-color;
+  }
+}
+
+// Error Message Styling
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $danger-color;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(220, 53, 69, 0.05);
+  border-radius: 6px;
+  animation: slideInError 0.3s ease-in-out;
+
+  ion-icon {
+    flex-shrink: 0;
+    font-size: 1rem;
+  }
+
+  span {
+    line-height: 1.4;
+  }
+}
+
+@keyframes slideInError {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Password Hint
+.password-hint {
+  background-color: #e7f3ff;
+  border-left: 4px solid $primary-color;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: $text-dark;
+
+  p {
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    list-style: none;
+
+    li {
+      position: relative;
+      margin-bottom: 0.25rem;
+      padding-left: 1rem;
+
+      &:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: $success-color;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+// Password Toggle Button
+.password-toggle {
+  --color: $primary-color;
+  --padding-end: 0.5rem;
+
+  &:hover {
+    --color: $primary-dark;
+  }
+}
+
+// Terms Section
+.terms-section {
+  background-color: $light-color;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border: 1px solid $border-color;
+}
+
+.terms-text {
+  font-size: 0.875rem;
+  color: $text-muted;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.terms-link {
+  color: $primary-color;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $primary-dark;
+    text-decoration: underline;
+  }
+}
+
+// Signup Actions
+.signup-actions {
+  padding: 2rem 2rem 0 2rem;
+  background: white;
+}
+
+.signup-button {
+  --background: #00BCD4;
+  --background-activated: #00ACC1;
+  --background-hover: #00ACC1;
+  --color: white;
+  --color-hover: white;
+  height: 3rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+  }
+
+  ion-icon {
+    margin-right: 0.5rem;
+  }
+}
+
+// Login Link Section
+.login-link-section {
+  text-align: center;
+  padding: 0 2rem 2rem 2rem;
+
+  p {
+    color: $text-muted;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+}
+
+.login-link {
+  color: $primary-color;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $primary-dark;
+    text-decoration: underline;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .signup-header {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+
+  .signup-title {
+    font-size: 1.5rem;
+  }
+
+  .signup-form-content {
+    padding: 1.5rem;
+  }
+
+  .signup-actions,
+  .login-link-section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .form-section {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-container {
+    padding: 1rem;
+  }
+
+  .signup-header {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .signup-title {
+    font-size: 1.25rem;
+  }
+
+  .signup-form-content {
+    padding: 1rem;
+    max-height: none;
+  }
+
+  .signup-actions,
+  .login-link-section {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .logo-container {
+    margin-bottom: 1rem;
+  }
+
+  .signup-logo {
+    max-width: 80px;
+  }
 }
