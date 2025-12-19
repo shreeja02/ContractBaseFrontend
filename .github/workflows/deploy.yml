@@ -32,7 +32,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "dist/contractbase-ionic/"
-          target: "/var/www/ContractBaseFrontend"
+          target: "/var/www/ContractBaseFrontend/www"
           strip_components: 1
 
       - name: Restart nginx on VPS
