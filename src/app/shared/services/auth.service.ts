@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import {jwtDecode} from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +28,9 @@ export class AuthService {
   public get tokenData() {
     var token = localStorage.getItem('authToken');
     if (!token) return null;
-    var decodedString = atob(token.split('.')[1])
+    var decodedString =  jwtDecode(token);
     if (decodedString) {
-      return JSON.parse(decodedString)?.res;
+      return decodedString;
     }
     return null;
   }
