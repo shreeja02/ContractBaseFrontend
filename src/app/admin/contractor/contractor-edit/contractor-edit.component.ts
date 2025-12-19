@@ -172,6 +172,7 @@ export class ContractorEditComponent implements OnInit {
     this.contractorForm.get('cityName')?.markAsUntouched();
     this.contractorForm.get('cityName')?.clearValidators();
     this.contractorForm.get('cityName')?.updateValueAndValidity();
+    this.router.navigate(['/admin/contractor']);
   }
 
   createForm(formValues?: any) {

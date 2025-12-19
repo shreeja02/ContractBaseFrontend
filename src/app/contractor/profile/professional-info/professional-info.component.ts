@@ -84,7 +84,7 @@ export class ProfessionalInfoComponent implements OnInit {
     this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser._id)
       .subscribe((data) => {
         if (data && data.success) {
-          this.router.navigateByUrl('contractor/profile/professional');
+          this.router.navigateByUrl('contractor/profile/basic');
         }
       });
   }

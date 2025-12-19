@@ -26,6 +26,6 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.popover.dismiss();
     this.authService.logout();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/auth/login');
   }
 }
