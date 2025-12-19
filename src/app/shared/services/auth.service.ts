@@ -57,8 +57,8 @@ export class AuthService {
   private extractUserData(token: string) {
     if (!token) return null;
     try {
-      const decodedString = atob(token.split('.')[1]);
-      return JSON.parse(decodedString);
+      var decodedString =  jwtDecode(token);
+      return decodedString;
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;
