@@ -4,6 +4,7 @@ import { IndustryInfoComponent } from '../industry-info/industry-info.component'
 import { Router } from '@angular/router';
 import { ContractorService } from 'src/app/shared/services/contractor.service';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-professional-info',
@@ -23,29 +24,31 @@ export class ProfessionalInfoComponent implements OnInit {
   todayDate = new Date();
   form = this.createFormGroup();
   isHybridSelected: boolean = false;
-  currentContractor: any;
+  currentUser: any;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private contractorService: ContractorService
+    private contractorService: ContractorService,
+    private authService:AuthService
   ) { }
 
   ngOnInit() {
-    this.contractorService.currentContractor$.subscribe((contractor: any) => {
-      console.log('contractor: ', contractor);
-      if (contractor) {
-        this.currentContractor = contractor;
-        this.form = this.createFormGroup(contractor);
-      }
+       this.authService.currentUser$.subscribe((data) => {
+      if (data)
+        this.currentUser = data;
+             this.form = this.createFormGroup(this.currentUser);
+                this.form = this.createFormGroup(this.currentUser
+                );
+
     })
   }
 
   createFormGroup(dataItem: any = {}) {
     return this.fb.group({
       location: [dataItem?.location || [], Validators.required],
-      yearsOfExperience: [dataItem?.yearsOfExperience || 0, Validators.required],
-      hourlyRate: [dataItem?.hourlyRate || 0, Validators.required],
+      yearsOfExperience: [dataItem?.yearsOfExperience || 0, [Validators.required, Validators.min(1)]],
+      hourlyRate: [dataItem?.hourlyRate || 0, [Validators.required, Validators.min(1)]],
       projectBudget: [dataItem?.projectBudget || [], Validators.required],
       teamSize: [dataItem?.teamSize || [], Validators.required],
       contractLength: [dataItem?.contractLength || [], Validators.required],
@@ -76,8 +79,9 @@ export class ProfessionalInfoComponent implements OnInit {
   }
 
   save() {
+    this.form.markAllAsTouched();
     if (!this.form.valid) return;
-    this.contractorService.editContractor({ ...this.currentContractor, ...this.form.value }, this.currentContractor._id)
+    this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser._id)
       .subscribe((data) => {
         if (data && data.success) {
           this.router.navigateByUrl('contractor/profile/professional');

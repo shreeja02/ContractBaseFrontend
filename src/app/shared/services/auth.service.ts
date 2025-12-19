@@ -15,10 +15,9 @@ export class AuthService {
     private http: HttpClient,
     private router: Router
   ) {
-    // This will be initialized during the first injection of this service (app.component).
-    // Purpose behind this call - If the user is logged in and page gets refreshed,
-    // it should initiate the user value from the token and the session should be considered as logged in session.
-    this.initUser();
+
+    const userData = this.extractUserData(localStorage.getItem('authToken') || '');
+    this.initUser(userData);
   }
 
   public get currentUser$() {
@@ -46,10 +45,23 @@ export class AuthService {
       .pipe(map((data: any) => {
         if (data && data.success) {
           localStorage.setItem('authToken', data.result);
-          this.initUser();
+          const userData = this.extractUserData(data.result);
+          this.currentUser.next(userData);
+          return userData;
         }
-        return this.tokenData;
+        return null;
       }));
+  }
+
+  private extractUserData(token: string) {
+    if (!token) return null;
+    try {
+      const decodedString = atob(token.split('.')[1]);
+      return JSON.parse(decodedString);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
   }
 
   signup(data: any) {

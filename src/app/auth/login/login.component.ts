@@ -37,10 +37,14 @@ export class LoginComponent implements OnInit {
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: (data: any) => {
-          if (data) {
-
+          console.log('data: ', data);
+          console.log('data.contractor: ', data.contractor);
+          if(data && data.contractor){
+              this.router.navigate(['/contractor'])
+          }
+          else if(data && data.role){
             this.errorMessage = "";
-            if ((data.role.roleName + "").toLowerCase() == 'admin') {
+            if ((data?.role?.roleName + "").toLowerCase() == 'admin') {
               this.router.navigate(['/admin/contractor']);
             }
             else {

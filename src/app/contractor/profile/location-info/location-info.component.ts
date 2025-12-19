@@ -5,8 +5,9 @@ import { Router } from '@angular/router';
 import { PositionService } from 'src/app/shared/services/position.service';
 import { TechnologyService } from 'src/app/shared/services/technology.service';
 import { CertificationService } from 'src/app/shared/services/certification.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContractorService } from 'src/app/shared/services/contractor.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-location-info',
@@ -23,33 +24,35 @@ export class LocationInfoComponent implements OnInit {
   isTechnologyAvailable: boolean = false;
   filteredTechnologies: any[] = [];
   selectedTechnologies: any[] = [];
+  isCertificationAvailable: boolean = false;
+  filteredCertifications: any[] = [];
+  selectedCertifications: any[] = [];
   certificationSelectionErrorMessage: string = "";
-  currentContractor: any;
+  currentUser: any;
 
   constructor(
     private router: Router,
     private contractorService: ContractorService,
     private positionService: PositionService,
     private technologyService: TechnologyService,
-    private certificationService: CertificationService
+    private certificationService: CertificationService,
+    private authService: AuthService  
   ) { }
 
   ngOnInit() {
     this.getPositions();
-    this.contractorService.currentContractor$.subscribe((contractor: any) => {
-      console.log('contractor: ', contractor);
-      if (contractor) {
-        this.currentContractor = contractor;
-        this.form = this.createFormGroup(contractor);
+      this.authService.currentUser$.subscribe((data) => {
+      if (data)
+        this.currentUser = data;
+             this.form = this.createFormGroup(this.currentUser);
         this.changeTechnology();
-      }
     })
   }
 
   createFormGroup(dataItem: any = {}) {
     dataItem = dataItem ? dataItem : {};
     let form = new FormGroup({
-      position: new FormControl(dataItem.position),
+      position: new FormControl(dataItem.position, Validators.required),
       technologies: new FormControl(dataItem.technologies),
       certifications: new FormControl(dataItem.certifications)
     });
@@ -77,6 +80,7 @@ export class LocationInfoComponent implements OnInit {
   }
 
   getTechnologiesByPosition(id: any) {
+    this.selectedTechnologies = [];
     this.technologyService.getTechnologiesByPositionId(id).subscribe(
       (res: any) => {
         if (res.result.length) {
@@ -95,10 +99,19 @@ export class LocationInfoComponent implements OnInit {
   }
 
   getCertificationByPosition(id: any) {
+    this.selectedCertifications = [];
     this.certificationService.getCertificationByPosition(id).subscribe(
       (res: any) => {
         if (res.result.length) {
           this.allCerifications = res.result;
+          if (this.form.value.certifications) {
+            this.allCerifications.forEach(element => {
+              let find = this.form.value.certifications.find((x: any) => x == element._id);
+              if (find) {
+                this.selectedCertifications.push(element);
+              }
+            });
+          }
         }
       }
     );
@@ -110,12 +123,25 @@ export class LocationInfoComponent implements OnInit {
   }
 
   next() {
-    if (!this.form.valid) return;
+    this.form.markAllAsTouched();
+    // Validate position is selected
+    if (!this.form.valid) {
+      return;
+    }
+    // Validate exactly 3 technologies are selected
+    if (this.selectedTechnologies.length !== 3) {
+      return;
+    }
+    // Validate exactly 3 certifications are selected
+    if (this.selectedCertifications.length !== 3) {
+      return;
+    }
     this.contractorService.editContractor({
-      ...this.currentContractor,
+      ...this.currentUser,
       ...this.form.value,
-      technologies: this.selectedTechnologies.map((x: any) => x._id)
-    }, this.currentContractor._id)
+      technologies: this.selectedTechnologies.map((x: any) => x._id),
+      certifications: this.selectedCertifications.map((x: any) => x._id)
+    }, this.currentUser._id)
       .subscribe((data) => {
         if (data && data.success) {
           this.router.navigateByUrl('contractor/profile/professional');
@@ -151,13 +177,38 @@ export class LocationInfoComponent implements OnInit {
     this.selectedTechnologies.splice(this.selectedTechnologies.indexOf(item), 1);
   }
 
-  handleChangeForCertifications(event: any) {
-    let selectedCertifications = event.target.value;
-    if (selectedCertifications.length > 3) {
-      this.certificationSelectionErrorMessage = 'Please select maximum 3 certifications.';
+  getCertifications(ev: any) {
+    const val = ev.target.value;
+    if (val && val.trim() !== '') {
+      this.isCertificationAvailable = true;
+      this.filteredCertifications = this.allCerifications.filter((item: any) => {
+        return ((item?.certificationName).toLowerCase().indexOf(val.toLowerCase()) > -1) &&
+               !this.selectedCertifications.find((x: any) => x._id === item._id);
+      })
+    } else {
+      this.isCertificationAvailable = false;
+      this.filteredCertifications = [];
     }
-    else {
+  }
+
+  onCertificationSelected(item: any) {
+    if (this.selectedCertifications.length >= 3) {
+      this.certificationSelectionErrorMessage = 'Please select maximum 3 certifications.';
+      return;
+    }
+    if (!this.selectedCertifications.find((val: any) => val._id === item._id)) {
+      this.selectedCertifications.push(item);
+      this.form.get('certifications')?.setValue('');
+      this.isCertificationAvailable = false;
+      this.filteredCertifications = [];
       this.certificationSelectionErrorMessage = '';
+    }
+  }
+
+  onCertificationSelectedRemoved(item: any) {
+    const index = this.selectedCertifications.findIndex((x: any) => x._id === item._id);
+    if (index > -1) {
+      this.selectedCertifications.splice(index, 1);
     }
   }
 

@@ -1,44 +1,71 @@
 <ion-grid>
   <ion-row>
     <ion-col class="sm-hidden" [size]="3">
-      <ion-card>
-        <ion-card-header style="background-color: lightgray;">
-          <p></p>
-        </ion-card-header>
+      <ion-card class="profile-card">
+        <div class="profile-header"></div>
         <ion-card-content>
-          <div style="margin-top: -3rem;">
+          <div class="avatar-container">
             <ion-icon class="avatar" name="person-circle"></ion-icon>
-            <h1>{{user?.firstName}} {{user?.lastName}}</h1>
           </div>
-          <hr />
-          <div class="info">
-            <ion-icon name="mail"></ion-icon>
-            <span>{{user?.email}}</span>
+          <div class="user-info-section">
+            <h2 class="user-name">{{user?.firstName}} {{user?.lastName}}</h2>
+            <p class="user-role">Contractor</p>
           </div>
-          <div class="info">
-            <ion-icon name="call"></ion-icon>
-            <span>{{user?.phone}}</span>
+          <div class="divider"></div>
+          <div class="info-section">
+            <div class="info-item">
+              <ion-icon name="mail-outline"></ion-icon>
+              <div class="info-text">
+                <p class="info-label">Email</p>
+                <p class="info-value">{{user?.email}}</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <ion-icon name="call-outline"></ion-icon>
+              <div class="info-text">
+                <p class="info-label">Phone</p>
+                <p class="info-value">{{user?.phone}}</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <ion-icon name="location-outline"></ion-icon>
+              <div class="info-text">
+                <p class="info-label">Location</p>
+                <p class="info-value">{{user?.city?.cityName}}, {{user?.province?.provinceName}}</p>
+              </div>
+            </div>
           </div>
-          <div class="info">
-            <ion-icon name="location"></ion-icon>
-            <span>{{user?.city?.cityName}}, {{user?.province?.provinceName}}</span>
-          </div>
-          <hr>
+          <div class="divider"></div>
+          <ion-button expand="block" color="danger" fill="outline" (click)="logout()">
+            <ion-icon slot="start" name="log-out-outline"></ion-icon>
+            Logout
+          </ion-button>
         </ion-card-content>
       </ion-card>
     </ion-col>
     <ion-col>
       <div class="form-container">
-        <div style="padding: 1rem">
-          <ion-progress-bar [value]="(((currentIndex) * 100) / (pages.length - 1)) / 100"></ion-progress-bar>
+        <div class="progress-section">
+          <div class="progress-header">
+            <h2>Complete Your Profile</h2>
+            <p class="progress-text">Step {{currentIndex + 1}} of {{pages.length}}</p>
+          </div>
         </div>
-        <div class="space-between chip-container">
-          <ion-chip [class.current]="i == currentIndex" [ngClass]="i <= currentIndex ? 'selected' : 'default'"
-            *ngFor="let page of pages; let i = index;" [outline]="false">
-            {{i + 1}}
-          </ion-chip>
+        <div class="steps-wrapper">
+          <ion-progress-bar [value]="(((currentIndex) * 100) / (pages.length - 1)) / 100" color="primary" class="progress-bar-custom"></ion-progress-bar>
+          <div class="steps-container">
+            <div class="step" *ngFor="let page of pages; let i = index;">
+              <div class="step-circle" [ngClass]="i <= currentIndex ? 'active' : 'inactive'" [class.current]="i == currentIndex">
+                <span *ngIf="i < currentIndex">✓</span>
+                <span *ngIf="i >= currentIndex">{{i + 1}}</span>
+              </div>
+              <!-- <p class="step-label">{{page.name | titlecase}}</p> -->
+            </div>
+          </div>
         </div>
-        <router-outlet></router-outlet>
+        <div class="form-content">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </ion-col>
   </ion-row>

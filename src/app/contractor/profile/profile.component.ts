@@ -57,8 +57,9 @@ export class ProfileComponent implements OnInit {
     this.pages[this.currentIndex].selected = true;
   }
 
-  next() {
-    this.router.navigateByUrl('contractor/profile/business')
+  logout() {
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
   }
 
 }

@@ -1,6 +1,108 @@
+.form-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    padding: 2rem;
+    background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%);
+    color: white;
+    margin: 0;
+
+    h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: white;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.95rem;
+        opacity: 0.9;
+    }
+}
+
+.form-section {
+    padding: 2rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #424242;
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+}
+
+.error-message {
+    color: #eb445c;
+    font-size: 12px;
+    margin-top: 6px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mat-form-field-full {
+    width: 100%;
+}
+
+ion-input.ng-invalid.ng-touched,
+ion-select.ng-invalid.ng-touched,
+mat-form-field.ng-invalid.ng-touched {
+    --highlight-color-invalid: #eb445c;
+}
+
+.button-section {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background-color: #f9f9f9;
+    border-top: 1px solid #e0e0e0;
+
+    ion-button {
+        min-width: 140px;
+    }
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.ml-2 {
+    margin-left: 0.5rem;
+}
+
 .font-13 {
     font-size: 13px;
 }
+
 ::ng-deep {
     .mdc-text-field--filled:not(.mdc-text-field--disabled) {
         background: none !important;

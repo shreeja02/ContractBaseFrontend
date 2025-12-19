@@ -1,47 +1,76 @@
-<ion-card>
-  <ion-card-content [formGroup]="form">
+<ion-card class="form-card">
+  <ion-card-header class="card-header">
+    <h2>Basic Information</h2>
+    <p>Let's start with your personal details</p>
+  </ion-card-header>
+  <ion-card-content [formGroup]="form" class="form-section">
     <ion-grid>
       <ion-row>
         <ion-col size="6">
           <ion-input class="p-2" label="First Name*" formControlName="firstName" label-placement="floating"
             fill="outline" placeholder="First Name*"></ion-input>
+          <div class="error-message" *ngIf="firstName?.touched && firstName?.hasError('required')">
+            First Name is required
+          </div>
         </ion-col>
         <ion-col size="6">
           <ion-input class="p-2" label="Last Name*" formControlName="lastName" label-placement="floating" fill="outline"
             placeholder="Last Name*"></ion-input>
+          <div class="error-message" *ngIf="lastName?.touched && lastName?.hasError('required')">
+            Last Name is required
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="6">
           <ion-input class="p-2" label="Email*" formControlName="email" label-placement="floating" fill="outline"
             placeholder="Email*"></ion-input>
+          <div class="error-message" *ngIf="email?.touched && email?.hasError('required')">
+            Email is required
+          </div>
+          <div class="error-message" *ngIf="email?.touched && email?.hasError('email')">
+            Please enter a valid email address
+          </div>
         </ion-col>
         <ion-col size="6">
           <ion-input class="p-2" label="Phone Number*" formControlName="phone" label-placement="floating" fill="outline"
             placeholder="Phone Number*"></ion-input>
+          <div class="error-message" *ngIf="phone?.touched && phone?.hasError('required')">
+            Phone Number is required
+          </div>
+          <div class="error-message" *ngIf="phone?.touched && phone?.hasError('pattern')">
+            Phone Number must be 10 digits
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="6" class="dropdown-container">
-          <ion-select [fill]="'outline'" aria-label="Fruit" formControlName="provinceId" interface="popover"
+          <ion-select [fill]="'outline'" aria-label="Province" formControlName="provinceId" interface="popover"
             placeholder="Select Province">
             <ion-select-option *ngFor="let item of allProvinces"
               [value]="item._id">{{item.provinceName}}</ion-select-option>
           </ion-select>
+          <div class="error-message" *ngIf="provinceId?.touched && provinceId?.hasError('required')">
+            Province is required
+          </div>
         </ion-col>
         <ion-col size="6" class="dropdown-container">
-          <ion-select [fill]="'outline'" aria-label="Fruit" formControlName="cityId" interface="popover"
+          <ion-select [fill]="'outline'" aria-label="City" formControlName="cityId" interface="popover"
             placeholder="Select City">
             <ion-select-option *ngFor="let item of getFilteredCities()"
               [value]="item._id">{{item.cityName}}</ion-select-option>
           </ion-select>
+          <div class="error-message" *ngIf="cityId?.touched && cityId?.hasError('required')">
+            City is required
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-card-content>
-  <div class="d-flex-end p-4">
-    <ion-button (click)="next()">Save & Next</ion-button>
-    <!-- <ion-nav-link router-direction="forward" [component]="componentName">
-      </ion-nav-link> -->
+  <div class="button-section">
+    <ion-button (click)="next()">
+      Save & Next
+      <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+    </ion-button>
   </div>
 </ion-card>

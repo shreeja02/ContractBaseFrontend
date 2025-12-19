@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +11,8 @@ export class HeaderComponent implements OnInit {
   @ViewChild('popover') popover: any;
   user: any;
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -24,5 +26,6 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.popover.dismiss();
     this.authService.logout();
+    this.router.navigateByUrl('/login');
   }
 }

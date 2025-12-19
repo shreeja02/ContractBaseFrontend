@@ -19,21 +19,24 @@ export class BusinessInfoComponent implements OnInit {
   allProvinces: any[] = [];
   allCities: any[] = [];
   currentContractor: any;
+  currentUser: any;
 
   constructor(
     private router: Router,
     private contractorService: ContractorService,
     private fb: FormBuilder,
     private provinceService: ProvinceService,
-    private cityService: CityService
+    private cityService: CityService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.getAllProvinces();
     this.getAllCities();
-    this.contractorService.currentContractor$.subscribe((currentContractor) => {
-      this.currentContractor = currentContractor;
-      this.form = this.createFormGroup(currentContractor);
+      this.authService.currentUser$.subscribe((data) => {
+      if (data)
+        this.currentUser = data;
+      this.form = this.createFormGroup(data);
     })
   }
 
@@ -60,6 +63,34 @@ export class BusinessInfoComponent implements OnInit {
     return [];
   }
 
+  public get businessNumber() {
+    return this.form.get('businessNumber');
+  }
+
+  public get businessAddressLine1() {
+    return this.form.get('businessAddressLine1');
+  }
+
+  public get businessAddressLine2() {
+    return this.form.get('businessAddressLine2');
+  }
+
+  public get businessProvinceId() {
+    return this.form.get('businessProvinceId');
+  }
+
+  public get businessCityId() {
+    return this.form.get('businessCityId');
+  }
+
+  public get businessZipCode() {
+    return this.form.get('businessZipCode');
+  }
+
+  public get linkedInProfile() {
+    return this.form.get('linkedInProfile');
+  }
+
   public get provinceId() {
     return this.form.get('businessProvinceId');
   }
@@ -84,8 +115,9 @@ export class BusinessInfoComponent implements OnInit {
   }
 
   next() {
+    this.form.markAllAsTouched();
     if (!this.form.valid) return;
-    this.contractorService.editContractor({ ...this.currentContractor, ...this.form.value }, this.currentContractor._id)
+    this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser._id)
       .subscribe((data) => {
         if (data && data.success) {
           this.router.navigateByUrl('contractor/profile/industry');

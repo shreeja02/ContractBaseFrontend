@@ -1,76 +1,97 @@
 <ion-grid>
   <ion-row>
     <ion-col size="12">
-      <ion-card>
-        <ion-card-content [formGroup]="form">
-          <ion-grid>
-            <ion-row>
-              <ion-col size="12">
-                <div class="d-flex-center mt-2">
-                  <ion-select size="" formControlName="position" label="Position " label-placement="floating"
-                    fill="outline">
-                    <ion-select-option *ngFor="let item of allPositions"
-                      [value]="item._id">{{item.positionName}}</ion-select-option>
-                  </ion-select>
-                </div>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-searchbar class="w-100 searchbar-style" type="text" debounce="100"
-                  placeholder="Select top 3 technologies" (ionInput)="getTechnologies($event)"></ion-searchbar>
-                <ion-list *ngIf="isTechnologyAvailable">
-                  <ion-item class="cursor-pointer" *ngFor="let item of filteredTechnologies"
-                    (click)="onTechnologySelected(item)">
-                    {{item?.technologyName}}</ion-item>
-                </ion-list>
-                <ion-chip *ngFor="let item of selectedTechnologies">
-                  <ion-label>{{item.technologyName}}</ion-label>
-                  <ion-icon name="close-circle" (click)="onTechnologySelectedRemoved(item)"></ion-icon>
-                </ion-chip>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-select formControlName="certifications" (ionChange)="handleChangeForCertifications($event)"
-                  interface="popover" fill="outline" placeholder="Please select top 3 Certifications" [multiple]="true">
-                  <ion-select-option *ngFor="let item of allCerifications"
-                    [value]="item._id">{{item.certificationName}}</ion-select-option>
-                </ion-select>
-                <div *ngIf="certificationSelectionErrorMessage" class="ml-2 mt-2 error-class">
-                  {{certificationSelectionErrorMessage}}
-                </div>
-              </ion-col>
-            </ion-row>
-            <!-- <ion-row>
-              <ion-col size-lg="2" size="0"></ion-col>
-              <ion-col size-lg="8" size="12">
-                <div>Location</div>
-                <div class="d-flex-column">
-                  <ion-button fill="outline">
-                    <ion-checkbox labelPlacement="end">Remote</ion-checkbox>
-                  </ion-button>
-                  <div class="d-flex-center">
-                    <ion-button fill="outline">
-                      <ion-checkbox labelPlacement="end" (ionChange)="hybridSelected($event)">Hybrid</ion-checkbox>
-                    </ion-button>
-                    <div class="ml-2">
-                      <input type="text" *ngIf="isHybridSelected" class="p-2" label="Number of days in the Office*"
-                        label-placement="floating" placeholder="Number of days in the office*">
-                    </div>
-                  </div>
+      <ion-card class="form-card">
+        <ion-card-header class="card-header">
+          <h2>Location & Professional Info</h2>
+          <p>Tell us about your position and skills</p>
+        </ion-card-header>
+        <ion-card-content [formGroup]="form" class="form-section">
+          <div class="form-group">
+            <label class="form-label">Position*</label>
+            <ion-select size="" formControlName="position" interface="popover" fill="outline" 
+              placeholder="Select Position">
+              <ion-select-option *ngFor="let item of allPositions"
+                [value]="item._id">{{item.positionName}}</ion-select-option>
+            </ion-select>
+            <div class="error-message" *ngIf="form.get('position')?.touched && form.get('position')?.hasError('required')">
+              Position is required
+            </div>
+          </div>
 
-                  <ion-button fill="outline">
-                    <ion-checkbox labelPlacement="end">In-person</ion-checkbox>
-                  </ion-button>
-                </div>
-              </ion-col>
-            </ion-row> -->
-          </ion-grid>
+          <div class="form-group">
+            <label class="form-label">Top 3 Technologies*</label>
+            <ion-searchbar class="search-bar" type="text" debounce="100"
+              placeholder="Search and select technologies" (ionInput)="getTechnologies($event)"></ion-searchbar>
+            <ion-list *ngIf="isTechnologyAvailable" class="suggestion-list">
+              <ion-item class="suggestion-item" *ngFor="let item of filteredTechnologies"
+                (click)="onTechnologySelected(item)">
+                {{item?.technologyName}}
+              </ion-item>
+            </ion-list>
+            <div class="selected-items-section" *ngIf="selectedTechnologies.length > 0">
+              <ion-chip *ngFor="let item of selectedTechnologies" class="tech-chip">
+                <ion-label>{{item.technologyName}}</ion-label>
+                <ion-icon name="close-circle" (click)="onTechnologySelectedRemoved(item)"></ion-icon>
+              </ion-chip>
+            </div>
+            <div class="warning-message" *ngIf="selectedTechnologies.length > 0 && selectedTechnologies.length < 3">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              Please select {{3 - selectedTechnologies.length}} more technologies
+            </div>
+            <div class="error-message" *ngIf="selectedTechnologies.length === 0 && form.get('technologies')?.touched">
+              Please select 3 technologies
+            </div>
+            <div class="success-message" *ngIf="selectedTechnologies.length === 3">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+              All technologies selected
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Top 3 Certifications*</label>
+            <ion-searchbar class="search-bar" type="text" debounce="100"
+              placeholder="Search and select certifications" (ionInput)="getCertifications($event)"></ion-searchbar>
+            <ion-list *ngIf="isCertificationAvailable && filteredCertifications.length > 0" class="suggestion-list">
+              <ion-item class="suggestion-item" *ngFor="let item of filteredCertifications"
+                (click)="onCertificationSelected(item)">
+                {{item?.certificationName}}
+              </ion-item>
+            </ion-list>
+            <div class="no-results" *ngIf="isCertificationAvailable && filteredCertifications.length === 0">
+              <p>No certifications found</p>
+            </div>
+            <div class="selected-items-section" *ngIf="selectedCertifications.length > 0">
+              <ion-chip *ngFor="let item of selectedCertifications" class="cert-chip">
+                <ion-label>{{item.certificationName}}</ion-label>
+                <ion-icon name="close-circle" (click)="onCertificationSelectedRemoved(item)"></ion-icon>
+              </ion-chip>
+            </div>
+            <div *ngIf="certificationSelectionErrorMessage" class="error-message mt-2">
+              {{certificationSelectionErrorMessage}}
+            </div>
+            <div class="warning-message" *ngIf="selectedCertifications.length > 0 && selectedCertifications.length < 3">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              Please select {{3 - selectedCertifications.length}} more certifications
+            </div>
+            <div class="error-message" *ngIf="selectedCertifications.length === 0 && form.get('certifications')?.touched">
+              Please select 3 certifications
+            </div>
+            <div class="success-message" *ngIf="selectedCertifications.length === 3">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+              All certifications selected
+            </div>
+          </div>
         </ion-card-content>
-        <div class="d-flex-end p-4">
-          <ion-button (click)="previous()">Previous</ion-button>
-          <ion-button (click)="next()">Save & Next</ion-button>
+        <div class="button-section">
+          <ion-button fill="outline" (click)="previous()">
+            <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+            Previous
+          </ion-button>
+          <ion-button (click)="next()">
+            Save & Next
+            <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+          </ion-button>
         </div>
       </ion-card>
     </ion-col>

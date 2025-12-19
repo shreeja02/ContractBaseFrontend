@@ -1,27 +1,64 @@
 <ion-grid>
   <ion-row>
     <ion-col size="12">
-      <ion-card>
-        <ion-card-content class="card-min-height">
+      <ion-card class="form-card">
+        <ion-card-header class="card-header">
+          <h2>Industry Selection</h2>
+          <p>Select your top 3 industries</p>
+        </ion-card-header>
+        <ion-card-content class="card-content-section">
           <div>
             <form [formGroup]="industryForm">
-              <ion-searchbar formControlName="searchIndustry" [disabled]="selectedItems && selectedItems.length >= 3"
-                search-icon="search-circle" show-clear-button="always" placeholder="What are your top 3 industries?"
-                type="text" debounce="100" (ionInput)="getItems($event)"></ion-searchbar>
-              <ion-list *ngIf="isItemAvailable">
-                <ion-item class="cursor-pointer" *ngFor="let item of items" (click)="onItemSelected(item)">
-                  {{item.industryName}}</ion-item>
+              <div class="form-group">
+                <label class="form-label">Search Industries*</label>
+                <ion-searchbar formControlName="searchIndustry" 
+                  [disabled]="selectedItems && selectedItems.length >= maxIndustries"
+                  search-icon="search-circle" show-clear-button="always" 
+                  placeholder="Search and add industries"
+                  type="text" debounce="100" (ionInput)="getItems($event)" 
+                  class="search-bar"></ion-searchbar>
+              </div>
+              <ion-list *ngIf="isItemAvailable && filteredItems.length > 0" class="suggestion-list">
+                <ion-item class="suggestion-item" *ngFor="let item of filteredItems" (click)="onItemSelected(item)">
+                  {{item.industryName}}
+                </ion-item>
               </ion-list>
-              <ion-chip *ngFor="let item of selectedItems">
-                <ion-label>{{item.industryName}}</ion-label>
-                <ion-icon name="close-circle" (click)="onItemSelectedRemoved(item)"></ion-icon>
-              </ion-chip>
+              <div class="no-results" *ngIf="isItemAvailable && filteredItems.length === 0">
+                <p>No industries found</p>
+              </div>
+              <div class="selected-items-section" *ngIf="selectedItems.length > 0">
+                <div class="selected-label">Selected Industries ({{selectedItems.length}}/{{maxIndustries}})</div>
+                <ion-chip *ngFor="let item of selectedItems" class="industry-chip">
+                  <ion-label>{{item.industryName}}</ion-label>
+                  <ion-icon name="close-circle" (click)="onItemSelectedRemoved(item)"></ion-icon>
+                </ion-chip>
+              </div>
+              <div class="validation-section">
+                <div class="warning-message" *ngIf="selectedItems.length > 0 && selectedItems.length < maxIndustries && formTouched">
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  Please select {{maxIndustries - selectedItems.length}} more industries
+                </div>
+                <div class="error-message" *ngIf="selectedItems.length === 0 && formTouched">
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  Please select {{maxIndustries}} industries
+                </div>
+                <div class="success-message" *ngIf="selectedItems.length === maxIndustries">
+                  <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  All industries selected
+                </div>
+              </div>
             </form>
           </div>
         </ion-card-content>
-        <div class="d-flex-end p-4">
-          <ion-button (click)="previous()">Previous</ion-button>
-          <ion-button (click)="next()">Save & Next</ion-button>
+        <div class="button-section">
+          <ion-button fill="outline" (click)="previous()">
+            <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+            Previous
+          </ion-button>
+          <ion-button (click)="next()">
+            Save & Next
+            <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+          </ion-button>
         </div>
       </ion-card>
     </ion-col>

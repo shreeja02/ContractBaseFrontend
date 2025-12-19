@@ -32,7 +32,9 @@ export class BasicInfoComponent implements OnInit {
     this.getAllProvinces();
     this.getAllCities();
     this.authService.currentUser$.subscribe((data) => {
-      this.currentUser = data;
+      if (data)
+        this.currentUser = data;
+      console.log('this.currentUser: ', this.currentUser);
       this.form = this.createFormGroup(data);
     })
   }
@@ -64,19 +66,40 @@ export class BasicInfoComponent implements OnInit {
     return this.form.get('provinceId');
   }
 
+  public get firstName() {
+    return this.form.get('firstName');
+  }
+
+  public get lastName() {
+    return this.form.get('lastName');
+  }
+
+  public get email() {
+    return this.form.get('email');
+  }
+
+  public get phone() {
+    return this.form.get('phone');
+  }
+
+  public get cityId() {
+    return this.form.get('cityId');
+  }
+
   createFormGroup(dataItem: any = {}) {
 
     return this.fb.group({
       firstName: [dataItem.firstName, Validators.required],
       lastName: [dataItem.lastName, Validators.required],
       email: [dataItem.email, [Validators.required, Validators.email]],
-      phone: [dataItem.phone, Validators.required],
+      phone: [dataItem.phone, [Validators.required, Validators.pattern(/^\d{10}$/)]],
       provinceId: [dataItem.province?._id, Validators.required],
       cityId: [dataItem.city?._id, Validators.required],
     });
   }
 
   next() {
+    this.form.markAllAsTouched();
     if (!this.form.valid) {
       return;
     }

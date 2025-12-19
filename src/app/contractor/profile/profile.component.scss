@@ -1,44 +1,210 @@
-.avatar {
-    height: 80px;
-    width: 80px;
+.profile-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    ion-card-content {
+        padding: 0;
+    }
 }
-.info {
-    margin-top: 0.5rem;
 
+.profile-header {
+    height: 100px;
+    background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%);
+}
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-top: -50px;
+    margin-bottom: 1rem;
+}
+
+.avatar {
+    height: 100px;
+    width: 100px;
+    color: #00BCD4;
+    filter: drop-shadow(0 2px 8px rgba(0, 188, 212, 0.3));
+}
+
+.user-info-section {
+    text-align: center;
+    padding: 1rem 1.5rem 0;
+}
+
+.user-name {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212121;
+}
+
+.user-role {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+    color: #757575;
+    font-weight: 500;
+}
+
+.divider {
+    height: 1px;
+    background-color: #E0E0E0;
+    margin: 1.5rem 0;
+}
+
+.info-section {
+    padding: 0 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    
     ion-icon {
-        vertical-align: middle;
-        margin-right: 0.6rem;
+        color: #00BCD4;
+        font-size: 1.25rem;
+        margin-top: 2px;
+        flex-shrink: 0;
     }
-    span {
-        font-size: small;
+    
+    .info-text {
+        flex: 1;
+        p {
+            margin: 0;
+            line-height: 1.4;
+        }
     }
 }
+
+.info-label {
+    font-size: 0.75rem;
+    color: #999;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 0.95rem;
+    color: #212121;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+ion-button {
+    margin: 1.5rem 1.5rem 1.5rem 1.5rem !important;
+}
+
 .form-container {
-    padding: 1rem;
+    padding: 1.5rem;
 }
-.space-between {
-    width: 100%;
+
+.progress-section {
+    margin-bottom: 2.5rem;
+}
+
+.progress-header {
+    margin-bottom: 1rem;
+    
+    h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #212121;
+    }
+}
+
+.progress-text {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #757575;
+}
+
+ion-progress-bar {
+    --progress-width: 100%;
+}
+
+.steps-wrapper {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.progress-bar-custom {
+    position: absolute;
+    top: 19px;
+    z-index: 0;
+}
+
+.steps-container {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+    padding: 0;
 }
 
-.chip-container {
-    margin-top: -2.4rem;
-    ion-chip {
-        border: 1px solid lightgray;
-    }
-    .default {
-        background-color: white;
-        color: black;
-    }
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // flex: 1;
+    position: relative;
+    z-index: 1;
+}
 
-    .selected {
-        background-color: #335a02;
+.step-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border: 2px solid #E0E0E0;
+    
+    &.inactive {
+        background-color: #F5F5F5;
+        color: #999;
+    }
+    
+    &.active {
+        background-color: #E1F5FE;
+        color: #00BCD4;
+        border-color: #00BCD4;
+    }
+    
+    &.current {
+        background-color: #00BCD4;
         color: white;
+        border-color: #00BCD4;
+        box-shadow: 0 2px 8px rgba(0, 188, 212, 0.3);
     }
+}
 
-    .current {
-        box-shadow: 0px 1px 2px 4px #335a02;
+.step-label {
+    font-size: 0.75rem;
+    text-align: center;
+    color: #666;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.form-content {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
 
@@ -46,4 +212,24 @@
     .sm-hidden {
         display: none !important;
     }
+    
+    .form-container {
+        padding: 1rem;
+    }
+    
+    .steps-container {
+        gap: 0.25rem;
+    }
+    
+    .step-circle {
+        width: 36px;
+        height: 36px;
+        font-size: 0.85rem;
+    }
+    
+    .step-label {
+        font-size: 0.65rem;
+    }
 }
+
+

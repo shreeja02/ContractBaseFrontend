@@ -1,0 +1,18 @@
+::ng-deep {
+    ion-content {
+        --overflow: auto;
+    }
+
+    ion-content .inner-scroll {
+        overflow-y: scroll !important;
+    }
+
+    ion-content .inner-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    ion-content .inner-scroll {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
