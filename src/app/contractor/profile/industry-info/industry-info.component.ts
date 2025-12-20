@@ -21,6 +21,7 @@ export class IndustryInfoComponent implements OnInit {
   currentUser: any;
   maxIndustries = 3;
   isLoading = false;
+  currentContractor: any;
 
 
   constructor(
@@ -35,11 +36,25 @@ export class IndustryInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-          this.authService.currentUser$.subscribe((data) => {
-      if (data)
+    this.authService.currentUser$.subscribe((data) => {
+      if (data) {
         this.currentUser = data;
-      this.getAllIndustries();
-    })
+        // First get contractor data, then load industries
+        this.getContractorByUserId(this.currentUser.id);
+      }
+    });
+  }
+
+  getContractorByUserId(contractorId: any) {
+    this.contractorService.getContractorByUserId(contractorId).subscribe(
+      (data: any) => {
+        if (data && data.success) {
+          this.currentContractor = data.result;
+          // Load industries after contractor is fetched
+          this.getAllIndustries();
+        }
+      }
+    );
   }
 
   createFormGroup(): FormGroup {
@@ -52,11 +67,17 @@ export class IndustryInfoComponent implements OnInit {
     this.industryService.getAllActiveIndustries().subscribe((data: any) => {
       if (data && data.success) {
         this.items = data.result;
-        // Load previously selected industries
-        if (this.currentUser?.industries && this.currentUser.industries.length > 0) {
-          this.selectedItems = this.items
-            .filter(x => this.currentUser.industries.includes(x._id))
-            .slice();
+        
+        // Load previously selected industries from currentContractor
+        if (this.currentContractor?.industries && this.currentContractor.industries.length > 0) {
+          // Handle both object IDs and string IDs
+          const selectedIndustryIds = this.currentContractor.industries.map((ind:any) => 
+            typeof ind === 'string' ? ind : (typeof ind === 'object' ? ind._id : ind)
+          );
+          
+          this.selectedItems = this.items.filter(item => 
+            selectedIndustryIds.includes(item._id)
+          );
         }
       }
     });
@@ -117,9 +138,15 @@ export class IndustryInfoComponent implements OnInit {
     });
     await loading.present();
     
+    // Update currentContractor with selected industries
+    const updatedContractor = {
+      ...this.currentContractor,
+      industries: this.selectedItems.map(x => x._id)
+    };
+    
     this.contractorService.editContractor(
-      { ...this.currentUser, industries: this.selectedItems.map(x => x._id) },
-      this.currentUser.id
+      updatedContractor,
+      this.currentContractor._id
     ).subscribe(
       (data) => {
         this.isLoading = false;
@@ -132,6 +159,6 @@ export class IndustryInfoComponent implements OnInit {
         this.isLoading = false;
         loading.dismiss();
       }
-   );
-}
+    );
+  }
 }
