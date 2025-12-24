@@ -21,7 +21,7 @@
 
           <div class="form-group">
             <label class="form-label">Top 3 Technologies*</label>
-            <ion-searchbar class="search-bar" type="text" debounce="100"
+            <ion-searchbar #technologySearchbar class="search-bar" type="text" debounce="100"
               placeholder="Search and select technologies" (ionInput)="getTechnologies($event)"></ion-searchbar>
             <ion-list *ngIf="isTechnologyAvailable" class="suggestion-list">
               <ion-item class="suggestion-item" *ngFor="let item of filteredTechnologies"
@@ -50,7 +50,7 @@
 
           <div class="form-group">
             <label class="form-label">Top 3 Certifications*</label>
-            <ion-searchbar class="search-bar" type="text" debounce="100"
+            <ion-searchbar #certificationSearchbar class="search-bar" type="text" debounce="100"
               placeholder="Search and select certifications" (ionInput)="getCertifications($event)"></ion-searchbar>
             <ion-list *ngIf="isCertificationAvailable && filteredCertifications.length > 0" class="suggestion-list">
               <ion-item class="suggestion-item" *ngFor="let item of filteredCertifications"

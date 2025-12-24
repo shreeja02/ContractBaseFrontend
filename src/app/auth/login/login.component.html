@@ -1,50 +1,106 @@
-<div class="card-div">
+<div class="login-container">
+  <ion-grid class="login-grid">
+    <ion-row>
+      <ion-col sizeLg="6" sizeMd="8" sizeSm="12" class="login-col-wrapper">
+        <ion-card class="login-card" *ngIf="loginForm" [formGroup]="loginForm">
+          <!-- Header Section -->
+          <div class="login-header">
+            <div class="logo-container">
+              <img class="login-logo" src="../../../assets/images/top3talent-logo1.png" alt="Logo">
+            </div>
+            <h1 class="login-title">Welcome Back</h1>
+            <p class="login-subtitle">Sign in to your professional account</p>
+          </div>
 
-  <ion-card class="card-width p-10" [formGroup]="loginForm">
-    <ion-card-header class="header-class">
-      <img class="img-logo" src="../../../assets/images/top3talent-logo.png">
-    </ion-card-header>
+          <ion-card-content class="login-form-content">
+            <!-- Credentials Section -->
+            <div class="form-section">
+              <h2 class="section-title">
+                <ion-icon name="key-outline"></ion-icon>
+                Credentials
+              </h2>
 
-    <ion-card-content>
-      <ion-item class="my-3">
-        <ion-input formControlName="email" labelPlacement="stacked" placeholder="email@domain.com">
-          <ion-icon slot="start" name="mail" aria-hidden="true"></ion-icon>
-        </ion-input>
-      </ion-item>
+              <div class="form-field-wrapper">
+                <ion-input 
+                  formControlName="email" 
+                  label="Email Address" 
+                  label-placement="floating"
+                  fill="outline" 
+                  type="email"
+                  placeholder="john.doe@example.com"
+                  class="form-input"
+                  [class.input-error]="loginForm.controls['email']?.invalid && (loginForm.controls['email']?.dirty || loginForm.controls['email'].touched)">
+                </ion-input>
+                <div class="error-message"
+                  *ngIf="loginForm.controls['email']?.invalid && (loginForm.controls['email']?.dirty || loginForm.controls['email'].touched)">
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  <span *ngIf="loginForm.controls['email']?.errors?.required">Email is required</span>
+                  <span *ngIf="loginForm.controls['email']?.errors?.email">Please enter a valid email address</span>
+                </div>
+              </div>
 
-      <ion-item>
-        <ion-input formControlName="password" [type]="isPasswordHidden ? 'password' : 'text'" labelPlacement="stacked"
-          placeholder="*********">
-          <ion-icon slot="start" name="key" aria-hidden="true"></ion-icon>
-          <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="isPasswordHidden=!isPasswordHidden">
-            <ion-icon *ngIf="isPasswordHidden" slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
-            <ion-icon *ngIf="!isPasswordHidden" slot="icon-only" name="eye-off-outline"
-                      aria-hidden="true"></ion-icon>
-          </ion-button>
-        </ion-input>
-      </ion-item>
+              <div class="form-field-wrapper">
+                <ion-input 
+                  [type]="isPasswordHidden ? 'password' : 'text'" 
+                  formControlName="password" 
+                  label="Password" 
+                  label-placement="floating" 
+                  fill="outline"
+                  placeholder="••••••••••••"
+                  class="form-input"
+                  [class.input-error]="loginForm.controls['password']?.invalid && (loginForm.controls['password']?.dirty || loginForm.controls['password'].touched)">
+                  <ion-button 
+                    fill="clear" 
+                    slot="end" 
+                    (click)="isPasswordHidden=!isPasswordHidden"
+                    class="password-toggle">
+                    <ion-icon 
+                      slot="icon-only" 
+                      [name]="isPasswordHidden ? 'eye-outline' : 'eye-off-outline'">
+                    </ion-icon>
+                  </ion-button>
+                </ion-input>
+                <div class="error-message"
+                  *ngIf="loginForm.controls['password']?.invalid && (loginForm.controls['password']?.dirty || loginForm.controls['password'].touched)">
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  <span *ngIf="loginForm.controls['password']?.errors?.required">Password is required</span>
+                </div>
+              </div>
 
-      <ion-text color="danger" *ngIf="errorMessage">{{errorMessage}}</ion-text>
+              <div class="error-message" *ngIf="errorMessage">
+                <ion-icon name="alert-circle-outline"></ion-icon>
+                <span>{{ errorMessage }}</span>
+              </div>
+            </div>
+          </ion-card-content>
 
-      <ion-button class="login-btn my-4" expand="block" (click)="onLogin()">
-        <ion-spinner *ngIf="loading"></ion-spinner>
-        <span *ngIf="!loading">Login</span>
-      </ion-button>
+          <!-- Action Buttons -->
+          <div class="login-actions">
+            <ion-button 
+              expand="block" 
+              (click)="onLogin()"
+              class="login-button"
+              [disabled]="loginForm.invalid || loading">
+              <ion-spinner *ngIf="loading" class="button-spinner"></ion-spinner>
+              <span *ngIf="!loading">
+                <ion-icon name="log-in-outline" slot="start"></ion-icon>
+                Sign In
+              </span>
+            </ion-button>
+          </div>
 
-      <div class="auth-links">
-        <a [routerLink]="['/auth/forgot-password']" class="forgot-password-link">
-          <ion-text color="primary" class="text-center">
-            <p>Forgot Password?</p>
-          </ion-text>
-        </a>
-        <a [routerLink]="['/auth/signup']" class="signup-link">
-          <ion-text color="primary" class="text-center">
-            <h4>New? Create an account</h4>
-          </ion-text>
-        </a>
-      </div>
-
-    </ion-card-content>
-  </ion-card>
-
+          <!-- Footer Links -->
+          <div class="login-footer">
+            <a [routerLink]="['/auth/forgot-password']" class="footer-link">
+              <ion-text>Forgot your password?</ion-text>
+            </a>
+            <p class="divider">or</p>
+            <p class="signup-prompt">New to our platform? 
+              <a [routerLink]="['/auth/signup']" class="footer-link">Create an account</a>
+            </p>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </div>

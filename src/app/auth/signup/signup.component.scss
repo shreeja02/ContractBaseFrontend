@@ -19,12 +19,6 @@ $text-dark: #212529;
   padding: 2rem 1rem;
 }
 
-::ng-deep{
-    .ion-page {
-        overflow: hidden !important;
-    }
-}
-
 .signup-grid ion-row {
   justify-content: center;
 }
@@ -72,8 +66,7 @@ $text-dark: #212529;
 }
 
 .signup-logo {
-  max-width: 70px;
-  height: auto;
+  height: 50px;
   filter: brightness(0) invert(1);
 }
 
@@ -94,7 +87,6 @@ $text-dark: #212529;
 // Form Content
 .signup-form-content {
   padding: 2.5rem 2rem;
-  max-height: calc(100vh - 400px);
   overflow-y: auto;
 }
 
@@ -164,16 +156,16 @@ $text-dark: #212529;
 }
 
 // Form Input
-.form-input {
-  --border-color: $border-color;
-  --padding-top: 1rem;
-  --padding-bottom: 1rem;
-  font-size: 1rem;
+// .form-input {
+//   --border-color: $border-color;
+//   --padding-top: 1rem;
+//   --padding-bottom: 1rem;
+//   font-size: 1rem;
 
-  &.input-error {
-    --border-color: $danger-color;
-  }
-}
+//   &.input-error {
+//     --border-color: $danger-color;
+//   }
+// }
 
 // Form Select
 .select-label {

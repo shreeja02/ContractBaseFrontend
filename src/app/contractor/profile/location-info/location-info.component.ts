@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IndustryInfoComponent } from '../industry-info/industry-info.component';
 import { BusinessInfoComponent } from '../business-info/business-info.component';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { CertificationService } from 'src/app/shared/services/certification.serv
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContractorService } from 'src/app/shared/services/contractor.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, IonSearchbar } from '@ionic/angular';
 
 @Component({
   selector: 'app-location-info',
@@ -16,6 +16,8 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./location-info.component.scss'],
 })
 export class LocationInfoComponent implements OnInit {
+  @ViewChild('technologySearchbar') technologySearchbar!: IonSearchbar;
+  @ViewChild('certificationSearchbar') certificationSearchbar!: IonSearchbar;
 
   allPositions: any[] = [];
   allTechnologies: any[] = [];
@@ -29,8 +31,9 @@ export class LocationInfoComponent implements OnInit {
   filteredCertifications: any[] = [];
   selectedCertifications: any[] = [];
   certificationSelectionErrorMessage: string = "";
-  currentUser: any;
   isLoading = false;
+  currentContractor: any;
+  currentUser: any;
 
   constructor(
     private router: Router,
@@ -44,12 +47,25 @@ export class LocationInfoComponent implements OnInit {
 
   ngOnInit() {
     this.getPositions();
-      this.authService.currentUser$.subscribe((data) => {
-      if (data)
+    this.authService.currentUser$.subscribe((data) => {
+      if (data) {
         this.currentUser = data;
-             this.form = this.createFormGroup(this.currentUser);
+        this.getContractorByUserId(this.currentUser.id);
         this.changeTechnology();
+      }
+      // this.form = this.createFormGroup(this.currentUser);
     })
+  }
+
+  getContractorByUserId(contractorId: any) {
+    this.contractorService.getContractorByUserId(contractorId).subscribe(
+      (data: any) => {
+        if (data && data.success) {
+          this.currentContractor = data.result;
+          this.form = this.createFormGroup(this.currentContractor);
+        }
+      }
+    );
   }
 
   createFormGroup(dataItem: any = {}) {
@@ -139,16 +155,16 @@ export class LocationInfoComponent implements OnInit {
     if (this.selectedCertifications.length !== 3) {
       return;
     }
-    
+
     this.isLoading = true;
     const loading = await this.loadingController.create({
       message: 'Saving position and skills...',
       spinner: 'circular'
     });
     await loading.present();
-    
+
     this.contractorService.editContractor({
-      ...this.currentUser,
+      ...this.currentContractor,
       ...this.form.value,
       technologies: this.selectedTechnologies.map((x: any) => x._id),
       certifications: this.selectedCertifications.map((x: any) => x._id)
@@ -189,6 +205,9 @@ export class LocationInfoComponent implements OnInit {
       this.filteredTechnologies.splice(this.allTechnologies.indexOf(item), 1);
       this.form.get('technologies')?.setValue('');
       this.isTechnologyAvailable = false;
+      if (this.technologySearchbar) {
+        this.technologySearchbar.value = '';
+      }
     }
   }
 
@@ -202,7 +221,7 @@ export class LocationInfoComponent implements OnInit {
       this.isCertificationAvailable = true;
       this.filteredCertifications = this.allCerifications.filter((item: any) => {
         return ((item?.certificationName).toLowerCase().indexOf(val.toLowerCase()) > -1) &&
-               !this.selectedCertifications.find((x: any) => x._id === item._id);
+          !this.selectedCertifications.find((x: any) => x._id === item._id);
       })
     } else {
       this.isCertificationAvailable = false;
@@ -221,6 +240,9 @@ export class LocationInfoComponent implements OnInit {
       this.isCertificationAvailable = false;
       this.filteredCertifications = [];
       this.certificationSelectionErrorMessage = '';
+      if (this.certificationSearchbar) {
+        this.certificationSearchbar.value = '';
+      }
     }
   }
 

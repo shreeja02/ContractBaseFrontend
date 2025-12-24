@@ -54,8 +54,9 @@ export class ForgotPasswordComponent implements OnInit {
           this.showSuccessAlert();
         },
         error: (error: any) => {
+          console.log('error: ', error);
           this.loading = false;
-          this.errorMessage = error?.error?.message || 'Email not found. Please check and try again.';
+          this.errorMessage = error?.error?.errors || 'Email not found. Please check and try again.';
         }
       });
   }
