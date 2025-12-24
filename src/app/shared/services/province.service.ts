@@ -29,6 +29,7 @@ export class ProvinceService {
     .pipe(map((data: any) => {
         if (data && data.success) {
           this.allProvinces = data.result;
+          console.log(' this.allProvinces: ',  this.allProvinces);
           return this.allProvinces;
         }
         return null;

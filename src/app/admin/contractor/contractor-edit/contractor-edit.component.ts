@@ -14,6 +14,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { AdminService } from 'src/app/shared/services/admin.service';
 
 @Component({
   selector: 'app-contractor-edit',
@@ -67,7 +68,7 @@ export class ContractorEditComponent implements OnInit {
   contractorId: any;
   contractorDetails: any;
   constructor(private fb: FormBuilder,
-    private contractorService: ContractorService,
+    private contractorService: AdminService,
     private userService: UserService,
     private positionService: PositionService,
     private provinceService: ProvinceService,
@@ -82,7 +83,6 @@ export class ContractorEditComponent implements OnInit {
       this.contractorId = params['id'];
       if (this.contractorId) {
         this.isEdit = true;
-        this.getContractorById();
       }
       else {
         this.isEdit = false;
@@ -97,7 +97,27 @@ export class ContractorEditComponent implements OnInit {
         this.contractorDetails = data.result;
         if (this.contractorDetails) {
           this.contractorForm = this.createForm(this.contractorDetails);
-          this.handleChangeForProvince(this.contractorDetails.businessProvinceId, true);
+          
+          // Handle Province and City - load cities after province is set
+          const provinceId = this.contractorDetails.businessProvinceId?._id || this.contractorDetails.businessProvinceId;
+          const cityId = this.contractorDetails.businessCityId?._id || this.contractorDetails.businessCityId;
+          
+          if (provinceId) {
+            // Load cities for this province and then set the city
+            this.cityService.getCitiesByProvince(provinceId).subscribe(
+              (res: any) => {
+                if (res.result && res.result.length) {
+                  this.allCities = res.result;
+                  // Set city after cities are loaded
+                  if (cityId) {
+                    this.contractorForm.get('businessCityId')?.setValue(cityId);
+                  }
+                  this.cdr.detectChanges();
+                }
+              }
+            );
+          }
+          
           this.handleChangeForPosition(this.contractorDetails.position, true);
           this.selectedTechnologies = this.contractorDetails.technologies;
           
@@ -156,6 +176,22 @@ export class ContractorEditComponent implements OnInit {
     this.getAllProvinces();
     this.getAllIndustries();
     this.getAllCertifications();
+    this.getAllActiveCities();
+    
+    // Call getContractorById for edit mode after data is loaded
+    if (this.isEdit && this.contractorId) {
+      this.getContractorById();
+    }
+  }
+
+  getAllActiveCities(){
+    this.cityService.getAllCities().subscribe(
+      (res: any) => {
+        if (res.result.length) {
+          this.allCities = res.result;
+        }
+      }
+    );
   }
 
    getAllCertifications(){
@@ -183,6 +219,7 @@ export class ContractorEditComponent implements OnInit {
       (res: any) => {
         if (res.result.length) {
           this.allProvinces = res.result;
+          console.log('this.allProvinces: ', this.allProvinces);
         }
       }
     );
@@ -235,8 +272,14 @@ export class ContractorEditComponent implements OnInit {
         businessNumber: new FormControl(formValues?.businessNumber || '', Validators.required),
         businessAddressLine1: new FormControl(formValues?.businessAddressLine1 || '', Validators.required),
         businessAddressLine2: new FormControl(formValues?.businessAddressLine2),
-        businessProvinceId: new FormControl(formValues?.businessProvinceId?._id || '', Validators.required),
-        businessCityId: new FormControl(formValues?.businessCityId?._id || '', Validators.required),
+        businessProvinceId: new FormControl(
+          (typeof formValues?.businessProvinceId === 'object' ? formValues?.businessProvinceId?._id : formValues?.businessProvinceId) || '', 
+          Validators.required
+        ),
+        businessCityId: new FormControl(
+          (typeof formValues?.businessCityId === 'object' ? formValues?.businessCityId?._id : formValues?.businessCityId) || '', 
+          Validators.required
+        ),
         businessZipCode: new FormControl(formValues?.businessZipCode || '', Validators.required),
         linkedInProfile: new FormControl(formValues?.linkedInProfile || '', Validators.required),
         position: new FormControl(formValues?.position?._id || '', Validators.required),
@@ -286,6 +329,12 @@ export class ContractorEditComponent implements OnInit {
   }
 
   onSave() {
+    // Validate form before saving
+    if (this.contractorForm.invalid) {
+      console.error('Form is invalid. Please fill in all required fields.');
+      return;
+    }
+
     if (this.hybridSelected) {
       var foundIndex = this.allLocations.findIndex((x: any) => x.id == 2);
       this.allLocations[foundIndex].days = this.hybridDays?.value || 0;
@@ -301,20 +350,30 @@ export class ContractorEditComponent implements OnInit {
     if (this.isEdit) {
       this.contractorService.editContractor(this.contractorForm.value, this.contractorId)
         .pipe(finalize(() => this.loading = false))
-        .subscribe((data: any) => {
-          if (data.status == 200) {
-            this.router.navigate(['/admin/contractor']);
+        .subscribe(
+          (data: any) => {
+            if (data.status == 200) {
+              this.router.navigate(['/admin/contractor']);
+            }
+          },
+          (error: any) => {
+            console.error('Error saving contractor:', error);
           }
-        })
+        )
     }
     else {
       this.contractorService.saveContractor(this.contractorForm.value)
         .pipe(finalize(() => this.loading = false))
-        .subscribe((data: any) => {
-          if (data.status == 200) {
-            this.router.navigate(['/admin/contractor']);
+        .subscribe(
+          (data: any) => {
+            if (data.status == 200) {
+              this.router.navigate(['/admin/contractor']);
+            }
+          },
+          (error: any) => {
+            console.error('Error saving contractor:', error);
           }
-        })
+        )
     }
   }
 
@@ -350,8 +409,8 @@ export class ContractorEditComponent implements OnInit {
 
   handleChangeForPosition(event: any, fromEdit = false) {
     let position = fromEdit ? event : event.target.value;
-    this.getTechnologiesByPosition(position);
-    this.getCertificationByPosition(position);
+    this.getTechnologiesByPosition(position?._id || position);
+    this.getCertificationByPosition(position?._id || position);
   }
 
   handleChangeForTechnologies(event: any) {
