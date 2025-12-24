@@ -12,6 +12,7 @@ import { ContractorService } from 'src/app/shared/services/contractor.service';
 export class ProfileComponent implements OnInit {
   user: any;
   currentPage = '';
+  showProgressSection = true;
   pages = [
     { name: 'basic', selected: false },
     { name: 'business', selected: false },
@@ -53,13 +54,16 @@ export class ProfileComponent implements OnInit {
 
   getCurrentPage() {
     this.currentPage = this.router.url.substring(this.router.url.lastIndexOf('/') + 1);
+    // Hide progress section when viewing profile
+    this.showProgressSection = this.currentPage !== 'view';
     this.currentIndex = this.pages.findIndex(x => x.name == this.currentPage);
-    this.pages[this.currentIndex].selected = true;
+    if (this.currentIndex >= 0) {
+      this.pages[this.currentIndex].selected = true;
+    }
   }
 
   logout() {
     this.authService.logout();
-    this.router.navigateByUrl('/login');
   }
 
 }

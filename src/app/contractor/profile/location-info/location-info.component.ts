@@ -51,9 +51,7 @@ export class LocationInfoComponent implements OnInit {
       if (data) {
         this.currentUser = data;
         this.getContractorByUserId(this.currentUser.id);
-        this.changeTechnology();
       }
-      // this.form = this.createFormGroup(this.currentUser);
     })
   }
 
@@ -63,6 +61,8 @@ export class LocationInfoComponent implements OnInit {
         if (data && data.success) {
           this.currentContractor = data.result;
           this.form = this.createFormGroup(this.currentContractor);
+          // Call changeTechnology after form is populated
+          this.changeTechnology();
         }
       }
     );
@@ -71,7 +71,7 @@ export class LocationInfoComponent implements OnInit {
   createFormGroup(dataItem: any = {}) {
     dataItem = dataItem ? dataItem : {};
     let form = new FormGroup({
-      position: new FormControl(dataItem.position, Validators.required),
+      position: new FormControl(dataItem.position?._id, Validators.required),
       technologies: new FormControl(dataItem.technologies),
       certifications: new FormControl(dataItem.certifications)
     });
@@ -84,8 +84,8 @@ export class LocationInfoComponent implements OnInit {
   changeTechnology() {
     var position = this.form.get('position')?.value;
     if (position) {
-      this.getTechnologiesByPosition(position);
-      this.getCertificationByPosition(position);
+      this.getTechnologiesByPosition(position?._id || position);
+      this.getCertificationByPosition(position?._id || position);
     }
   }
 
@@ -102,12 +102,14 @@ export class LocationInfoComponent implements OnInit {
     this.selectedTechnologies = [];
     this.technologyService.getTechnologiesByPositionId(id).subscribe(
       (res: any) => {
-        if (res.result.length) {
+        if (res.result && res.result.length) {
           this.allTechnologies = res.result;
-          if (this.form.value.technologies) {
+          const techIds = this.form.get('technologies')?.value;
+          if (techIds && Array.isArray(techIds) && techIds.length > 0) {
+            // Extract IDs - handle both string IDs and objects with _id
+            const techIdList = techIds.map((t: any) => typeof t === 'string' ? t : t._id);
             this.allTechnologies.forEach(element => {
-              let find = this.form.value.technologies.find((x: any) => x == element._id);
-              if (find) {
+              if (techIdList.includes(element._id)) {
                 this.selectedTechnologies.push(element);
               }
             });
@@ -121,12 +123,14 @@ export class LocationInfoComponent implements OnInit {
     this.selectedCertifications = [];
     this.certificationService.getCertificationByPosition(id).subscribe(
       (res: any) => {
-        if (res.result.length) {
+        if (res.result && res.result.length) {
           this.allCerifications = res.result;
-          if (this.form.value.certifications) {
+          const certIds = this.form.get('certifications')?.value;
+          if (certIds && Array.isArray(certIds) && certIds.length > 0) {
+            // Extract IDs - handle both string IDs and objects with _id
+            const certIdList = certIds.map((c: any) => typeof c === 'string' ? c : c._id);
             this.allCerifications.forEach(element => {
-              let find = this.form.value.certifications.find((x: any) => x == element._id);
-              if (find) {
+              if (certIdList.includes(element._id)) {
                 this.selectedCertifications.push(element);
               }
             });

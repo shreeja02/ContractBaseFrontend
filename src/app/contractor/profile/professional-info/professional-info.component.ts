@@ -27,6 +27,7 @@ export class ProfessionalInfoComponent implements OnInit {
   isHybridSelected: boolean = false;
   currentUser: any;
   isLoading = false;
+  currentContractor: any;
 
   constructor(
     private fb: FormBuilder,
@@ -37,14 +38,22 @@ export class ProfessionalInfoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-       this.authService.currentUser$.subscribe((data) => {
+    this.authService.currentUser$.subscribe((data) => {
       if (data)
         this.currentUser = data;
-             this.form = this.createFormGroup(this.currentUser);
-                this.form = this.createFormGroup(this.currentUser
-                );
-
+      this.getContractorByUserId(this.currentUser.id);
     })
+  }
+
+   getContractorByUserId(contractorId: any) {
+    this.contractorService.getContractorByUserId(contractorId).subscribe(
+      (data: any) => {
+        if (data && data.success) {
+          this.currentContractor = data.result;
+          this.form = this.createFormGroup(this.currentContractor);
+        }
+      }
+    );
   }
 
   createFormGroup(dataItem: any = {}) {
@@ -92,7 +101,7 @@ export class ProfessionalInfoComponent implements OnInit {
     });
     await loading.present();
 
-    this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser.id)
+    this.contractorService.editContractor({ ...this.currentContractor, ...this.form.value }, this.currentUser.id)
       .subscribe(
         (data) => {
           this.isLoading = false;

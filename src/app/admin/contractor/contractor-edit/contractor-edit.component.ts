@@ -91,7 +91,6 @@ export class ContractorEditComponent implements OnInit {
         this.contractorDetails = data.result;
         if (this.contractorDetails) {
           this.contractorForm = this.createForm(this.contractorDetails);
-          console.log('this.contractorForm: ', this.contractorForm);
           this.handleChangeForProvince(this.contractorDetails.businessProvinceId, true);
           this.handleChangeForPosition(this.contractorDetails.position, true);
           this.selectedTechnologies = this.contractorDetails.technologies;

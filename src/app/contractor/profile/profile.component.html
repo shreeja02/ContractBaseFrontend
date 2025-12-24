@@ -45,13 +45,13 @@
     </ion-col>
     <ion-col>
       <div class="form-container">
-        <div class="progress-section">
+        <div class="progress-section" *ngIf="showProgressSection">
           <div class="progress-header">
             <h2>Complete Your Profile</h2>
             <p class="progress-text">Step {{currentIndex + 1}} of {{pages.length}}</p>
           </div>
         </div>
-        <div class="steps-wrapper">
+        <div class="steps-wrapper" *ngIf="showProgressSection">
           <ion-progress-bar [value]="(((currentIndex) * 100) / (pages.length - 1)) / 100" color="primary" class="progress-bar-custom"></ion-progress-bar>
           <div class="steps-container">
             <div class="step" *ngFor="let page of pages; let i = index;">
