@@ -73,9 +73,9 @@ export class ContractorListComponent implements OnInit {
       this.contractorService.deleteContractor(item._id).subscribe(
         (res: any) => {
           if (res.success) {
+            alert("Contractor deleted successfully.");
             this.getAllContractors();
             this.router.navigateByUrl(`/admin/contractor/list`);
-            alert("Contractor deleted successfully.");
           }
         }
       );

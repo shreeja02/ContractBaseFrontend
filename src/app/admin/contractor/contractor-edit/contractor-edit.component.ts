@@ -53,9 +53,15 @@ export class ContractorEditComponent implements OnInit {
   filteredTechnologies: any;
   loading: boolean = false;
   isTechnologyAvailable: boolean = false;
+  isIndustryAvailable: boolean = false;
+  isCertificationAvailable: boolean = false;
   technologies = signal(['']);
   readonly announcer = inject(LiveAnnouncer);
   selectedTechnologies: any = [];
+  selectedIndustries: any = [];
+  selectedCertifications: any = [];
+  filteredIndustries: any = [];
+  filteredCertifications: any = [];
   threeTechnologiesAreAdded: boolean = false;
   routeSub!: Subscription;
   contractorId: any;
@@ -94,6 +100,43 @@ export class ContractorEditComponent implements OnInit {
           this.handleChangeForProvince(this.contractorDetails.businessProvinceId, true);
           this.handleChangeForPosition(this.contractorDetails.position, true);
           this.selectedTechnologies = this.contractorDetails.technologies;
+          
+          // Set industries - extract IDs if they are objects
+          if (this.contractorDetails.industries) {
+            const industryIds = this.contractorDetails.industries.map((ind: any) => 
+              typeof ind === 'string' ? ind : ind._id
+            );
+            this.contractorForm.get('industries')?.setValue(industryIds);
+            // Also populate selectedIndustries for chip display
+            this.selectedIndustries = this.contractorDetails.industries.map((ind: any) =>
+              typeof ind === 'string' ? { _id: ind } : ind
+            );
+          }
+          
+          // Set certifications - extract IDs if they are objects
+          if (this.contractorDetails.certifications) {
+            const certIds = this.contractorDetails.certifications.map((cert: any) => 
+              typeof cert === 'string' ? cert : cert._id
+            );
+            this.contractorForm.get('certifications')?.setValue(certIds);
+            // Also populate selectedCertifications for chip display
+            this.selectedCertifications = this.contractorDetails.certifications.map((cert: any) =>
+              typeof cert === 'string' ? { _id: cert } : cert
+            );
+          }
+          
+          // Set location - set the objects directly and check for hybrid
+          if (this.contractorDetails.location && Array.isArray(this.contractorDetails.location)) {
+            this.contractorForm.get('location')?.setValue(this.contractorDetails.location);
+            const hasHybrid = this.contractorDetails.location.find(
+              (loc: any) => loc.type && loc.type.toLowerCase() === 'hybrid'
+            );
+            if (hasHybrid) {
+              this.hybridSelected = true;
+              this.hybridDays.setValue(hasHybrid.days);
+            }
+          }
+          
           this.cdr.detectChanges();
         }
       }
@@ -112,7 +155,18 @@ export class ContractorEditComponent implements OnInit {
     this.getAllPositions();
     this.getAllProvinces();
     this.getAllIndustries();
+    this.getAllCertifications();
   }
+
+   getAllCertifications(){
+    this.certificationService.getAllCertifications().subscribe(
+      (res:any)=>{
+        if(res.result.length){
+          this.allCerifications = res.result;
+        }
+      }
+    );
+   }
 
   getAllIndustries() {
     this.industryService.getAllIndustries().subscribe(
@@ -181,11 +235,11 @@ export class ContractorEditComponent implements OnInit {
         businessNumber: new FormControl(formValues?.businessNumber || '', Validators.required),
         businessAddressLine1: new FormControl(formValues?.businessAddressLine1 || '', Validators.required),
         businessAddressLine2: new FormControl(formValues?.businessAddressLine2),
-        businessProvinceId: new FormControl(formValues?.businessProvinceId || '', Validators.required),
-        businessCityId: new FormControl(formValues?.businessCityId || '', Validators.required),
+        businessProvinceId: new FormControl(formValues?.businessProvinceId?._id || '', Validators.required),
+        businessCityId: new FormControl(formValues?.businessCityId?._id || '', Validators.required),
         businessZipCode: new FormControl(formValues?.businessZipCode || '', Validators.required),
         linkedInProfile: new FormControl(formValues?.linkedInProfile || '', Validators.required),
-        position: new FormControl(formValues?.position || '', Validators.required),
+        position: new FormControl(formValues?.position?._id || '', Validators.required),
         industries: new FormControl(formValues?.industries || [], Validators.required),
         technologies: new FormControl(formValues?.technologies || [], Validators.required),
         certifications: new FormControl(formValues?.certifications || [], Validators.required),
@@ -212,16 +266,23 @@ export class ContractorEditComponent implements OnInit {
 
   handleChange(event: any) {
     let selectedValues = event.target.value;
-    if (selectedValues.length > 0) {
-      let find = selectedValues.find((elem: any) => elem.toLowerCase() == 'hybrid');
-      if (find) {
-        this.hybridSelected = true;
-      }
-      else {
-        this.hybridSelected = false;
-        this.hybridDays?.removeValidators(Validators.required);
-      }
+    if (selectedValues && selectedValues.length > 0) {
+      let find = selectedValues.find((elem: any) => {
+        if (typeof elem === 'string') {
+          return elem.toLowerCase() === 'hybrid';
+        }
+        return elem.type && elem.type.toLowerCase() === 'hybrid';
+      });
+      this.hybridSelected = !!find;
+    } else {
+      this.hybridSelected = false;
+      this.hybridDays?.removeValidators(Validators.required);
     }
+  }
+
+  compareLocationObjects(loc1: any, loc2: any): boolean {
+    if (!loc1 || !loc2) return loc1 === loc2;
+    return loc1.type?.toLowerCase() === loc2.type?.toLowerCase();
   }
 
   onSave() {
@@ -233,6 +294,8 @@ export class ContractorEditComponent implements OnInit {
       this.contractorForm.get('userId')?.setValue((this.myControl.value)?._id);
     }
     this.contractorForm.get('technologies')?.setValue(this.selectedTechnologies.map((x: any) => x._id));
+    this.contractorForm.get('industries')?.setValue(this.selectedIndustries.map((x: any) => x._id));
+    this.contractorForm.get('certifications')?.setValue(this.selectedCertifications.map((x: any) => x._id));
 
     this.loading = true;
     if (this.isEdit) {
@@ -346,6 +409,76 @@ export class ContractorEditComponent implements OnInit {
     this.selectedTechnologies.splice(this.selectedTechnologies.indexOf(item), 1);
   }
 
+  getIndustries(ev: any) {
+    const val = ev.target.value;
+    if (val && val.trim() !== '') {
+      this.isIndustryAvailable = true;
+      this.filteredIndustries = this.allIndustries.filter((item: any) => {
+        return ((item?.industryName).toLowerCase().indexOf(val.toLowerCase()) > -1) &&
+          !this.selectedIndustries.find((x: any) => x._id === item._id);
+      })
+    } else {
+      this.isIndustryAvailable = false;
+      this.filteredIndustries = [];
+    }
+  }
+
+  onIndustrySelected(item: any) {
+    if (this.selectedIndustries.length === 3) {
+      this.industrySelectionErrorMessage = 'Please select maximum 3 industries.';
+      return;
+    }
+    if (!this.selectedIndustries.find((val: any) => val._id === item._id)) {
+      this.selectedIndustries.push(item);
+      this.contractorForm.get('industries')?.setValue('');
+      this.isIndustryAvailable = false;
+      this.filteredIndustries = [];
+      this.industrySelectionErrorMessage = '';
+    }
+  }
+
+  onIndustrySelectedRemoved(item: any) {
+    const index = this.selectedIndustries.findIndex((x: any) => x._id === item._id);
+    if (index > -1) {
+      this.selectedIndustries.splice(index, 1);
+    }
+    this.industrySelectionErrorMessage = '';
+  }
+
+  getCertifications(ev: any) {
+    const val = ev.target.value;
+    if (val && val.trim() !== '') {
+      this.isCertificationAvailable = true;
+      this.filteredCertifications = this.allCerifications.filter((item: any) => {
+        return ((item?.certificationName).toLowerCase().indexOf(val.toLowerCase()) > -1) &&
+          !this.selectedCertifications.find((x: any) => x._id === item._id);
+      })
+    } else {
+      this.isCertificationAvailable = false;
+      this.filteredCertifications = [];
+    }
+  }
+
+  onCertificationSelected(item: any) {
+    if (this.selectedCertifications.length === 3) {
+      this.certificationSelectionErrorMessage = 'Please select maximum 3 certifications.';
+      return;
+    }
+    if (!this.selectedCertifications.find((val: any) => val._id === item._id)) {
+      this.selectedCertifications.push(item);
+      this.contractorForm.get('certifications')?.setValue('');
+      this.isCertificationAvailable = false;
+      this.filteredCertifications = [];
+      this.certificationSelectionErrorMessage = '';
+    }
+  }
+
+  onCertificationSelectedRemoved(item: any) {
+    const index = this.selectedCertifications.findIndex((x: any) => x._id === item._id);
+    if (index > -1) {
+      this.selectedCertifications.splice(index, 1);
+    }
+    this.certificationSelectionErrorMessage = '';
+  }
 
 }
-

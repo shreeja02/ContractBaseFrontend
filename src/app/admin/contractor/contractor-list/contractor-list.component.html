@@ -8,7 +8,7 @@
 <ion-grid>
   <ion-row>
     <ion-col size="12" size-md="4" size-lg="3" *ngFor="let item of filteredContractors">
-      <ion-card class="form-card" (click)="onViewMoreClicked(item._id)">
+      <ion-card class="form-card">
         <ion-card-header>
           <ion-card-title>{{item?.userId.firstName}} {{item?.userId.lastName}}</ion-card-title>
         </ion-card-header>

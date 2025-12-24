@@ -138,7 +138,8 @@
           <ion-row>
             <ion-col>
               <ion-select formControlName="location" (ionChange)="handleChange($event)" interface="popover"
-                fill="outline" placeholder="Select all Positions those apply" [multiple]="true">
+                fill="outline" placeholder="Select all locations those apply" [multiple]="true"
+                [compareWith]="compareLocationObjects">
                 <ion-select-option *ngFor="let item of allLocations" [value]="item">{{item.type}}</ion-select-option>
               </ion-select>
             </ion-col>
@@ -150,11 +151,18 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-select formControlName="industries" (ionChange)="handleChangeForIndustries($event)"
-                interface="popover" fill="outline" placeholder="Please select top 3 industries" [multiple]="true">
-                <ion-select-option *ngFor="let item of allIndustries"
-                  [value]="item._id">{{item.industryName}}</ion-select-option>
-              </ion-select>
+              <ion-searchbar class="w-100 searchbar-style" search-icon="search-circle"
+                show-clear-button="always" placeholder="Please select contractor's top 3 industries.." type="text"
+                debounce="100" (ionInput)="getIndustries($event)"></ion-searchbar>
+              <ion-list *ngIf="isIndustryAvailable">
+                <ion-item class="cursor-pointer" *ngFor="let item of filteredIndustries"
+                  (click)="onIndustrySelected(item)">
+                  {{item?.industryName}}</ion-item>
+              </ion-list>
+              <ion-chip *ngFor="let item of selectedIndustries">
+                <ion-label>{{item.industryName}}</ion-label>
+                <ion-icon name="close-circle" (click)="onIndustrySelectedRemoved(item)"></ion-icon>
+              </ion-chip>
               <div *ngIf="industrySelectionErrorMessage" class="ml-2 mt-2 error-class">
                 {{industrySelectionErrorMessage}}
               </div>
@@ -176,11 +184,18 @@
               </ion-chip>
             </ion-col>
             <ion-col>
-              <ion-select formControlName="certifications" (ionChange)="handleChangeForCertifications($event)"
-                interface="popover" fill="outline" placeholder="Please select top 3 Certifications" [multiple]="true">
-                <ion-select-option *ngFor="let item of allCerifications"
-                  [value]="item._id">{{item.certificationName}}</ion-select-option>
-              </ion-select>
+              <ion-searchbar class="w-100 searchbar-style" search-icon="search-circle"
+                show-clear-button="always" placeholder="Please select contractor's top 3 certifications.." type="text"
+                debounce="100" (ionInput)="getCertifications($event)"></ion-searchbar>
+              <ion-list *ngIf="isCertificationAvailable">
+                <ion-item class="cursor-pointer" *ngFor="let item of filteredCertifications"
+                  (click)="onCertificationSelected(item)">
+                  {{item?.certificationName}}</ion-item>
+              </ion-list>
+              <ion-chip *ngFor="let item of selectedCertifications">
+                <ion-label>{{item.certificationName}}</ion-label>
+                <ion-icon name="close-circle" (click)="onCertificationSelectedRemoved(item)"></ion-icon>
+              </ion-chip>
               <div *ngIf="certificationSelectionErrorMessage" class="ml-2 mt-2 error-class">
                 {{certificationSelectionErrorMessage}}
               </div>
