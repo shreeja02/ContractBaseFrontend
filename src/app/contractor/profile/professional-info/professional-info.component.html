@@ -68,16 +68,23 @@
                   <div class="form-group">
                     <label class="form-label">Location Preference*</label>
                     <ion-select formControlName="location" (ionChange)="handleChange($event)" interface="popover"
-                      fill="outline" placeholder="Select location preferences" [multiple]="true">
-                      <ion-select-option *ngFor="let item of allLocations" [value]="item">{{item}}</ion-select-option>
+                      fill="outline" placeholder="Select location preferences" [multiple]="true"
+                      [compareWith]="compareLocationObjects">
+                      <ion-select-option *ngFor="let item of allLocations" [value]="item">{{item.type}}</ion-select-option>
                     </ion-select>
                   </div>
                 </div>
                 <div class="form-col" *ngIf="isHybridSelected">
                   <div class="form-group">
+                    <label class="form-label">Days in the office*</label>
                     <ion-input formControlName="hybridDays" type="number"
                       label="Days in Office (for Hybrid)*" label-placement="floating"
-                      fill="outline" placeholder="Enter number of days"></ion-input>
+                      fill="outline" placeholder="Enter number of days (0-5)"></ion-input>
+                    <div class="error-message"
+                      *ngIf="form.get('hybridDays')?.invalid && form.get('hybridDays')?.touched">
+                      <span *ngIf="form.get('hybridDays')?.errors?.min">Days must be at least 0</span>
+                      <span *ngIf="form.get('hybridDays')?.errors?.max">Days cannot exceed 5</span>
+                    </div>
                   </div>
                 </div>
               </div>

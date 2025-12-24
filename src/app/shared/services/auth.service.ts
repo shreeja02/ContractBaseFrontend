@@ -11,13 +11,14 @@ import {jwtDecode} from 'jwt-decode';
 export class AuthService {
 
   private currentUser: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private readonly TOKEN_KEY = 'authToken';
 
   constructor(
     private http: HttpClient,
     private router: Router
   ) {
 
-    const userData = this.extractUserData(localStorage.getItem('authToken') || '');
+    const userData = this.extractUserData(this.getToken() || '');
     this.initUser(userData);
   }
 
@@ -25,12 +26,50 @@ export class AuthService {
     return this.currentUser.asObservable();
   }
 
+  /**
+   * Get the stored JWT token
+   */
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  /**
+   * Set the JWT token
+   */
+  private setToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  /**
+   * Check if token exists and is valid
+   */
+  isTokenValid(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+    
+    try {
+      const decoded: any = jwtDecode(token);
+      // Check if token is expired
+      if (decoded.exp) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        return decoded.exp > currentTime;
+      }
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   public get tokenData() {
-    var token = localStorage.getItem('authToken');
+    const token = this.getToken();
     if (!token) return null;
-    var decodedString =  jwtDecode(token);
-    if (decodedString) {
-      return decodedString;
+    try {
+      const decodedString = jwtDecode(token);
+      if (decodedString) {
+        return decodedString;
+      }
+    } catch (error) {
+      console.error('Error decoding token:', error);
     }
     return null;
   }
@@ -47,7 +86,7 @@ export class AuthService {
     return this.http.post(environment.apiEndPoint + 'users/login', req)
       .pipe(map((data: any) => {
         if (data && data.success) {
-          localStorage.setItem('authToken', data.result);
+          this.setToken(data.result);
           const userData = this.extractUserData(data.result);
           this.currentUser.next(userData);
           return userData;
@@ -59,7 +98,7 @@ export class AuthService {
   private extractUserData(token: string) {
     if (!token) return null;
     try {
-      var decodedString =  jwtDecode(token);
+      const decodedString = jwtDecode(token);
       return decodedString;
     } catch (error) {
       console.error('Error decoding token:', error);
@@ -73,7 +112,7 @@ export class AuthService {
 
   logout() {
     this.currentUser.next(null);
-    localStorage.clear();
+    localStorage.removeItem(this.TOKEN_KEY);
     this.router.navigate(['/auth/login']);
   }
 }

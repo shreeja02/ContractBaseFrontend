@@ -116,8 +116,8 @@ export class BusinessInfoComponent implements OnInit {
       businessNumber: [dataItem.businessNumber, Validators.required],
       businessAddressLine1: [dataItem.businessAddressLine1, Validators.required],
       businessAddressLine2: [dataItem.businessAddressLine2],
-      businessProvinceId: [dataItem.businessProvinceId, Validators.required],
-      businessCityId: [dataItem.businessCityId, Validators.required],
+      businessProvinceId: [dataItem.businessProvinceId?._id, Validators.required],
+      businessCityId: [dataItem.businessCityId?._id, Validators.required],
       businessZipCode: [dataItem.businessZipCode, Validators.required],
       linkedInProfile: [dataItem.linkedInProfile, Validators.required],
     });
@@ -140,7 +140,7 @@ export class BusinessInfoComponent implements OnInit {
     });
     await loading.present();
     
-    this.contractorService.editContractor({ ...this.currentUser, ...this.form.value }, this.currentUser.id)
+    this.contractorService.editContractor({ ...this.currentContractor, ...this.form.value }, this.currentUser.id)
       .subscribe(
         (data) => {
           this.isLoading = false;
