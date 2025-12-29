@@ -29,6 +29,7 @@ export class AdminService {
   }
 
   saveContractor(contractorForm: any) {
+    console.log('contractorForm: ', contractorForm);
     return this._http.post(this.apiEndPoint + "Admin", contractorForm);
   }
 

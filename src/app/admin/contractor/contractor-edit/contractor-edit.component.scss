@@ -317,12 +317,39 @@ ion-select {
 /* Error Messages */
 .error-message {
     color: #d32f2f;
-    font-size: 0.8rem;
-    margin-top: 0.4rem;
-    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.6rem;
     background: #ffebee;
     border-left: 3px solid #d32f2f;
     border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .error-icon {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+}
+
+/* Success Messages */
+.success-message {
+    color: #388e3c;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.6rem;
+    background: #f1f8e9;
+    border-left: 3px solid #388e3c;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .success-icon {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
 }
 
 /* Checkbox Group */

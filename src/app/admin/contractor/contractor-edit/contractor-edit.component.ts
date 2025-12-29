@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, computed, inject, Inject, model, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, inject, Inject, model, OnInit, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Route, Router } from '@angular/router';
@@ -39,7 +39,7 @@ export class ContractorEditComponent implements OnInit {
   allIndustries: any = [];
   hybridSelected = false;
   todayDate: Date = new Date();
-  allLocations: any = [{type:'Remote', days: 0},{type:'Inperson', days: 5},{type:'Hybrid', days: 0}];
+  allLocations: any = [{ type: 'Remote', days: 0 }, { type: 'Inperson', days: 5 }, { type: 'Hybrid', days: 0 }];
   projectBudget: any = ['<10MIO', '10MIO - 100MIO', '100MIO - 500MIO', '>500MIO'];
   teamSize: any = ['<10', '10-50', '50-100', '>100'];
   contractLength: any = ['<6 Months', '6 Months - 1 Year', '>1 Year'];
@@ -67,6 +67,9 @@ export class ContractorEditComponent implements OnInit {
   routeSub!: Subscription;
   contractorId: any;
   contractorDetails: any;
+  @ViewChild('industrySearchbar') industrySearchbar: any;
+  @ViewChild('technologySearchbar') technologySearchbar: any;
+  @ViewChild('certificationSearchbar') certificationSearchbar: any;
   constructor(private fb: FormBuilder,
     private contractorService: AdminService,
     private userService: UserService,
@@ -97,55 +100,43 @@ export class ContractorEditComponent implements OnInit {
         this.contractorDetails = data.result;
         if (this.contractorDetails) {
           this.contractorForm = this.createForm(this.contractorDetails);
-          
-          // Handle Province and City - load cities after province is set
-          const provinceId = this.contractorDetails.businessProvinceId?._id || this.contractorDetails.businessProvinceId;
-          const cityId = this.contractorDetails.businessCityId?._id || this.contractorDetails.businessCityId;
-          
-          if (provinceId) {
-            // Load cities for this province and then set the city
-            this.cityService.getCitiesByProvince(provinceId).subscribe(
+          this.cdr.detectChanges();
+          if (this.contractorDetails.businessProvinceId) {
+
+            this.cityService.getCitiesByProvince(this.contractorDetails?.businessProvinceId).subscribe(
               (res: any) => {
                 if (res.result && res.result.length) {
                   this.allCities = res.result;
-                  // Set city after cities are loaded
-                  if (cityId) {
-                    this.contractorForm.get('businessCityId')?.setValue(cityId);
-                  }
+                  this.contractorForm.get('businessCityId')?.setValue(this.contractorDetails.businessCityId?._id);
                   this.cdr.detectChanges();
                 }
               }
             );
           }
-          
+
           this.handleChangeForPosition(this.contractorDetails.position, true);
           this.selectedTechnologies = this.contractorDetails.technologies;
-          
-          // Set industries - extract IDs if they are objects
+
           if (this.contractorDetails.industries) {
-            const industryIds = this.contractorDetails.industries.map((ind: any) => 
+            const industryIds = this.contractorDetails.industries.map((ind: any) =>
               typeof ind === 'string' ? ind : ind._id
             );
             this.contractorForm.get('industries')?.setValue(industryIds);
-            // Also populate selectedIndustries for chip display
             this.selectedIndustries = this.contractorDetails.industries.map((ind: any) =>
               typeof ind === 'string' ? { _id: ind } : ind
             );
           }
-          
-          // Set certifications - extract IDs if they are objects
+
           if (this.contractorDetails.certifications) {
-            const certIds = this.contractorDetails.certifications.map((cert: any) => 
+            const certIds = this.contractorDetails.certifications.map((cert: any) =>
               typeof cert === 'string' ? cert : cert._id
             );
             this.contractorForm.get('certifications')?.setValue(certIds);
-            // Also populate selectedCertifications for chip display
             this.selectedCertifications = this.contractorDetails.certifications.map((cert: any) =>
               typeof cert === 'string' ? { _id: cert } : cert
             );
           }
-          
-          // Set location - set the objects directly and check for hybrid
+
           if (this.contractorDetails.location && Array.isArray(this.contractorDetails.location)) {
             this.contractorForm.get('location')?.setValue(this.contractorDetails.location);
             const hasHybrid = this.contractorDetails.location.find(
@@ -156,7 +147,7 @@ export class ContractorEditComponent implements OnInit {
               this.hybridDays.setValue(hasHybrid.days);
             }
           }
-          
+
           this.cdr.detectChanges();
         }
       }
@@ -173,36 +164,37 @@ export class ContractorEditComponent implements OnInit {
       }),
     );
     this.getAllPositions();
+    this.getAllActiveCities();
     this.getAllProvinces();
     this.getAllIndustries();
     this.getAllCertifications();
     this.getAllActiveCities();
-    
+
     // Call getContractorById for edit mode after data is loaded
     if (this.isEdit && this.contractorId) {
       this.getContractorById();
     }
   }
 
-  getAllActiveCities(){
+  getAllActiveCities() {
     this.cityService.getAllCities().subscribe(
       (res: any) => {
-        if (res.result.length) {
-          this.allCities = res.result;
+        if (res.length) {
+          this.allCities = res;
         }
       }
     );
   }
 
-   getAllCertifications(){
+  getAllCertifications() {
     this.certificationService.getAllCertifications().subscribe(
-      (res:any)=>{
-        if(res.result.length){
+      (res: any) => {
+        if (res.result.length) {
           this.allCerifications = res.result;
         }
       }
     );
-   }
+  }
 
   getAllIndustries() {
     this.industryService.getAllIndustries().subscribe(
@@ -217,9 +209,8 @@ export class ContractorEditComponent implements OnInit {
   getAllProvinces() {
     this.provinceService.getAllActiveProvinces().subscribe(
       (res: any) => {
-        if (res.result.length) {
-          this.allProvinces = res.result;
-          console.log('this.allProvinces: ', this.allProvinces);
+        if (res.length) {
+          this.allProvinces = res;
         }
       }
     );
@@ -269,19 +260,19 @@ export class ContractorEditComponent implements OnInit {
     return this.fb.group(
       {
         userId: new FormControl(formValues?.userId?._id || '', Validators.required),
+        linkedInProfile: new FormControl(formValues?.linkedInProfile || '', Validators.required),
         businessNumber: new FormControl(formValues?.businessNumber || '', Validators.required),
         businessAddressLine1: new FormControl(formValues?.businessAddressLine1 || '', Validators.required),
         businessAddressLine2: new FormControl(formValues?.businessAddressLine2),
         businessProvinceId: new FormControl(
-          (typeof formValues?.businessProvinceId === 'object' ? formValues?.businessProvinceId?._id : formValues?.businessProvinceId) || '', 
+          formValues?.businessProvinceId?._id || '',
           Validators.required
         ),
         businessCityId: new FormControl(
-          (typeof formValues?.businessCityId === 'object' ? formValues?.businessCityId?._id : formValues?.businessCityId) || '', 
+          formValues?.businessCityId?._id || '',
           Validators.required
         ),
         businessZipCode: new FormControl(formValues?.businessZipCode || '', Validators.required),
-        linkedInProfile: new FormControl(formValues?.linkedInProfile || '', Validators.required),
         position: new FormControl(formValues?.position?._id || '', Validators.required),
         industries: new FormControl(formValues?.industries || [], Validators.required),
         technologies: new FormControl(formValues?.technologies || [], Validators.required),
@@ -329,14 +320,57 @@ export class ContractorEditComponent implements OnInit {
   }
 
   onSave() {
-    // Validate form before saving
-    if (this.contractorForm.invalid) {
-      console.error('Form is invalid. Please fill in all required fields.');
+    // Validate form fields
+    
+
+    // Validate industries selection
+    if (!this.selectedIndustries || this.selectedIndustries.length === 0) {
+      this.industrySelectionErrorMessage = 'Please select at least 1 industry.';
+      return;
+    }
+    if (this.selectedIndustries.length > 3) {
+      this.industrySelectionErrorMessage = 'Please select maximum 3 industries.';
       return;
     }
 
+    // Validate technologies selection
+    if (!this.selectedTechnologies || this.selectedTechnologies.length === 0) {
+      this.technologySelectionErrorMessage = 'Please select at least 1 technology.';
+      return;
+    }
+    if (this.selectedTechnologies.length > 3) {
+      this.technologySelectionErrorMessage = 'Please select maximum 3 technologies.';
+      return;
+    }
+
+    // Validate certifications selection
+    if (!this.selectedCertifications || this.selectedCertifications.length === 0) {
+      this.certificationSelectionErrorMessage = 'Please select at least 1 certification.';
+      return;
+    }
+    if (this.selectedCertifications.length > 3) {
+      this.certificationSelectionErrorMessage = 'Please select maximum 3 certifications.';
+      return;
+    }
+
+    // Validate location selection
+    const locationValue = this.contractorForm.get('location')?.value;
+    if (!locationValue || (Array.isArray(locationValue) && locationValue.length === 0)) {
+      console.error('Please select at least one work location.');
+      return;
+    }
+
+    // Validate hybrid days if hybrid is selected
     if (this.hybridSelected) {
-      var foundIndex = this.allLocations.findIndex((x: any) => x.id == 2);
+      const hybridDaysValue = this.hybridDays?.value;
+      if (!hybridDaysValue || hybridDaysValue <= 0 || hybridDaysValue > 5) {
+        console.error('Please enter valid number of office days per week (1-5).');
+        return;
+      }
+    }
+
+    if (this.hybridSelected) {
+      var foundIndex = this.allLocations.findIndex((x: any) => x.type == 'Hybrid');
       this.allLocations[foundIndex].days = this.hybridDays?.value || 0;
     }
     if (!this.isEdit) {
@@ -346,6 +380,10 @@ export class ContractorEditComponent implements OnInit {
     this.contractorForm.get('industries')?.setValue(this.selectedIndustries.map((x: any) => x._id));
     this.contractorForm.get('certifications')?.setValue(this.selectedCertifications.map((x: any) => x._id));
 
+    if (this.contractorForm.invalid) {
+      this.markFormGroupTouched(this.contractorForm);
+      return;
+    }
     this.loading = true;
     if (this.isEdit) {
       this.contractorService.editContractor(this.contractorForm.value, this.contractorId)
@@ -357,12 +395,14 @@ export class ContractorEditComponent implements OnInit {
             }
           },
           (error: any) => {
-            console.error('Error saving contractor:', error);
           }
         )
     }
     else {
-      this.contractorService.saveContractor(this.contractorForm.value)
+      let data ={
+        ...this.contractorForm.value, userId: this.myControl.value?._id
+      }
+      this.contractorService.saveContractor(data)
         .pipe(finalize(() => this.loading = false))
         .subscribe(
           (data: any) => {
@@ -375,6 +415,13 @@ export class ContractorEditComponent implements OnInit {
           }
         )
     }
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+    });
   }
 
   handleChangeForIndustries(event: any) {
@@ -461,6 +508,10 @@ export class ContractorEditComponent implements OnInit {
       this.filteredTechnologies.splice(this.allTechnologies.indexOf(item), 1);
       this.contractorForm.get('technologies')?.setValue('');
       this.isTechnologyAvailable = false;
+      // Clear searchbar
+      if (this.technologySearchbar) {
+        this.technologySearchbar.value = '';
+      }
     }
   }
 
@@ -493,6 +544,10 @@ export class ContractorEditComponent implements OnInit {
       this.isIndustryAvailable = false;
       this.filteredIndustries = [];
       this.industrySelectionErrorMessage = '';
+      // Clear searchbar
+      if (this.industrySearchbar) {
+        this.industrySearchbar.value = '';
+      }
     }
   }
 
@@ -529,6 +584,10 @@ export class ContractorEditComponent implements OnInit {
       this.isCertificationAvailable = false;
       this.filteredCertifications = [];
       this.certificationSelectionErrorMessage = '';
+      // Clear searchbar
+      if (this.certificationSearchbar) {
+        this.certificationSearchbar.value = '';
+      }
     }
   }
 

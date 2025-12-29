@@ -34,7 +34,8 @@
           <ion-col>
             <div class="form-group">
               <label class="form-label">LinkedIn Profile *</label>
-              <ion-input formControlName="linkedInProfile" type="text" fill="outline"></ion-input>
+              <span hidden=true>{{contractorForm.controls['linkedInProfile']?.value}}</span>
+              <ion-input formControlName="linkedInProfile" fill="outline"></ion-input>
               <div class="error-message" *ngIf="contractorForm.controls['linkedInProfile']?.invalid && (contractorForm.controls['linkedInProfile']?.dirty || contractorForm.controls['linkedInProfile'].touched)">
                 <div *ngIf="contractorForm.controls['linkedInProfile']?.errors?.required">LinkedIn Profile is required.</div>
               </div>
@@ -127,10 +128,18 @@
             [compareWith]="compareLocationObjects">
             <ion-select-option *ngFor="let item of allLocations" [value]="item">{{item.type}}</ion-select-option>
           </ion-select>
+          <div class="error-message" *ngIf="contractorForm.controls['location']?.invalid && (contractorForm.controls['location']?.dirty || contractorForm.controls['location'].touched)">
+            <ion-icon name="alert-circle" class="error-icon"></ion-icon>
+            <div *ngIf="contractorForm.controls['location']?.errors?.required">Work location selection is required.</div>
+          </div>
         </div>
         <div class="form-group" *ngIf="hybridSelected">
-          <label class="form-label">Office Days per Week (Hybrid)</label>
-          <ion-input [formControl]="hybridDays" type="number" placeholder="Number of days" fill="outline"></ion-input>
+          <label class="form-label">Office Days per Week (Hybrid) *</label>
+          <ion-input [formControl]="hybridDays" type="number" placeholder="Number of days (1-5)" fill="outline" min="1" max="5"></ion-input>
+          <div class="error-message" *ngIf="hybridDays?.invalid && (hybridDays?.dirty || hybridDays.touched)">
+            <ion-icon name="alert-circle" class="error-icon"></ion-icon>
+            <div *ngIf="hybridDays?.errors?.required">Office days is required for hybrid location.</div>
+          </div>
         </div>
       </div>
 
@@ -139,7 +148,7 @@
         <h2 class="section-title">Professional Expertise</h2>
         <div class="form-group">
           <label class="form-label">Industries (Select up to 3) *</label>
-          <ion-searchbar class="searchbar-style" search-icon="search-circle"
+          <ion-searchbar #industrySearchbar class="searchbar-style" search-icon="search-circle"
             show-clear-button="always" placeholder="Search industries..." type="text"
             debounce="100" (ionInput)="getIndustries($event)"></ion-searchbar>
           <ion-list *ngIf="isIndustryAvailable" class="suggestions-list">
@@ -154,14 +163,19 @@
             </ion-chip>
           </div>
           <div *ngIf="industrySelectionErrorMessage" class="error-message">
+            <ion-icon name="alert-circle" class="error-icon"></ion-icon>
             {{industrySelectionErrorMessage}}
+          </div>
+          <div *ngIf="!industrySelectionErrorMessage && selectedIndustries.length > 0" class="success-message">
+            <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
+            {{selectedIndustries.length}} industry(ies) selected
           </div>
         </div>
         <ion-row>
           <ion-col>
             <div class="form-group">
               <label class="form-label">Technologies (Select up to 3) *</label>
-              <ion-searchbar class="searchbar-style" search-icon="search-circle"
+              <ion-searchbar #technologySearchbar class="searchbar-style" search-icon="search-circle"
                 show-clear-button="always" placeholder="Search technologies..." type="text"
                 debounce="100" (ionInput)="getTechnologies($event)"></ion-searchbar>
               <ion-list *ngIf="isTechnologyAvailable" class="suggestions-list">
@@ -175,12 +189,20 @@
                   <ion-icon name="close-circle" (click)="onTechnologySelectedRemoved(item)"></ion-icon>
                 </ion-chip>
               </div>
+              <div *ngIf="technologySelectionErrorMessage" class="error-message">
+                <ion-icon name="alert-circle" class="error-icon"></ion-icon>
+                {{technologySelectionErrorMessage}}
+              </div>
+              <div *ngIf="!technologySelectionErrorMessage && selectedTechnologies.length > 0" class="success-message">
+                <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
+                {{selectedTechnologies.length}} technology(ies) selected
+              </div>
             </div>
           </ion-col>
           <ion-col>
             <div class="form-group">
               <label class="form-label">Certifications (Select up to 3) *</label>
-              <ion-searchbar class="searchbar-style" search-icon="search-circle"
+              <ion-searchbar #certificationSearchbar class="searchbar-style" search-icon="search-circle"
                 show-clear-button="always" placeholder="Search certifications..." type="text"
                 debounce="100" (ionInput)="getCertifications($event)"></ion-searchbar>
               <ion-list *ngIf="isCertificationAvailable" class="suggestions-list">
@@ -195,7 +217,12 @@
                 </ion-chip>
               </div>
               <div *ngIf="certificationSelectionErrorMessage" class="error-message">
+                <ion-icon name="alert-circle" class="error-icon"></ion-icon>
                 {{certificationSelectionErrorMessage}}
+              </div>
+              <div *ngIf="!certificationSelectionErrorMessage && selectedCertifications.length > 0" class="success-message">
+                <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
+                {{selectedCertifications.length}} certification(s) selected
               </div>
             </div>
           </ion-col>
