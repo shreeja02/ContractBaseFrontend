@@ -24,22 +24,26 @@ export class ContractorListComponent implements OnInit {
   }
 
   search() {
-    this.allContractors = this.searchbarControl.valueChanges.subscribe(
+    this.searchbarControl.valueChanges.pipe(
+      startWith('')
+    ).subscribe(
       (term) => {
-        if (term) {
+        if (term && term.trim()) {
           this.filteredContractors = this.allContractors.filter((item: any) => {
             return (
-              item.businessAddressLine1.toLowerCase().includes(term) ||
-              item.businessNumber.includes(term) ||
-              item.position.positionName.toLowerCase().includes(term) ||
-              item.businessCityId.cityName.toLowerCase().includes(term) ||
-              item.industries.some((ind: any) => ind.industryName.toLowerCase().includes(term)) ||
-              item.certifications.some((ind: any) => ind.industryName.toLowerCase().includes(term)) ||
-              item.location.some((ind: any) => ind.industryName.toLowerCase().includes(term)) ||
-              item.technologies.some((ind: any) => ind.industryName.toLowerCase().includes(term)) ||
-              (item.userId.firstName.toLowerCase() + ' ' + item.userId.lastName.toLowerCase()).includes(term) ||
+              item.businessAddressLine1.toLowerCase().includes(term.toLowerCase()) ||
+              item.businessNumber.toString().includes(term) ||
+              item.position.positionName.toLowerCase().includes(term.toLowerCase()) ||
+              item.businessCityId.cityName.toLowerCase().includes(term.toLowerCase()) ||
+              item.industries.some((ind: any) => ind.industryName.toLowerCase().includes(term.toLowerCase())) ||
+              item.certifications.some((ind: any) => ind.certificationName.toLowerCase().includes(term.toLowerCase())) ||
+              item.location.some((ind: any) => ind.type.toLowerCase().includes(term.toLowerCase())) ||
+              item.technologies.some((ind: any) => ind.technologyName.toLowerCase().includes(term.toLowerCase())) ||
+              (item.userId.firstName.toLowerCase() + ' ' + item.userId.lastName.toLowerCase()).includes(term.toLowerCase()) ||
               item.yearsOfExperience.toString().includes(term));
           });
+        } else {
+          this.filteredContractors = this.allContractors;
         }
       }
     );

@@ -15,6 +15,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AdminService } from 'src/app/shared/services/admin.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-contractor-edit',
@@ -67,6 +68,7 @@ export class ContractorEditComponent implements OnInit {
   routeSub!: Subscription;
   contractorId: any;
   contractorDetails: any;
+  saveErrorMessage: string = '';
   @ViewChild('industrySearchbar') industrySearchbar: any;
   @ViewChild('technologySearchbar') technologySearchbar: any;
   @ViewChild('certificationSearchbar') certificationSearchbar: any;
@@ -81,7 +83,8 @@ export class ContractorEditComponent implements OnInit {
     private technologyService: TechnologyService,
     private certificationService: CertificationService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private alertController: AlertController) {
     this.routeSub = this.route.params.subscribe(params => {
       this.contractorId = params['id'];
       if (this.contractorId) {
@@ -393,8 +396,12 @@ export class ContractorEditComponent implements OnInit {
             if (data.status == 200) {
               this.router.navigate(['/admin/contractor']);
             }
+            if(data.status == 500){
+              this.handleSaveError(data);
+            }
           },
           (error: any) => {
+            this.handleSaveError(error);
           }
         )
     }
@@ -409,9 +416,12 @@ export class ContractorEditComponent implements OnInit {
             if (data.status == 200) {
               this.router.navigate(['/admin/contractor']);
             }
+             if(data.status == 500){
+              this.handleSaveError(data);
+            }
           },
           (error: any) => {
-            console.error('Error saving contractor:', error);
+            this.handleSaveError(error);
           }
         )
     }
@@ -422,6 +432,31 @@ export class ContractorEditComponent implements OnInit {
       const control = formGroup.get(key);
       control?.markAsTouched();
     });
+  }
+
+  private async handleSaveError(error: any) {
+    console.log('error: ', error);
+    let errorMessage = 'An error occurred while saving the contractor.';
+    
+    if (error?.errors?.message) {
+      errorMessage = error.errors.message;
+    } else if (error?.error?.errors?.message) {
+      errorMessage = error.error.errors.message;
+    } else if (error?.error?.errors) {
+      errorMessage = error.error.errors;
+    } else if (error?.error?.message) {
+      errorMessage = error.error.message;
+    } else if (error?.statusText) {
+      errorMessage = error.statusText;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: errorMessage,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   handleChangeForIndustries(event: any) {
