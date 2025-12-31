@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiEndPoint: 'https://api.contractbase.ca/'
+  apiEndPoint: 'https://api.top3talent.ca/'
 };
